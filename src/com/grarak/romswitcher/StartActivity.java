@@ -111,7 +111,7 @@ public class StartActivity extends Activity {
 			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
 			editor.commit();
 			setup(context);
-		} else if (!mKernelVersion.equals(Utils.getFormattedKernelVersion()) || mFirstuse == false) {
+		} else if (!mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
 			Utils.displayprogress(context.getString(R.string.setupnewkernel), context);
 			GetKernel.pullkernel();
