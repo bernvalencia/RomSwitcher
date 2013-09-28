@@ -61,7 +61,7 @@ public class MainSetupActivity extends Activity {
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(2000);
+								Thread.sleep(1500);
 								GetKernel.pullkernel();
 								Intent i = new Intent(MainSetupActivity.this,
 										SetNameActivity.class);
