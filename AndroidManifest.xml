@@ -32,7 +32,17 @@
         </activity>
         <activity android:name="SetNameActivity" >
         </activity>
-        <activity android:name="CheckforFilesActivity" >
+        <activity
+            android:name="CheckforFilesActivity"
+            android:theme="@style/ThemeTransparent" >
+        </activity>
+        <activity
+            android:name="LinkActivity"
+            android:theme="@style/ThemeTransparent" >
+        </activity>
+        <activity
+            android:name="PackageDownloader"
+            android:theme="@style/ThemeTransparent" >
         </activity>
     </application>
 

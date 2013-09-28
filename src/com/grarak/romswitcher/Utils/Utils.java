@@ -12,8 +12,14 @@ package com.grarak.romswitcher.Utils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.grarak.romswitcher.R;
 
@@ -22,11 +28,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
 public class Utils {
 
+	public static String mHtmlstring = "";
 	private static ProgressDialog mProgressDialog;
 	private static final String FILENAME_PROC_VERSION = "/proc/version";
 
@@ -119,4 +128,42 @@ public class Utils {
 		return m.group(1);
 	}
 
+	public static void getconnection(String url) {
+
+		DownloadWebPageTask task = new DownloadWebPageTask();
+		task.execute(new String[] { url });
+	}
+
+	private static class DownloadWebPageTask extends
+			AsyncTask<String, Void, String> {
+
+		@Override
+		protected String doInBackground(String... urls) {
+			String response = "";
+			for (String url : urls) {
+				DefaultHttpClient client = new DefaultHttpClient();
+				HttpGet httpGet = new HttpGet(url);
+				try {
+					HttpResponse execute = client.execute(httpGet);
+					InputStream content = execute.getEntity().getContent();
+
+					BufferedReader buffer = new BufferedReader(
+							new InputStreamReader(content));
+					String s = "";
+					while ((s = buffer.readLine()) != null) {
+						response += s;
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return response;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			mHtmlstring = Html.fromHtml(result).toString();
+		}
+	}
 }

@@ -21,6 +21,7 @@ import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -59,7 +60,9 @@ public class CheckforFilesActivity extends Activity {
 						+ "/romswitcher/");
 			}
 		} else {
-
+			Intent i = new Intent(this, LinkActivity.class);
+			startActivity(i);
+			finish();
 		}
 	}
 

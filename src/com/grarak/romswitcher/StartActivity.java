@@ -109,12 +109,13 @@ public class StartActivity extends Activity {
 		String mKernelVersion = PREF_KERNEL_VERSION.getString("kernelversion",
 				"nothing");
 
-		if (mKernelVersion.equals("nothing")) {
+		if (mKernelVersion.equals("nothing")
+				|| mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
 			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
 			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
 			editor.commit();
 			setup(context);
-		} else if (!mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
+		} else {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
 			Utils.displayprogress(context.getString(R.string.setupnewkernel),
 					context);

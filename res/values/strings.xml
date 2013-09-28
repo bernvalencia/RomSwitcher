@@ -38,4 +38,10 @@
     <string name="more">More</string>
     <string name="yes">Yes</string>
     
+    <!-- Connection -->
+    <string name="checkconnection">Checking connection</string>
+    <string name="nointernet">No internet connection</string>
+    <string name="serverdown">Server is down</string>
+    <string name="openagain">Open RomSwitcher again when the download finished</string>
+    
 </resources>

@@ -71,8 +71,8 @@ public class MainSetupActivity extends Activity {
 								Intent i = new Intent(MainSetupActivity.this,
 										SetNameActivity.class);
 								startActivity(i);
-								Utils.hideprogress();
 								finish();
+								Utils.hideprogress();
 							} catch (Exception e) {
 								e.getLocalizedMessage();
 							}
