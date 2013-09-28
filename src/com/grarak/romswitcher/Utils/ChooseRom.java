@@ -87,8 +87,8 @@ public class ChooseRom {
 							+ "/romswitcher/" + rom + ".img of="
 							+ StartActivity.bootpartition,
 							"echo 1 > /proc/sys/kernel/sysrq",
-							"echo b > /proc/sysrq-trigger", "reboot"))
-					.waitForFinish();
+							"echo b > /proc/sysrq-trigger")).waitForFinish();
+			getShell(true).add(new CommandCapture(1, "reboot"));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

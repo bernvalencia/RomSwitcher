@@ -119,7 +119,6 @@ public class StartActivity extends Activity {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
 			Utils.displayprogress(context.getString(R.string.setupnewkernel),
 					context);
-			GetKernel.pullkernel();
 
 			Thread pause = new Thread(new Runnable() {
 				@Override
@@ -136,7 +135,6 @@ public class StartActivity extends Activity {
 						Intent i = new Intent(context,
 								CheckforFilesActivity.class);
 						context.startActivity(i);
-						Utils.hideprogress();
 						((Activity) context).finish();
 					} catch (Exception e) {
 						e.getLocalizedMessage();
@@ -159,7 +157,6 @@ public class StartActivity extends Activity {
 		} else {
 			Intent i = new Intent(context, CheckforFilesActivity.class);
 			context.startActivity(i);
-			Utils.hideprogress();
 			((Activity) context).finish();
 		}
 	}
