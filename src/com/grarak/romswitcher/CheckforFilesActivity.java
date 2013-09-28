@@ -11,14 +11,17 @@ package com.grarak.romswitcher;
 
 import static android.os.Environment.getExternalStorageDirectory;
 import static com.stericson.RootTools.RootTools.debugMode;
+import static com.stericson.RootTools.RootTools.getShell;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import com.grarak.romswitcher.Utils.ChooseRom;
-import com.grarak.romswitcher.Utils.Unzip;
 import com.grarak.romswitcher.Utils.Utils;
+import com.stericson.RootTools.CommandCapture;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,7 +34,7 @@ public class CheckforFilesActivity extends Activity {
 	private static String PREF_NAME_FIRST = "first_rom_name";
 	private static String PREF_NAME_SECOND = "second_rom_name";
 	private static String sdcard = getExternalStorageDirectory().getPath();
-	private static final File secondtimg = new File(sdcard
+	private static final File secondimg = new File(sdcard
 			+ "/romswitcher/second.img");
 	private static final File zip = new File(sdcard
 			+ "/romswitcher/download.zip");
@@ -39,7 +42,7 @@ public class CheckforFilesActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		debugMode = true;
 
 		if (!isRootAvailable()) {
@@ -51,17 +54,10 @@ public class CheckforFilesActivity extends Activity {
 			finish();
 		}
 
-		if (secondtimg.exists()) {
+		if (secondimg.exists()) {
 			start(this);
 		} else if (zip.exists()) {
-			Unzip.unzip(sdcard + "/romswitcher/download.zip", sdcard
-					+ "/romswitcher/");
-			if (zip.exists()) {
-				start(this);
-			} else {
-				Unzip.unzip(sdcard + "/romswitcher/download.zip", sdcard
-						+ "/romswitcher/");
-			}
+			unzip(this);
 		} else {
 			Intent i = new Intent(this, LinkActivity.class);
 			startActivity(i);
@@ -78,5 +74,25 @@ public class CheckforFilesActivity extends Activity {
 		ChooseRom.chooserom(context, context.getString(R.string.app_name),
 				FIRST_NAME.getString("firstname", "nothing"),
 				SECOND_NAME.getString("secondname", "nothing"));
+	}
+
+	private static void unzip(Context context) {
+		try {
+			getShell(true)
+					.add(new CommandCapture(1,
+							"unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/"))
+					.waitForFinish();
+			if (secondimg.exists()) {
+				start(context);
+			} else {
+				unzip(context);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 	}
 }
