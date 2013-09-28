@@ -9,6 +9,10 @@
 
 package com.grarak.romswitcher;
 
+import static android.os.Environment.getExternalStorageDirectory;
+
+import java.io.File;
+
 import com.grarak.romswitcher.Utils.GetKernel;
 import com.grarak.romswitcher.Utils.Utils;
 
@@ -20,6 +24,8 @@ import android.os.Bundle;
 
 public class StartActivity extends Activity {
 
+	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final File firstimg = new File(sdcard + "/romswitcher/first.img");
 	private static final String PREF_FIRST_USE = "firstuse";
 	private static final String KERNEL_VERSION = "kernelversion";
 	private static String device = android.os.Build.DEVICE.toString();
@@ -95,34 +101,55 @@ public class StartActivity extends Activity {
 		}
 	}
 	
-	private static void checkkernel(Context context) {
+	private static void checkkernel(final Context context) {
 		
 		SharedPreferences PREF_KERNEL_VERSION = context.getSharedPreferences(KERNEL_VERSION, 0);
 		String mKernelVersion = PREF_KERNEL_VERSION.getString("kernelversion", "nothing");
 		
-		if (mKernelVersion.equals("nothing")) {
+		SharedPreferences FIRST_USE = context.getSharedPreferences(PREF_FIRST_USE, 0);
+		boolean mFirstuse = FIRST_USE.getBoolean("firstuse", true);
+		
+		if (mKernelVersion.equals("nothing") || mFirstuse == true) {
 			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
 			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
 			editor.commit();
-			setup(context);
-		} else if (!mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
+		} else if (!mKernelVersion.equals(Utils.getFormattedKernelVersion()) || mFirstuse == false) {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
 			Utils.displayprogress(context.getString(R.string.setupnewkernel), context);
 			GetKernel.pullkernel();
-		} else {
-			setup(context);
+			
+			Thread pause = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						GetKernel.pullkernel();
+						Thread.sleep(1500);
+						if (!firstimg.exists()) {
+							Utils.toast(context, context.getString(R.string.somethingwrong), 0);
+							((Activity) context).finish();
+						}
+						Intent i = new Intent(context,
+								CheckforFilesActivity.class);
+						context.startActivity(i);
+						Utils.hideprogress();
+						((Activity) context).finish();
+					} catch (Exception e) {
+						e.getLocalizedMessage();
+					}
+				}
+			});
+			pause.start();
 		}
+		
+		setup(context, mFirstuse);
 	}
 	
-	private static void setup(Context context) {
-		SharedPreferences FIRST_USE = context.getSharedPreferences(PREF_FIRST_USE, 0);
-		boolean mFirstuse = FIRST_USE.getBoolean("firstuse", true);
+	private static void setup(Context context, boolean mFirstuse) {
+		
 		if (mFirstuse == true) {
 			Intent i = new Intent(context, MainSetupActivity.class);
 			context.startActivity(i);
 			((Activity) context).finish();
-		} else {
-			
 		}
 	}
 }

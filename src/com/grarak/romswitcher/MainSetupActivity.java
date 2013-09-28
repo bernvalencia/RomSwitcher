@@ -25,7 +25,7 @@ import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 public class MainSetupActivity extends Activity {
-	
+
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard + "/romswitcher/first.img");
 	private static Button mNextButton, mCancelButton;

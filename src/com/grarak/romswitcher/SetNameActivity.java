@@ -12,6 +12,7 @@ package com.grarak.romswitcher;
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -56,6 +57,10 @@ public class SetNameActivity extends Activity {
 					eFirstname.commit();
 					eSecondname.commit();
 					eFirstuse.commit();
+					
+					Intent i = new Intent(SetNameActivity.this, CheckforFilesActivity.class);
+					startActivity(i);
+					finish();
 				}
 			}
 		});
