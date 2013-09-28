@@ -25,8 +25,9 @@ import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 public class MainSetupActivity extends Activity {
-
+	
 	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final File firstimg = new File(sdcard + "/romswitcher/first.img");
 	private static Button mNextButton, mCancelButton;
 	public static boolean firstuse = false;
 
@@ -61,8 +62,12 @@ public class MainSetupActivity extends Activity {
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(1500);
 								GetKernel.pullkernel();
+								Thread.sleep(1500);
+								if (!firstimg.exists()) {
+									Utils.toast(MainSetupActivity.this, getString(R.string.somethingwrong), 0);
+									finish();
+								}
 								Intent i = new Intent(MainSetupActivity.this,
 										SetNameActivity.class);
 								startActivity(i);
