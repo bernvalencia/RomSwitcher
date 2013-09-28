@@ -67,6 +67,7 @@ public class MainSetupActivity extends Activity {
 										SetNameActivity.class);
 								startActivity(i);
 								Utils.hideprogress();
+								finish();
 							} catch (Exception e) {
 								e.getLocalizedMessage();
 							}
