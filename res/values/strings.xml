@@ -34,4 +34,8 @@
     <string name="setname_second">Name of second rom</string>
     <string name="emptynames">Names are empty</string>
     
+    <!-- Check Files -->
+    <string name="more">More</string>
+    <string name="yes">Yes</string>
+    
 </resources>
