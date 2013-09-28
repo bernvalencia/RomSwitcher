@@ -31,4 +31,6 @@
     <string name="secondrom">Second rom</string>
     <string name="setname_first">Name of first rom</string>
     <string name="setname_second">Name of second rom</string>
+    <string name="emptynames">Names are empty</string>
+    
 </resources>
