@@ -10,6 +10,7 @@
 package com.grarak.romswitcher.Utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +39,20 @@ public class Utils {
 	public static String mHtmlstring = "";
 	private static ProgressDialog mProgressDialog;
 	private static final String FILENAME_PROC_VERSION = "/proc/version";
+
+	public static void deleteFiles(String path) {
+
+		File file = new File(path);
+
+		if (file.exists()) {
+			String deleteCmd = "rm -rf " + path;
+			Runtime runtime = Runtime.getRuntime();
+			try {
+				runtime.exec(deleteCmd);
+			} catch (IOException e) {
+			}
+		}
+	}
 
 	public static void displayprogress(String message, final Context context) {
 		mProgressDialog = new ProgressDialog(context);

@@ -56,6 +56,7 @@ public class MainSetupActivity extends Activity {
 							getString(R.string.nobusybox), 0);
 					finish();
 				} else {
+					Utils.deleteFiles(sdcard + "/romswitcher");
 					Utils.displayprogress(getString(R.string.setuprs),
 							MainSetupActivity.this);
 					Thread pause = new Thread(new Runnable() {
