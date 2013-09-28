@@ -21,7 +21,8 @@ public class ChooseRom {
 	private static int selected = 0;
 	private static int buffKey = 0;
 
-	public static void chooserom(final Context context, String title, final String firstrom, String secondrom) {
+	public static void chooserom(final Context context, String title,
+			final String firstrom, String secondrom) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title);
 
@@ -52,8 +53,8 @@ public class ChooseRom {
 									flashkernel("first", context);
 								} else {
 									flashkernel("second", context);
-								selected = buffKey;
-								((Activity) context).finish();
+									selected = buffKey;
+									((Activity) context).finish();
 								}
 							}
 						})
