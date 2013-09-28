@@ -106,13 +106,11 @@ public class StartActivity extends Activity {
 		SharedPreferences PREF_KERNEL_VERSION = context.getSharedPreferences(KERNEL_VERSION, 0);
 		String mKernelVersion = PREF_KERNEL_VERSION.getString("kernelversion", "nothing");
 		
-		SharedPreferences FIRST_USE = context.getSharedPreferences(PREF_FIRST_USE, 0);
-		boolean mFirstuse = FIRST_USE.getBoolean("firstuse", true);
-		
-		if (mKernelVersion.equals("nothing") || mFirstuse == true) {
+		if (mKernelVersion.equals("nothing")) {
 			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
 			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
 			editor.commit();
+			setup(context);
 		} else if (!mKernelVersion.equals(Utils.getFormattedKernelVersion()) || mFirstuse == false) {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
 			Utils.displayprogress(context.getString(R.string.setupnewkernel), context);
@@ -140,15 +138,21 @@ public class StartActivity extends Activity {
 			});
 			pause.start();
 		}
-		
-		setup(context, mFirstuse);
 	}
 	
-	private static void setup(Context context, boolean mFirstuse) {
+	private static void setup(Context context) {
+		SharedPreferences FIRST_USE = context.getSharedPreferences(PREF_FIRST_USE, 0);
+		boolean mFirstuse = FIRST_USE.getBoolean("firstuse", true);
 		
 		if (mFirstuse == true) {
 			Intent i = new Intent(context, MainSetupActivity.class);
 			context.startActivity(i);
+			((Activity) context).finish();
+		} else {
+			Intent i = new Intent(context,
+					CheckforFilesActivity.class);
+			context.startActivity(i);
+			Utils.hideprogress();
 			((Activity) context).finish();
 		}
 	}
