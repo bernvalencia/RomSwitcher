@@ -20,7 +20,7 @@ import android.os.Bundle;
 
 public class StartActivity extends Activity {
 
-	private static final String FIRST_USE = "firstuse";
+	private static final String PREF_FIRST_USE = "firstuse";
 	private static final String KERNEL_VERSION = "kernelversion";
 	private static String device = android.os.Build.DEVICE.toString();
 	private static String board = android.os.Build.BOARD.toString();
@@ -115,8 +115,8 @@ public class StartActivity extends Activity {
 	}
 	
 	private static void setup(Context context) {
-		SharedPreferences PREF_FIRST_USE = context.getSharedPreferences(FIRST_USE, 0);
-		boolean mFirstuse = PREF_FIRST_USE.getBoolean("firstuse", true);
+		SharedPreferences FIRST_USE = context.getSharedPreferences(PREF_FIRST_USE, 0);
+		boolean mFirstuse = FIRST_USE.getBoolean("firstuse", true);
 		if (mFirstuse == true) {
 			Intent i = new Intent(context, MainSetupActivity.class);
 			context.startActivity(i);

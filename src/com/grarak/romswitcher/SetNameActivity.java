@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 public class SetNameActivity extends Activity {
 	
+	private static final String PREF_FIRST_USE = "firstuse";
 	private static String PREF_NAME_FIRST = "first_rom_name";
 	private static String PREF_NAME_SECOND = "second_rom_name";
 	private static Button mButtonNext;
@@ -42,15 +43,19 @@ public class SetNameActivity extends Activity {
 				} else {
 					SharedPreferences FIRST_NAME = getSharedPreferences(PREF_NAME_FIRST, 0);
 					SharedPreferences SECOND_NAME = getSharedPreferences(PREF_NAME_SECOND, 0);
+					SharedPreferences FIRST_USE = getSharedPreferences(PREF_FIRST_USE, 0);
 					
 					SharedPreferences.Editor eFirstname = FIRST_NAME.edit();
 					SharedPreferences.Editor eSecondname = SECOND_NAME.edit();
+					SharedPreferences.Editor eFirstuse = FIRST_USE.edit();
 					
 					eFirstname.putString("firstname", mFirstEdit.getText().toString());
 					eSecondname.putString("secondname", mSecondEdit.getText().toString());
+					eFirstuse.putBoolean("firstuse", false);
 					
 					eFirstname.commit();
 					eSecondname.commit();
+					eFirstuse.commit();
 				}
 			}
 		});
