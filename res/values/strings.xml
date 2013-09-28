@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The RomSwitcher Project
+
+     Licensed under the GNU GPLv2 license
+
+     The text of the license can be found in the LICENSE file
+     or at https://www.gnu.org/licenses/gpl-2.0.txt
+-->
+
+<resources>
+
+    <string name="app_name">RomSwitcher</string>
+    
+    <!-- Start -->
+    <string name="nosupport">No support for your device!\nBlame Grarak</string>
+    <string name="ok">OK</string>
+    <string name="newkernel">New kernel detected</string>
+    <string name="setupnewkernel">Seting up new kernel</string>
+    
+    <!-- Main Setup -->
+    <string name="text_welcome">Welcome</string>
+    <string name="text_guidance">Thank you for using RomSwitcher\nPress \"Next\" for setup\nor \"Cancel\" to abort</string>
+    <string name="button_next">Next</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="nobusybox">Busybox is not installed</string>
+    <string name="noroot">No Root access</string>
+    <string name="setuprs">Seting up RomSwitcher</string>
+
+    <!-- Set Name -->
+    <string name="firstrom">First rom</string>
+    <string name="secondrom">Second rom</string>
+    <string name="setname_first">Name of first rom</string>
+    <string name="setname_second">Name of second rom</string>
+</resources>

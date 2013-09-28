@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The RomSwitcher Project
+
+     Licensed under the GNU GPLv2 license
+
+     The text of the license can be found in the LICENSE file
+     or at https://www.gnu.org/licenses/gpl-2.0.txt
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/red_light"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button_next_setname"
+            style="@style/ButtonTheme"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/button_next" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_secondname"
+        style="@style/TextTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/secondrom_edit"
+        android:layout_centerHorizontal="true"
+        android:text="@string/secondrom"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_firstname"
+        style="@style/TextTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/firstrom_edit"
+        android:layout_centerHorizontal="true"
+        android:text="@string/firstrom"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/firstrom_edit"
+        style="@style/Halo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_secondname"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="@string/setname_first" />
+
+    <EditText
+        android:id="@+id/secondrom_edit"
+        style="@style/Halo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/firstrom_edit"
+        android:layout_alignRight="@+id/firstrom_edit"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="@string/setname_second" />
+
+</RelativeLayout>
