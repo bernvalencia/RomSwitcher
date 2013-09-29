@@ -61,7 +61,6 @@ public class CheckforFilesActivity extends Activity {
 		}
 
 		if (!firstimg.exists() && !secondrom.exists()) {
-
 			Thread pause = new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -79,7 +78,7 @@ public class CheckforFilesActivity extends Activity {
 				}
 			});
 			pause.start();
-		} else if (secondimg.exists() && firstimg.exists()) {
+		} else if (firstimg.exists() && secondimg.exists()) {
 			start(this);
 		} else if (zip.exists()) {
 			unzip(this);
