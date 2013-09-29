@@ -24,6 +24,7 @@ import android.os.Bundle;
 
 public class StartActivity extends Activity {
 
+	private static final File secondrom = new File("/.firstrom/app");
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
@@ -115,7 +116,7 @@ public class StartActivity extends Activity {
 			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
 			editor.commit();
 			setup(context);
-		} else {
+		} else if (!secondrom.exists()) {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
 			Utils.displayprogress(context.getString(R.string.setupnewkernel),
 					context);
@@ -142,6 +143,8 @@ public class StartActivity extends Activity {
 				}
 			});
 			pause.start();
+		} else {
+			setup(context);
 		}
 	}
 

@@ -26,6 +26,7 @@ import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 public class MainSetupActivity extends Activity {
 
+	private static final File secondrom = new File("/.firstrom/app");
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard + "/romswitcher/first.img");
 	private static Button mNextButton, mCancelButton;
@@ -57,7 +58,7 @@ public class MainSetupActivity extends Activity {
 					Utils.toast(getApplicationContext(),
 							getString(R.string.nobusybox), 0);
 					finish();
-				} else {
+				} else if (!secondrom.exists()){
 					Utils.displayprogress(getString(R.string.setuprs),
 							MainSetupActivity.this);
 					Thread pause = new Thread(new Runnable() {
@@ -81,6 +82,11 @@ public class MainSetupActivity extends Activity {
 						}
 					});
 					pause.start();
+				} else {
+					Intent i = new Intent(MainSetupActivity.this,
+							SetNameActivity.class);
+					startActivity(i);
+					finish();
 				}
 			}
 		});
