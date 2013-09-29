@@ -29,6 +29,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	private static Preference mFirstname, mSecondname;
 	private static SharedPreferences mPref;
 	private static EditText mName;
+	private static SharedPreferences.Editor editPref;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 		addPreferencesFromResource(R.xml.more_settings_header);
 
 		mPref = getActivity().getSharedPreferences(PREF, 0);
+		editPref = mPref.edit();
 
 		mFirstname = (Preference) findPreference(SETNAME_FIRST);
 		mSecondname = (Preference) findPreference(SETNAME_SECOND);
@@ -58,6 +60,11 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	private static void alertEdit(final Context context, final boolean name) {
 		Builder alert = new Builder(context);
 		mName = new EditText(context);
+		if (name) {
+			mName.setHint(mPref.getString("firstname", "nothing"));
+		} else {
+			mName.setHint(mPref.getString("secondname", "nothing"));
+		}
 		alert.setView(mName)
 				.setTitle(context.getString(R.string.setname))
 				.setPositiveButton(context.getString(R.string.ok),
@@ -78,7 +85,6 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	}
 
 	private static void setName(Context context, boolean name) {
-		SharedPreferences.Editor editPref = mPref.edit();
 		if (name) {
 			editPref.putString("firstname", mName.getText().toString().trim());
 			editPref.commit();
