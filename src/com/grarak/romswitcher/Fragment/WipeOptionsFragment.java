@@ -9,9 +9,14 @@
 
 package com.grarak.romswitcher.Fragment;
 
+import static com.stericson.RootTools.RootTools.getShell;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import com.grarak.romswitcher.R;
+import com.stericson.RootTools.CommandCapture;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -48,20 +53,21 @@ public class WipeOptionsFragment extends PreferenceFragment {
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
 			Preference preference) {
 		if (preference.getKey().equals(REMOVE_2NDROM)) {
-			confirmDialog(getActivity(), getString(R.string.remove2ndrom));
+			confirmDialog(getActivity(), getString(R.string.remove2ndrom), 0);
 		} else if (preference.getKey().equals(FACTORY_RESET)) {
-			confirmDialog(getActivity(), getString(R.string.factoryreset));
+			confirmDialog(getActivity(), getString(R.string.factoryreset), 1);
 		} else if (preference.getKey().equals(WIPE_CACHE)) {
-			confirmDialog(getActivity(), getString(R.string.wipecache));
+			confirmDialog(getActivity(), getString(R.string.wipecache), 2);
 		} else if (preference.getKey().equals(WIPE_DALVIK)) {
-			confirmDialog(getActivity(), getString(R.string.wipedalvik));
+			confirmDialog(getActivity(), getString(R.string.wipedalvik), 3);
 		} else if (preference.getKey().equals(WIPE_BATTERY)) {
-			confirmDialog(getActivity(), getString(R.string.wipebattery));
+			confirmDialog(getActivity(), getString(R.string.wipebattery), 4);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
 
-	private static void confirmDialog(Context context, String title) {
+	private static void confirmDialog(Context context, String title,
+			final int mode) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title)
 				.setMessage(context.getString(R.string.areyousure))
@@ -70,6 +76,23 @@ public class WipeOptionsFragment extends PreferenceFragment {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
+								switch (mode) {
+								case 0:
+									runCommand("rm -rf /cache/* && rm -rf /data/media/.secondrom");
+									break;
+								case 1:
+									runCommand("rm -rf /data/media/.secondrom");
+									break;
+								case 2:
+									runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache && rm -rf /data/media/.secondrom/cache");
+									break;
+								case 3:
+									runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache");
+									break;
+								case 4:
+									runCommand("rm -rf /data/media/.secondrom/data/system/batterystats.bin");
+									break;
+								}
 							}
 						})
 				.setNegativeButton(context.getString(R.string.button_cancel),
@@ -79,5 +102,17 @@ public class WipeOptionsFragment extends PreferenceFragment {
 									int which) {
 							}
 						}).show();
+	}
+
+	private static void runCommand(String run) {
+		try {
+			getShell(true).add(new CommandCapture(0, run)).waitForFinish();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
