@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The RomSwitcher Project
+<!--
+     Copyright (C) 2013 The RomSwitcher Project
 
      Licensed under the GNU GPLv2 license
 
@@ -9,8 +10,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Halo" parent="@android:style/Theme.Holo">
-    </style>
+    <style name="Halo" parent="@android:style/Theme.Holo"></style>
 
     <style name="TextTheme">
         <item name="android:gravity">center</item>

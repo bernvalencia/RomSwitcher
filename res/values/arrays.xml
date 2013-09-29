@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The RomSwitcher Project
+<!--
+     Copyright (C) 2013 The RomSwitcher Project
 
      Licensed under the GNU GPLv2 license
 
@@ -8,11 +9,11 @@
 -->
 
 <resources>
-    
+
     <string-array name="menu_arrays">
-		<item >@string/generalsettings</item>
-		<item >@string/wipeoptions</item>
-		<item >@string/aboutus</item>
+        <item>@string/generalsettings</item>
+        <item>@string/wipeoptions</item>
+        <item>@string/aboutus</item>
     </string-array>
-    
+
 </resources>

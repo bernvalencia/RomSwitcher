@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 The RomSwitcher Project
+
+     Licensed under the GNU GPLv2 license
+
+     The text of the license can be found in the LICENSE file
+     or at https://www.gnu.org/licenses/gpl-2.0.txt
+-->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/secondrom" >
         <Preference
             android:key="key_remove_2ndrom"
             android:title="@string/remove2ndrom" />
-        <Preference android:key="key_factory_reset" android:title="@string/factoryreset"/>
-        <Preference android:key="key_wipe_cache" android:title="@string/wipecache"/>
-        <Preference android:key="key_wipe_dalvik" android:title="@string/wipedalvik"/>
-        <Preference android:key="key_wipe_battery" android:title="@string/wipebattery"/>
+        <Preference
+            android:key="key_factory_reset"
+            android:title="@string/factoryreset" />
+        <Preference
+            android:key="key_wipe_cache"
+            android:title="@string/wipecache" />
+        <Preference
+            android:key="key_wipe_dalvik"
+            android:title="@string/wipedalvik" />
+        <Preference
+            android:key="key_wipe_battery"
+            android:title="@string/wipebattery" />
     </PreferenceCategory>
 
 </PreferenceScreen>

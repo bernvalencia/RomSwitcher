@@ -54,6 +54,7 @@
 
     <!-- General Settings -->
     <string name="setname">Set name</string>
+    <string name="miscellaneous">Miscellaneous</string>
 
     <!-- Wipe Options -->
     <string name="remove2ndrom">Remove 2nd rom</string>
@@ -63,7 +64,7 @@
     <string name="wipebattery">Wipe battery stats</string>
     <string name="areyousure">Are you sure?\n\nI am not responsible if your device get bricked!</string>
     <string name="confirm">Confirm</string>
-    
+
     <!-- About us -->
     <string name="members">Team members</string>
 

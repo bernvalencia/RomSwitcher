@@ -186,7 +186,7 @@ public class Utils {
 			mHtmlstring = Html.fromHtml(result).toString();
 		}
 	}
-	
+
 	public static void runCommand(String run) {
 		try {
 			getShell(true).add(new CommandCapture(0, run)).waitForFinish();

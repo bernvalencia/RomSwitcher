@@ -63,7 +63,9 @@ public class MainSetupActivity extends Activity {
 								GetKernel.pullkernel();
 								Thread.sleep(1000);
 								if (!firstimg.exists()) {
-									Utils.toast(MainSetupActivity.this, getString(R.string.somethingwrong), 0);
+									Utils.toast(MainSetupActivity.this,
+											getString(R.string.somethingwrong),
+											0);
 									finish();
 								}
 								Intent i = new Intent(MainSetupActivity.this,
