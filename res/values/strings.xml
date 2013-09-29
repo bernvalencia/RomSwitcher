@@ -48,6 +48,7 @@
     <!-- More Settings -->
     <string name="generalsettings">General Settings</string>
     <string name="wipeoptions">Wipe Options</string>
+    <string name="aboutus">About us</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
@@ -62,5 +63,8 @@
     <string name="wipebattery">Wipe battery stats</string>
     <string name="areyousure">Are you sure?\n\nI am not responsible if your device get bricked!</string>
     <string name="confirm">Confirm</string>
+    
+    <!-- About us -->
+    <string name="members">Team members</string>
 
 </resources>

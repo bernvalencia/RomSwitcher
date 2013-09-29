@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/members" >
+        <PreferenceScreen
+            android:key="key_grarak"
+            android:layout="@layout/grarak" >
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="key_mithun46"
+            android:layout="@layout/mithun46" >
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="key_bluefa1con"
+            android:layout="@layout/bluefa1con" >
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="key_madc0w"
+            android:layout="@layout/madc0w" >
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="key_disturbed"
+            android:layout="@layout/disturbed" >
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+</PreferenceScreen>
