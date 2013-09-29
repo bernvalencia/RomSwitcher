@@ -44,4 +44,9 @@
     <string name="serverdown">Server is down</string>
     <string name="openagain">Open RomSwitcher again when the download finished</string>
     
+    <!-- More Settings -->
+    <string name="generalsettings">General Settings</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    
 </resources>

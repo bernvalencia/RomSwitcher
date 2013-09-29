@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="@string/firstrom">
+        <Preference android:title="@string/setname_first" android:key="key_setname_first"/>
+        
+    </PreferenceCategory><PreferenceCategory android:title="@string/secondrom">
+        <Preference android:title="@string/setname_second" android:key="key_setname_second"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -15,6 +15,7 @@ import static com.stericson.RootTools.RootTools.getShell;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import com.grarak.romswitcher.MoreSettingsActitvity;
 import com.grarak.romswitcher.R;
 import com.grarak.romswitcher.StartActivity;
 import com.stericson.RootTools.CommandCapture;
@@ -24,6 +25,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 
 public class ChooseRom {
 
@@ -72,6 +74,9 @@ public class ChooseRom {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
+								Intent i = new Intent(context,
+										MoreSettingsActitvity.class);
+								context.startActivity(i);
 								((Activity) context).finish();
 							}
 						});

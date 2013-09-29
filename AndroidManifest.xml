@@ -44,6 +44,8 @@
             android:name="PackageDownloader"
             android:theme="@style/ThemeTransparent" >
         </activity>
+        <activity android:name="MoreSettingsActitvity" >
+        </activity>
     </application>
 
 </manifest>
