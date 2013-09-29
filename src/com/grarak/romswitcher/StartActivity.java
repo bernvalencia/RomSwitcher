@@ -125,7 +125,8 @@ public class StartActivity extends Activity {
 				editor.commit();
 			} else {
 				Utils.toast(context, context.getString(R.string.newkernel), 0);
-				Utils.displayprogress(context.getString(R.string.setupnewkernel), context);
+				Utils.displayprogress(
+						context.getString(R.string.setupnewkernel), context);
 				loadKernel(context);
 				editor.putString("kernelversion",
 						Utils.getFormattedKernelVersion());
@@ -139,7 +140,7 @@ public class StartActivity extends Activity {
 	private static void setup(Context context, SharedPreferences mPref) {
 		boolean mFirstuse = mPref.getBoolean("firstuse", true);
 
-		if (mFirstuse) {
+		if (mFirstuse && !secondrom.exists()) {
 			Intent i = new Intent(context, MainSetupActivity.class);
 			context.startActivity(i);
 			((Activity) context).finish();

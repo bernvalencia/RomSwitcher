@@ -91,7 +91,7 @@ public class ChooseRom {
 				+ "/romswitcher/" + rom + ".img of="
 				+ StartActivity.bootpartition
 				+ " && echo 1 > /proc/sys/kernel/sysrq"
-				+ " && echo b > /proc/sysrq-trigger");
-		Utils.runCommand("reboot");
+				+ " && echo b > /proc/sysrq-trigger", 0);
+		Utils.runCommand("reboot", 1);
 	}
 }

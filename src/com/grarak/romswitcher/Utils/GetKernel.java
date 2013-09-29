@@ -26,7 +26,7 @@ public class GetKernel {
 
 	public static void pullkernel() {
 		Utils.runCommand("dd if=" + StartActivity.bootpartition + " of="
-				+ sdcard + "/romswitcher/first.img");
+				+ sdcard + "/romswitcher/first.img", 0);
 	}
 
 }

@@ -16,6 +16,10 @@
 
 package com.grarak.romswitcher;
 
+import static android.os.Environment.getExternalStorageDirectory;
+
+import java.io.File;
+
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
@@ -28,9 +32,10 @@ import android.widget.EditText;
 
 public class SetNameActivity extends Activity {
 
-	private static final String PREF = "prefs";
 	private static Button mButtonNext;
 	private static EditText mFirstEdit, mSecondEdit;
+	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String PREF = "prefs";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,16 +55,20 @@ public class SetNameActivity extends Activity {
 							getString(R.string.emptynames), 0);
 				} else {
 					SharedPreferences mPref = getSharedPreferences(PREF, 0);
+					SharedPreferences.Editor editorPref = mPref.edit();
+					editorPref.putBoolean("firstuse", false);
+					editorPref.commit();
 
-					SharedPreferences.Editor editPref = mPref.edit();
+					File rstmp = new File(sdcard + "/romswitcher-tmp");
+					rstmp.mkdirs();
 
-					editPref.putString("firstname", mFirstEdit.getText()
-							.toString());
-					editPref.putString("secondname", mSecondEdit.getText()
-							.toString());
-					editPref.putBoolean("firstuse", false);
+					Utils.runCommand("echo \""
+							+ mFirstEdit.getText().toString().trim() + "\" > "
+							+ sdcard + "/romswitcher-tmp/firstname", 0);
 
-					editPref.commit();
+					Utils.runCommand("echo \""
+							+ mSecondEdit.getText().toString().trim() + "\" > "
+							+ sdcard + "/romswitcher-tmp/secondname", 1);
 
 					Intent i = new Intent(SetNameActivity.this,
 							CheckforFilesActivity.class);

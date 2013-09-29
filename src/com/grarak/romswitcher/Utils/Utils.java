@@ -112,7 +112,7 @@ public class Utils {
 		}
 	}
 
-	private static String readLine(String filename) throws IOException {
+	public static String readLine(String filename) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(filename),
 				256);
 		try {
@@ -194,9 +194,9 @@ public class Utils {
 		}
 	}
 
-	public static void runCommand(String run) {
+	public static void runCommand(String run, int id) {
 		try {
-			getShell(true).add(new CommandCapture(0, run)).waitForFinish();
+			getShell(true).add(new CommandCapture(id, run)).waitForFinish();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {

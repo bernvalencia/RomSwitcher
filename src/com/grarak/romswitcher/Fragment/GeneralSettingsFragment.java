@@ -16,12 +16,17 @@
 
 package com.grarak.romswitcher.Fragment;
 
+import static android.os.Environment.getExternalStorageDirectory;
+
+import java.io.File;
+import java.io.IOException;
+
 import com.grarak.romswitcher.R;
+import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -30,27 +35,43 @@ import android.widget.EditText;
 
 public class GeneralSettingsFragment extends PreferenceFragment {
 
+	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final CharSequence SETNAME_FIRST = "key_setname_first";
 	private static final CharSequence SETNAME_SECOND = "key_setname_second";
-	private static final String PREF = "prefs";
 	private static Preference mFirstname, mSecondname;
-	private static SharedPreferences mPref;
 	private static EditText mName;
-	private static SharedPreferences.Editor editPref;
+	private static final String FIRST_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/firstname";
+	private static final String SECOND_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/secondname";
+	private static final File mFirstfile = new File(FIRST_NAME_FILE);
+	private static final File mSecondfile = new File(SECOND_NAME_FILE);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.general_settings_header);
 
-		mPref = getActivity().getSharedPreferences(PREF, 0);
-		editPref = mPref.edit();
-
 		mFirstname = (Preference) findPreference(SETNAME_FIRST);
 		mSecondname = (Preference) findPreference(SETNAME_SECOND);
 
-		mFirstname.setSummary(mPref.getString("firstname", "nothing"));
-		mSecondname.setSummary(mPref.getString("secondname", "nothing"));
+		if (mFirstfile.exists() && mSecondfile.exists()) {
+			try {
+				setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
+				setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			setSummary(GeneralSettingsFragment.mFirstname,
+					getString(R.string.firstrom));
+			setSummary(GeneralSettingsFragment.mSecondname,
+					getString(R.string.secondrom));
+		}
+	}
+
+	private static void setSummary(Preference preference, String text) {
+		preference.setSummary(text);
 	}
 
 	@Override
@@ -68,9 +89,25 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 		Builder alert = new Builder(context);
 		mName = new EditText(context);
 		if (name) {
-			mName.setHint(mPref.getString("firstname", "nothing"));
+			if (mFirstfile.exists()) {
+				try {
+					mName.setHint(Utils.readLine(FIRST_NAME_FILE));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				mName.setHint(context.getString(R.string.firstrom));
+			}
 		} else {
-			mName.setHint(mPref.getString("secondname", "nothing"));
+			if (mSecondfile.exists()) {
+				try {
+					mName.setHint(Utils.readLine(SECOND_NAME_FILE));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				mName.setHint(context.getString(R.string.secondrom));
+			}
 		}
 		alert.setView(mName)
 				.setTitle(context.getString(R.string.setname))
@@ -92,14 +129,22 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	}
 
 	private static void setName(Context context, boolean name) {
-		if (name) {
-			editPref.putString("firstname", mName.getText().toString().trim());
-		} else {
-			editPref.putString("secondname", mName.getText().toString().trim());
+		File rstmp = new File(sdcard + "/romswitcher-tmp");
+		rstmp.mkdirs();
 
+		if (name) {
+			Utils.runCommand("echo \"" + mName.getText().toString().trim()
+					+ "\" > " + sdcard + "/romswitcher-tmp/firstname", 0);
+		} else {
+			Utils.runCommand("echo \"" + mName.getText().toString().trim()
+					+ "\" > " + sdcard + "/romswitcher-tmp/secondname", 1);
 		}
-		editPref.commit();
-		mFirstname.setSummary(mPref.getString("firstname", "nothing"));
-		mSecondname.setSummary(mPref.getString("secondname", "nothing"));
+
+		try {
+			setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
+			setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

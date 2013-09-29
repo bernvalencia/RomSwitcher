@@ -21,6 +21,7 @@ import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.grarak.romswitcher.Utils.ChooseRom;
 import com.grarak.romswitcher.Utils.GetKernel;
@@ -29,13 +30,11 @@ import com.grarak.romswitcher.Utils.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class CheckforFilesActivity extends Activity {
 
 	private static final File secondrom = new File("/.firstrom/app");
-	private static String PREF = "prefs";
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
@@ -43,6 +42,10 @@ public class CheckforFilesActivity extends Activity {
 			+ "/romswitcher/second.img");
 	private static final File zip = new File(sdcard
 			+ "/romswitcher/download.zip");
+	private static final String FIRST_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/firstname";
+	private static final String SECOND_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/secondname";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,14 +91,27 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void start(Context context) {
-		SharedPreferences mPref = context.getSharedPreferences(PREF, 0);
-
-		ChooseRom.chooserom(context, context.getString(R.string.app_name),
-				mPref.getString("firstname", "nothing"),
-				mPref.getString("secondname", "nothing"));
+		File mFirstname = new File(FIRST_NAME_FILE);
+		File mSecondname = new File(SECOND_NAME_FILE);
+		if (mFirstname.exists() && mSecondname.exists()) {
+			try {
+				ChooseRom.chooserom(context,
+						context.getString(R.string.app_name),
+						Utils.readLine(FIRST_NAME_FILE),
+						Utils.readLine(SECOND_NAME_FILE));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			ChooseRom.chooserom(context, context.getString(R.string.app_name),
+					context.getString(R.string.firstrom),
+					context.getString(R.string.secondrom));
+		}
 	}
 
 	private static void unzip(Context context) {
-		Utils.runCommand("unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/");
+		Utils.runCommand(
+				"unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/",
+				0);
 	}
 }

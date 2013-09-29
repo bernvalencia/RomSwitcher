@@ -81,19 +81,28 @@ public class WipeOptionsFragment extends PreferenceFragment {
 									int which) {
 								switch (mode) {
 								case 0:
-									Utils.runCommand("rm -rf /cache/* && rm -rf /data/media/.secondrom");
+									Utils.runCommand(
+											"rm -rf /cache/* && rm -rf /data/media/.secondrom",
+											0);
 									break;
 								case 1:
-									Utils.runCommand("rm -rf /data/media/.secondrom");
+									Utils.runCommand(
+											"rm -rf /data/media/.secondrom", 1);
 									break;
 								case 2:
-									Utils.runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache && rm -rf /data/media/.secondrom/cache");
+									Utils.runCommand(
+											"rm -rf /data/media/.secondrom/data/dalvik-cache && rm -rf /data/media/.secondrom/cache",
+											2);
 									break;
 								case 3:
-									Utils.runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache");
+									Utils.runCommand(
+											"rm -rf /data/media/.secondrom/data/dalvik-cache",
+											3);
 									break;
 								case 4:
-									Utils.runCommand("rm -rf /data/media/.secondrom/data/system/batterystats.bin");
+									Utils.runCommand(
+											"rm -rf /data/media/.secondrom/data/system/batterystats.bin",
+											4);
 									break;
 								}
 							}
