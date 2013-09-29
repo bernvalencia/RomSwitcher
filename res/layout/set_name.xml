@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The RomSwitcher Project
+<!--
+     Copyright (C) 2013 The RomSwitcher Project
 
      Licensed under the GNU GPLv2 license
 
@@ -65,7 +66,11 @@
         android:layout_above="@+id/text_secondname"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="@string/setname_first" />
+        android:hint="@string/setname_first"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/secondrom_edit"
@@ -76,6 +81,7 @@
         android:layout_alignRight="@+id/firstrom_edit"
         android:layout_centerVertical="true"
         android:ems="10"
-        android:hint="@string/setname_second" />
+        android:hint="@string/setname_second"
+        android:singleLine="true" />
 
 </RelativeLayout>
