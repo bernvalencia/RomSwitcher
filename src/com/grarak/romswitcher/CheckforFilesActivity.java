@@ -10,7 +10,6 @@
 package com.grarak.romswitcher;
 
 import static android.os.Environment.getExternalStorageDirectory;
-import static com.stericson.RootTools.RootTools.debugMode;
 import static com.stericson.RootTools.RootTools.getShell;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
@@ -47,8 +46,6 @@ public class CheckforFilesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		debugMode = true;
-
 		if (!isRootAvailable()) {
 			Utils.toast(getApplicationContext(), getString(R.string.noroot), 0);
 			finish();
@@ -59,7 +56,6 @@ public class CheckforFilesActivity extends Activity {
 		}
 
 		if (!firstimg.exists() && !secondrom.exists()) {
-			Utils.displayprogress(getString(R.string.setupnewkernel), this);
 
 			Thread pause = new Thread(new Runnable() {
 				@Override
@@ -72,10 +68,6 @@ public class CheckforFilesActivity extends Activity {
 									getString(R.string.somethingwrong), 0);
 							finish();
 						}
-						Intent i = new Intent(CheckforFilesActivity.this,
-								CheckforFilesActivity.class);
-						startActivity(i);
-						finish();
 					} catch (Exception e) {
 						e.getLocalizedMessage();
 					}

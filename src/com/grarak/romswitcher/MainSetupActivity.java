@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.app.Activity;
 import android.content.Intent;
 import static android.os.Environment.getExternalStorageDirectory;
-import static com.stericson.RootTools.RootTools.debugMode;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
@@ -43,8 +42,6 @@ public class MainSetupActivity extends Activity {
 		File RSDirectory = new File(sdcard + "/romswitcher/");
 		RSDirectory.mkdirs();
 
-		debugMode = true;
-
 		mNextButton = (Button) findViewById(R.id.button_next);
 		mNextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -66,7 +63,7 @@ public class MainSetupActivity extends Activity {
 						public void run() {
 							try {
 								GetKernel.pullkernel();
-								Thread.sleep(1500);
+								Thread.sleep(1000);
 								if (!firstimg.exists()) {
 									Utils.toast(MainSetupActivity.this, getString(R.string.somethingwrong), 0);
 									finish();

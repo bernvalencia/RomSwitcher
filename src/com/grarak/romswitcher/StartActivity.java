@@ -10,6 +10,7 @@
 package com.grarak.romswitcher;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static com.stericson.RootTools.RootTools.debugMode;
 
 import java.io.File;
 
@@ -39,6 +40,8 @@ public class StartActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		debugMode = true;
 
 		// i9500
 		if (device.equals("ja3g")) {
@@ -105,7 +108,7 @@ public class StartActivity extends Activity {
 
 	private static void checkkernel(final Context context) {
 
-		SharedPreferences PREF_KERNEL_VERSION = context.getSharedPreferences(
+		final SharedPreferences PREF_KERNEL_VERSION = context.getSharedPreferences(
 				KERNEL_VERSION, 0);
 		String mKernelVersion = PREF_KERNEL_VERSION.getString("kernelversion",
 				"nothing");
@@ -115,37 +118,15 @@ public class StartActivity extends Activity {
 			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
 			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
 			editor.commit();
-			setup(context);
 		} else if (!secondrom.exists()) {
 			Utils.toast(context, context.getString(R.string.newkernel), 0);
-			Utils.displayprogress(context.getString(R.string.setupnewkernel),
-					context);
-
-			Thread pause = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						GetKernel.pullkernel();
-						Thread.sleep(1500);
-						if (!firstimg.exists()) {
-							Utils.toast(context,
-									context.getString(R.string.somethingwrong),
-									0);
-							((Activity) context).finish();
-						}
-						Intent i = new Intent(context,
-								CheckforFilesActivity.class);
-						context.startActivity(i);
-						((Activity) context).finish();
-					} catch (Exception e) {
-						e.getLocalizedMessage();
-					}
-				}
-			});
-			pause.start();
-		} else {
-			setup(context);
+			loadKernel(context);
+			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
+			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
+			editor.commit();
 		}
+		
+		setup(context);
 	}
 
 	private static void setup(Context context) {
@@ -162,5 +143,25 @@ public class StartActivity extends Activity {
 			context.startActivity(i);
 			((Activity) context).finish();
 		}
+	}
+	
+	private static void loadKernel(final Context context) {
+		Thread pause = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					GetKernel.pullkernel();
+					Thread.sleep(1000);
+					if (!firstimg.exists()) {
+						Utils.toast(context, context.getString(R.string.somethingwrong), 0);
+						((Activity) context).finish();
+					}
+					Utils.hideprogress();
+				} catch (Exception e) {
+					e.getLocalizedMessage();
+				}
+			}
+		});
+		pause.start();
 	}
 }
