@@ -62,6 +62,10 @@
     <!-- General Settings -->
     <string name="setname">Set name</string>
     <string name="miscellaneous">Miscellaneous</string>
+    <string name="appsharing">App Sharing</string>
+    <string name="datasharing">Data Sharing</string>
+    <string name="appsharing_summary">Enable App Sharing between both roms</string>
+    <string name="datasharing_summary">Enable Data Sharing between both roms</string>
 
     <!-- Wipe Options -->
     <string name="remove2ndrom">Remove 2nd rom</string>

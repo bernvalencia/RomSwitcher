@@ -41,7 +41,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.more_settings_header);
+		addPreferencesFromResource(R.xml.general_settings_header);
 
 		mPref = getActivity().getSharedPreferences(PREF, 0);
 		editPref = mPref.edit();

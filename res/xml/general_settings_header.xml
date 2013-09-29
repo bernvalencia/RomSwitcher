@@ -27,5 +27,17 @@
             android:key="key_setname_second"
             android:title="@string/setname_second" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/miscellaneous" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key_app_sharing"
+            android:summary="@string/appsharing_summary"
+            android:title="@string/appsharing" />
+        <CheckBoxPreference
+            android:enabled="false"
+            android:key="key_data_sharing"
+            android:summary="@string/datasharing_summary"
+            android:title="@string/datasharing" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
