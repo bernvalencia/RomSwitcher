@@ -118,6 +118,7 @@ public class StartActivity extends Activity {
 				editor.commit();
 			} else {
 				Utils.toast(context, context.getString(R.string.newkernel), 0);
+				Utils.displayprogress(context.getString(R.string.setupnewkernel), context);
 				loadKernel(context);
 				editor.putString("kernelversion",
 						Utils.getFormattedKernelVersion());
