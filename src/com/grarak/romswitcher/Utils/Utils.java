@@ -62,6 +62,7 @@ public class Utils {
 				.setOnDismissListener(new DialogInterface.OnDismissListener() {
 					@Override
 					public void onDismiss(DialogInterface dialog) {
+						((Activity) context).finish();
 					}
 				});
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
