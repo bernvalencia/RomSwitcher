@@ -9,14 +9,10 @@
 
 package com.grarak.romswitcher.Fragment;
 
-import static com.stericson.RootTools.RootTools.getShell;
-
 import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import com.grarak.romswitcher.R;
-import com.stericson.RootTools.CommandCapture;
+import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -78,19 +74,19 @@ public class WipeOptionsFragment extends PreferenceFragment {
 									int which) {
 								switch (mode) {
 								case 0:
-									runCommand("rm -rf /cache/* && rm -rf /data/media/.secondrom");
+									Utils.runCommand("rm -rf /cache/* && rm -rf /data/media/.secondrom");
 									break;
 								case 1:
-									runCommand("rm -rf /data/media/.secondrom");
+									Utils.runCommand("rm -rf /data/media/.secondrom");
 									break;
 								case 2:
-									runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache && rm -rf /data/media/.secondrom/cache");
+									Utils.runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache && rm -rf /data/media/.secondrom/cache");
 									break;
 								case 3:
-									runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache");
+									Utils.runCommand("rm -rf /data/media/.secondrom/data/dalvik-cache");
 									break;
 								case 4:
-									runCommand("rm -rf /data/media/.secondrom/data/system/batterystats.bin");
+									Utils.runCommand("rm -rf /data/media/.secondrom/data/system/batterystats.bin");
 									break;
 								}
 							}
@@ -102,17 +98,5 @@ public class WipeOptionsFragment extends PreferenceFragment {
 									int which) {
 							}
 						}).show();
-	}
-
-	private static void runCommand(String run) {
-		try {
-			getShell(true).add(new CommandCapture(0, run)).waitForFinish();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -10,15 +10,10 @@
 package com.grarak.romswitcher.Utils;
 
 import static android.os.Environment.getExternalStorageDirectory;
-import static com.stericson.RootTools.RootTools.getShell;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import com.grarak.romswitcher.MoreSettingsActitvity;
 import com.grarak.romswitcher.R;
 import com.grarak.romswitcher.StartActivity;
-import com.stericson.RootTools.CommandCapture;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -85,21 +80,11 @@ public class ChooseRom {
 	}
 
 	private static void flashkernel(String rom, Context context) {
-		try {
-			getShell(true).add(
-					new CommandCapture(0, "dd if="
-							+ getExternalStorageDirectory().getPath()
-							+ "/romswitcher/" + rom + ".img of="
-							+ StartActivity.bootpartition,
-							"echo 1 > /proc/sys/kernel/sysrq",
-							"echo b > /proc/sysrq-trigger")).waitForFinish();
-			getShell(true).add(new CommandCapture(1, "reboot"));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-		}
+		Utils.runCommand("dd if=" + getExternalStorageDirectory().getPath()
+				+ "/romswitcher/" + rom + ".img of="
+				+ StartActivity.bootpartition
+				+ " && echo 1 > /proc/sys/kernel/sysrq"
+				+ " && echo b > /proc/sysrq-trigger");
+		Utils.runCommand("reboot");
 	}
 }

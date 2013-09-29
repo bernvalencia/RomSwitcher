@@ -10,18 +10,14 @@
 package com.grarak.romswitcher;
 
 import static android.os.Environment.getExternalStorageDirectory;
-import static com.stericson.RootTools.RootTools.getShell;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import com.grarak.romswitcher.Utils.ChooseRom;
 import com.grarak.romswitcher.Utils.GetKernel;
 import com.grarak.romswitcher.Utils.Utils;
-import com.stericson.RootTools.CommandCapture;
 
 import android.app.Activity;
 import android.content.Context;
@@ -93,22 +89,6 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void unzip(Context context) {
-		try {
-			getShell(true)
-					.add(new CommandCapture(1,
-							"unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/"))
-					.waitForFinish();
-			if (secondimg.exists()) {
-				start(context);
-			} else {
-				unzip(context);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-		}
+		Utils.runCommand("unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/");
 	}
 }

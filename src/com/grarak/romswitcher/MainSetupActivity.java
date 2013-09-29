@@ -36,8 +36,6 @@ public class MainSetupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_setup);
 		firstuse = true;
-		
-		Utils.deleteFiles(sdcard + "/romswitcher");
 
 		File RSDirectory = new File(sdcard + "/romswitcher/");
 		RSDirectory.mkdirs();
