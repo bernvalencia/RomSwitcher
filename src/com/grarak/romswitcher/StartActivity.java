@@ -29,8 +29,7 @@ public class StartActivity extends Activity {
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
-	private static final String PREF_FIRST_USE = "firstuse";
-	private static final String KERNEL_VERSION = "kernelversion";
+	private static final String PREF = "prefs";
 	private static String device = android.os.Build.DEVICE.toString();
 	private static String board = android.os.Build.BOARD.toString();
 	private static String brand = android.os.Build.BRAND.toString();
@@ -40,7 +39,7 @@ public class StartActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		debugMode = true;
 
 		// i9500
@@ -106,35 +105,33 @@ public class StartActivity extends Activity {
 		}
 	}
 
-	private static void checkkernel(final Context context) {
+	private static void checkkernel(Context context) {
+		final SharedPreferences mPref = context.getSharedPreferences(PREF, 0);
+		String mKernelVersion = mPref.getString("kernelversion", "nothing");
+		SharedPreferences.Editor editor = mPref.edit();
 
-		final SharedPreferences PREF_KERNEL_VERSION = context.getSharedPreferences(
-				KERNEL_VERSION, 0);
-		String mKernelVersion = PREF_KERNEL_VERSION.getString("kernelversion",
-				"nothing");
-
-		if (mKernelVersion.equals("nothing")
-				|| mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
-			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
-			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
-			editor.commit();
-		} else if (!secondrom.exists()) {
-			Utils.toast(context, context.getString(R.string.newkernel), 0);
-			loadKernel(context);
-			SharedPreferences.Editor editor = PREF_KERNEL_VERSION.edit();
-			editor.putString("kernelversion", Utils.getFormattedKernelVersion());
-			editor.commit();
+		if (!secondrom.exists()) {
+			if (mKernelVersion.equals("nothing")
+					|| mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
+				editor.putString("kernelversion",
+						Utils.getFormattedKernelVersion());
+				editor.commit();
+			} else {
+				Utils.toast(context, context.getString(R.string.newkernel), 0);
+				loadKernel(context);
+				editor.putString("kernelversion",
+						Utils.getFormattedKernelVersion());
+				editor.commit();
+			}
 		}
-		
-		setup(context);
+
+		setup(context, mPref);
 	}
 
-	private static void setup(Context context) {
-		SharedPreferences FIRST_USE = context.getSharedPreferences(
-				PREF_FIRST_USE, 0);
-		boolean mFirstuse = FIRST_USE.getBoolean("firstuse", true);
+	private static void setup(Context context, SharedPreferences mPref) {
+		boolean mFirstuse = mPref.getBoolean("firstuse", true);
 
-		if (mFirstuse == true) {
+		if (mFirstuse) {
 			Intent i = new Intent(context, MainSetupActivity.class);
 			context.startActivity(i);
 			((Activity) context).finish();
@@ -144,7 +141,7 @@ public class StartActivity extends Activity {
 			((Activity) context).finish();
 		}
 	}
-	
+
 	private static void loadKernel(final Context context) {
 		Thread pause = new Thread(new Runnable() {
 			@Override
@@ -153,7 +150,8 @@ public class StartActivity extends Activity {
 					GetKernel.pullkernel();
 					Thread.sleep(1000);
 					if (!firstimg.exists()) {
-						Utils.toast(context, context.getString(R.string.somethingwrong), 0);
+						Utils.toast(context,
+								context.getString(R.string.somethingwrong), 0);
 						((Activity) context).finish();
 					}
 					Utils.hideprogress();

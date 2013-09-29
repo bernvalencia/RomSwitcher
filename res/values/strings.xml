@@ -24,7 +24,7 @@
     <string name="button_cancel">Cancel</string>
     <string name="nobusybox">Busybox is not installed</string>
     <string name="noroot">No Root access</string>
-    <string name="setuprs">Seting up RomSwitcher</string>
+    <string name="setuprs">Setting up RomSwitcher</string>
     <string name="somethingwrong">Something went wrong</string>
 
     <!-- Set Name -->

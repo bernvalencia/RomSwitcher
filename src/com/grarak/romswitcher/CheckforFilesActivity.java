@@ -32,8 +32,7 @@ import android.os.Bundle;
 public class CheckforFilesActivity extends Activity {
 
 	private static final File secondrom = new File("/.firstrom/app");
-	private static String PREF_NAME_FIRST = "first_rom_name";
-	private static String PREF_NAME_SECOND = "second_rom_name";
+	private static String PREF = "prefs";
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
@@ -86,14 +85,11 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void start(Context context) {
-		SharedPreferences FIRST_NAME = context.getSharedPreferences(
-				PREF_NAME_FIRST, 0);
-		SharedPreferences SECOND_NAME = context.getSharedPreferences(
-				PREF_NAME_SECOND, 0);
+		SharedPreferences mPref = context.getSharedPreferences(PREF, 0);
 
 		ChooseRom.chooserom(context, context.getString(R.string.app_name),
-				FIRST_NAME.getString("firstname", "nothing"),
-				SECOND_NAME.getString("secondname", "nothing"));
+				mPref.getString("firstname", "nothing"),
+				mPref.getString("secondname", "nothing"));
 	}
 
 	private static void unzip(Context context) {
