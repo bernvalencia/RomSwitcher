@@ -28,32 +28,48 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.widget.EditText;
 
-public class GeneralSettingsFragment extends PreferenceFragment {
+public class GeneralSettingsFragment extends PreferenceFragment implements
+		Preference.OnPreferenceChangeListener {
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
-	private static final CharSequence SETNAME_FIRST = "key_setname_first";
-	private static final CharSequence SETNAME_SECOND = "key_setname_second";
+	private static final CharSequence KEY_SETNAME_FIRST = "key_setname_first";
+	private static final CharSequence KEY_SETNAME_SECOND = "key_setname_second";
+	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
+	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
+
+	private static CheckBoxPreference mAppSharing, mDataSharing;
+
 	private static Preference mFirstname, mSecondname;
 	private static EditText mName;
+
+	private static String sdcard = getExternalStorageDirectory().getPath();
+
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";
 	private static final String SECOND_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/secondname";
+	private static final String APP_SHARING_FILE = sdcard
+			+ "/romswitcher-tmp/appshare";
+	private static final String DATA_SHARING_FILE = sdcard
+			+ "/romswitcher-tmp/datashare";
+
 	private static final File mFirstfile = new File(FIRST_NAME_FILE);
 	private static final File mSecondfile = new File(SECOND_NAME_FILE);
+	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
+	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.general_settings_header);
 
-		mFirstname = (Preference) findPreference(SETNAME_FIRST);
-		mSecondname = (Preference) findPreference(SETNAME_SECOND);
+		mFirstname = (Preference) findPreference(KEY_SETNAME_FIRST);
+		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
 
 		if (mFirstfile.exists() && mSecondfile.exists()) {
 			try {
@@ -68,6 +84,50 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 			setSummary(GeneralSettingsFragment.mSecondname,
 					getString(R.string.secondrom));
 		}
+
+		mAppSharing = (CheckBoxPreference) findPreference(KEY_APP_SHARING);
+		mAppSharing.setOnPreferenceChangeListener(this);
+		mDataSharing = (CheckBoxPreference) findPreference(KEY_DATA_SHARING);
+		mDataSharing.setOnPreferenceChangeListener(this);
+
+		if (mAppSharingfile.exists()) {
+			mAppSharing.setChecked(true);
+			mDataSharing.setEnabled(true);
+		} else {
+			mAppSharing.setChecked(false);
+			mDataSharing.setChecked(false);
+			mDataSharing.setEnabled(false);
+		}
+
+		if (mAppSharingfile.exists() && mDataSharingfile.exists()) {
+			mDataSharing.setChecked(true);
+		} else {
+			mDataSharing.setChecked(false);
+			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
+		}
+	}
+
+	public boolean onPreferenceChange(Preference preference, Object objValue) {
+		if (preference == mAppSharing) {
+			if (mAppSharing.isChecked()) {
+				mAppSharing.setChecked(false);
+				mDataSharing.setEnabled(false);
+				mDataSharing.setChecked(false);
+				Utils.runCommand("rm -f " + APP_SHARING_FILE + " && rm -f "
+						+ DATA_SHARING_FILE, 0);
+			} else {
+				mAppSharing.setChecked(true);
+				mDataSharing.setEnabled(true);
+				Utils.runCommand("echo \"enabled\" > " + APP_SHARING_FILE, 0);
+			}
+		} else if (mDataSharing.isChecked()) {
+			mDataSharing.setChecked(false);
+			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
+		} else {
+			mDataSharing.setChecked(true);
+			Utils.runCommand("echo \"enabled\" > " + DATA_SHARING_FILE, 0);
+		}
+		return false;
 	}
 
 	private static void setSummary(Preference preference, String text) {
@@ -77,9 +137,9 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	@Override
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
 			Preference preference) {
-		if (preference.getKey().equals(SETNAME_FIRST)) {
+		if (preference.getKey().equals(KEY_SETNAME_FIRST)) {
 			alertEdit(getActivity(), true);
-		} else if (preference.getKey().equals(SETNAME_SECOND)) {
+		} else if (preference.getKey().equals(KEY_SETNAME_SECOND)) {
 			alertEdit(getActivity(), false);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);

@@ -35,7 +35,9 @@ import android.os.Bundle;
 public class CheckforFilesActivity extends Activity {
 
 	private static final File secondrom = new File("/.firstrom/app");
+
 	private static String sdcard = getExternalStorageDirectory().getPath();
+
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
 	private static final File secondimg = new File(sdcard
@@ -50,6 +52,9 @@ public class CheckforFilesActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		File rstmp = new File(sdcard + "/romswitcher-tmp");
+		rstmp.mkdirs();
 
 		if (!isRootAvailable()) {
 			Utils.toast(getApplicationContext(), getString(R.string.noroot), 0);
