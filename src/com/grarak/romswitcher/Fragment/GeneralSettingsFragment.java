@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) 2013 The RomSwitcher Project
+ *
+ * * Licensed under the GNU GPLv2 license
+ *
+ * The text of the license can be found in the LICENSE file
+ * or at https://www.gnu.org/licenses/gpl-2.0.txt
+ */
+
 package com.grarak.romswitcher.Fragment;
 
 import com.grarak.romswitcher.R;
@@ -17,7 +26,9 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.more_settings_header);
 
-		SharedPreferences FIRST_NAME = getActivity().getSharedPreferences(PREF, 0);
-		SharedPreferences SECOND_NAME = getActivity().getSharedPreferences(PREF, 0);
+		SharedPreferences mPref = getActivity().getSharedPreferences(PREF, 0);
+		
+		findPreference(SETNAME_FIRST).setSummary(mPref.getString("firstname", "nothing"));
+		findPreference(SETNAME_SECOND).setSummary(mPref.getString("secondname", "nothing"));
 	}
 }
