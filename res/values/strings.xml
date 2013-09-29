@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The RomSwitcher Project
+<!--
+     Copyright (C) 2013 The RomSwitcher Project
 
      Licensed under the GNU GPLv2 license
 
@@ -10,13 +11,13 @@
 <resources>
 
     <string name="app_name">RomSwitcher</string>
-    
+
     <!-- Start -->
     <string name="nosupport">No support for your device!\nBlame Grarak</string>
     <string name="ok">OK</string>
     <string name="newkernel">New kernel detected</string>
     <string name="setupnewkernel">Seting up new kernel</string>
-    
+
     <!-- Main Setup -->
     <string name="text_welcome">Welcome</string>
     <string name="text_guidance">Thank you for using RomSwitcher\nPress \"Next\" for setup\nor \"Cancel\" to abort</string>
@@ -33,21 +34,33 @@
     <string name="setname_first">Name of first rom</string>
     <string name="setname_second">Name of second rom</string>
     <string name="emptynames">Names are empty</string>
-    
+
     <!-- Check Files -->
     <string name="more">More</string>
     <string name="yes">Yes</string>
-    
+
     <!-- Connection -->
     <string name="checkconnection">Checking connection</string>
     <string name="nointernet">No internet connection</string>
     <string name="serverdown">Server is down</string>
     <string name="openagain">Open RomSwitcher again when the download finished</string>
-    
+
     <!-- More Settings -->
     <string name="generalsettings">General Settings</string>
+    <string name="wipeoptions">Wipe Options</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- General Settings -->
     <string name="setname">Set name</string>
-    
+
+    <!-- Wipe Options -->
+    <string name="remove2ndrom">Remove 2nd rom</string>
+    <string name="factoryreset">Factory reset</string>
+    <string name="wipecache">Wipe cache</string>
+    <string name="wipedalvik">Wipe dalvik-cache</string>
+    <string name="wipebattery">Wipe battery stats</string>
+    <string name="areyousure">Are you sure?\n\nI am not responsible if your device get bricked!</string>
+    <string name="confirm">Confirm</string>
+
 </resources>

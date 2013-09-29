@@ -17,6 +17,7 @@
 package com.grarak.romswitcher;
 
 import com.grarak.romswitcher.Fragment.GeneralSettingsFragment;
+import com.grarak.romswitcher.Fragment.WipeOptionsFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -76,7 +77,7 @@ public class MoreSettingsActitvity extends Activity {
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] mPlanetTitles;
+	private String[] mMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class MoreSettingsActitvity extends Activity {
 		setContentView(R.layout.more_settings);
 
 		mTitle = mDrawerTitle = getTitle();
-		mPlanetTitles = getResources().getStringArray(R.array.menu_arrays);
+		mMenu = getResources().getStringArray(R.array.menu_arrays);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -94,7 +95,7 @@ public class MoreSettingsActitvity extends Activity {
 				GravityCompat.START);
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mPlanetTitles));
+				R.layout.drawer_list_item, mMenu));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
@@ -171,6 +172,9 @@ public class MoreSettingsActitvity extends Activity {
 		case 0:
 			fragment = new GeneralSettingsFragment();
 			break;
+		case 1:
+			fragment = new WipeOptionsFragment();
+			break;
 		default:
 			break;
 		}
@@ -183,7 +187,7 @@ public class MoreSettingsActitvity extends Activity {
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mPlanetTitles[position]);
+		setTitle(mMenu[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 

@@ -11,6 +11,7 @@
     
     <string-array name="menu_arrays">
 		<item >@string/generalsettings</item>
+		<item >@string/wipeoptions</item>
     </string-array>
     
 </resources>

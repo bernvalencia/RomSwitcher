@@ -87,12 +87,12 @@ public class GeneralSettingsFragment extends PreferenceFragment {
 	private static void setName(Context context, boolean name) {
 		if (name) {
 			editPref.putString("firstname", mName.getText().toString().trim());
-			editPref.commit();
-			mFirstname.setSummary(mPref.getString("firstname", "nothing"));
 		} else {
 			editPref.putString("secondname", mName.getText().toString().trim());
-			editPref.commit();
-			mSecondname.setSummary(mPref.getString("secondname", "nothing"));
+
 		}
+		editPref.commit();
+		mFirstname.setSummary(mPref.getString("firstname", "nothing"));
+		mSecondname.setSummary(mPref.getString("secondname", "nothing"));
 	}
 }
