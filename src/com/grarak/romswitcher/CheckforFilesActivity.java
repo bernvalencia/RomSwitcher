@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import com.grarak.romswitcher.Utils.ChooseRom;
+import com.grarak.romswitcher.Utils.GetKernel;
 import com.grarak.romswitcher.Utils.Utils;
 import com.stericson.RootTools.CommandCapture;
 
@@ -31,9 +32,12 @@ import android.os.Bundle;
 
 public class CheckforFilesActivity extends Activity {
 
+	private static final File secondrom = new File("/.firstrom/app");
 	private static String PREF_NAME_FIRST = "first_rom_name";
 	private static String PREF_NAME_SECOND = "second_rom_name";
 	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final File firstimg = new File(sdcard
+			+ "/romswitcher/first.img");
 	private static final File secondimg = new File(sdcard
 			+ "/romswitcher/second.img");
 	private static final File zip = new File(sdcard
@@ -54,7 +58,31 @@ public class CheckforFilesActivity extends Activity {
 			finish();
 		}
 
-		if (secondimg.exists()) {
+		if (!firstimg.exists() && !secondrom.exists()) {
+			Utils.displayprogress(getString(R.string.setupnewkernel), this);
+
+			Thread pause = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						GetKernel.pullkernel();
+						Thread.sleep(1500);
+						if (!firstimg.exists()) {
+							Utils.toast(CheckforFilesActivity.this,
+									getString(R.string.somethingwrong), 0);
+							finish();
+						}
+						Intent i = new Intent(CheckforFilesActivity.this,
+								CheckforFilesActivity.class);
+						startActivity(i);
+						finish();
+					} catch (Exception e) {
+						e.getLocalizedMessage();
+					}
+				}
+			});
+			pause.start();
+		} else if (secondimg.exists() && firstimg.exists()) {
 			start(this);
 		} else if (zip.exists()) {
 			unzip(this);
