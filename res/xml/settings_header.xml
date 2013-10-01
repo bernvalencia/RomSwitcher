@@ -15,13 +15,14 @@
      limitations under the License.
 -->
 
-<resources>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <string-array name="menu_arrays">
-        <item>@string/general</item>
-        <item>@string/wipeoptions</item>
-        <item>@string/settings</item>
-        <item>@string/aboutus</item>
-    </string-array>
+    <PreferenceCategory android:title="@string/update" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_ota"
+            android:summary="@string/ota_summary"
+            android:title="@string/ota" />
+    </PreferenceCategory>
 
-</resources>
+</PreferenceScreen>

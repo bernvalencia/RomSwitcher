@@ -45,6 +45,8 @@
     <!-- Check Files -->
     <string name="more">More</string>
     <string name="yes">Yes</string>
+    <string name="getfirstimg">Grab first.img from your device</string>
+    <string name="nofirstimg">first.img does not exist\nPlease extract boot.img from your 1st rom, rename it to first.img and move to romswitcher folder</string>
 
     <!-- Connection -->
     <string name="checkconnection">Checking connection</string>
@@ -53,13 +55,14 @@
     <string name="openagain">Open RomSwitcher again when the download finished</string>
 
     <!-- More Settings -->
-    <string name="generalsettings">General Settings</string>
+    <string name="general">General</string>
     <string name="wipeoptions">Wipe Options</string>
+    <string name="settings">Settings</string>
     <string name="aboutus">About us</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-    <!-- General Settings -->
+    <!-- General -->
     <string name="setname">Set name</string>
     <string name="miscellaneous">Miscellaneous</string>
     <string name="appsharing">App Sharing</string>
@@ -76,7 +79,16 @@
     <string name="areyousure">Are you sure?\n\nI am not responsible if your device get bricked!</string>
     <string name="confirm">Confirm</string>
 
+    <!-- Settings -->
+    <string name="update">Update</string>
+    <string name="ota">Receive OTA-Updates</string>
+    <string name="ota_summary">On every reboot the app will check for new updates\nNo service will run in background</string>
+
     <!-- About us -->
     <string name="members">Team members</string>
+    
+    <!-- OTA -->
+    <string name="updateavaible">Update is avaible</string>
+    <string name="updatefinish">Please open RomSwitcher App! It will download required files again</string>
 
 </resources>

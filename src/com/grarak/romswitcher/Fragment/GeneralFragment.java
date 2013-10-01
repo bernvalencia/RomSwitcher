@@ -34,7 +34,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.widget.EditText;
 
-public class GeneralSettingsFragment extends PreferenceFragment implements
+public class GeneralFragment extends PreferenceFragment implements
 		Preference.OnPreferenceChangeListener {
 
 	private static final CharSequence KEY_SETNAME_FIRST = "key_setname_first";
@@ -66,7 +66,7 @@ public class GeneralSettingsFragment extends PreferenceFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.general_settings_header);
+		addPreferencesFromResource(R.xml.general_header);
 
 		mFirstname = (Preference) findPreference(KEY_SETNAME_FIRST);
 		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
@@ -79,9 +79,9 @@ public class GeneralSettingsFragment extends PreferenceFragment implements
 				e.printStackTrace();
 			}
 		} else {
-			setSummary(GeneralSettingsFragment.mFirstname,
+			setSummary(GeneralFragment.mFirstname,
 					getString(R.string.firstrom));
-			setSummary(GeneralSettingsFragment.mSecondname,
+			setSummary(GeneralFragment.mSecondname,
 					getString(R.string.secondrom));
 		}
 

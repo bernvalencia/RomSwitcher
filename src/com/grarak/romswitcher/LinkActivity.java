@@ -16,6 +16,9 @@
 
 package com.grarak.romswitcher;
 
+import static android.os.Environment.getExternalStorageDirectory;
+
+import com.grarak.romswitcher.Utils.SupportedDevices;
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
@@ -27,8 +30,14 @@ import android.os.Bundle;
 public class LinkActivity extends Activity {
 
 	private static Context context;
-	private static String HTML = "";
+	private static String HTML;
 	public static String mDownload;
+
+	private static final String sdcard = getExternalStorageDirectory()
+			.getPath();
+
+	private static final String HTML_FILE = sdcard
+			+ "/romswitcher-tmp/htmllink";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +46,7 @@ public class LinkActivity extends Activity {
 
 		Utils.displayprogress(context.getString(R.string.checkconnection),
 				context);
-		Utils.getconnection(StartActivity.downloadlink);
+		Utils.getconnection(SupportedDevices.downloadlink);
 
 		DisplayString task = new DisplayString();
 		task.execute();
@@ -54,17 +63,15 @@ public class LinkActivity extends Activity {
 			HTML = Utils.mHtmlstring.toString();
 			if (HTML.isEmpty()) {
 				Utils.toast(context, context.getString(R.string.nointernet), 0);
+			} else if (HTML.contains("ffline")) {
+				Utils.toast(context, context.getString(R.string.serverdown), 0);
 			} else {
-				if (HTML.contains("ffline")) {
-					Utils.toast(context,
-							context.getString(R.string.serverdown), 0);
-				} else {
-					PackageDownloader.mDownloadfolder = "/romswitcher/";
-					PackageDownloader.mDownloadlink = HTML;
-					PackageDownloader.mDownloadname = "download.zip";
-					Intent i = new Intent(context, PackageDownloader.class);
-					context.startActivity(i);
-				}
+				Utils.runCommand("echo \"" + HTML + "\" > " + HTML_FILE, 0);
+				PackageDownloader.mDownloadfolder = "/romswitcher/";
+				PackageDownloader.mDownloadlink = HTML;
+				PackageDownloader.mDownloadname = "download.zip";
+				Intent i = new Intent(context, PackageDownloader.class);
+				context.startActivity(i);
 			}
 			Utils.hideprogress();
 			((Activity) context).finish();

@@ -20,7 +20,6 @@ import static android.os.Environment.getExternalStorageDirectory;
 
 import com.grarak.romswitcher.MoreSettingsActitvity;
 import com.grarak.romswitcher.R;
-import com.grarak.romswitcher.StartActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -89,7 +88,7 @@ public class ChooseRom {
 	private static void flashkernel(String rom, Context context) {
 		Utils.runCommand("dd if=" + getExternalStorageDirectory().getPath()
 				+ "/romswitcher/" + rom + ".img of="
-				+ StartActivity.bootpartition
+				+ SupportedDevices.bootpartition
 				+ " && echo 1 > /proc/sys/kernel/sysrq"
 				+ " && echo b > /proc/sysrq-trigger", 0);
 		Utils.runCommand("reboot", 1);

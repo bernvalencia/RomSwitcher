@@ -53,6 +53,9 @@ public class CheckforFilesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		File rs = new File(sdcard + "/romswitcher");
+		rs.mkdirs();
+
 		File rstmp = new File(sdcard + "/romswitcher-tmp");
 		rstmp.mkdirs();
 
@@ -65,32 +68,41 @@ public class CheckforFilesActivity extends Activity {
 			finish();
 		}
 
-		if (!firstimg.exists() && !secondrom.exists()) {
-			Thread pause = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						GetKernel.pullkernel();
-						Thread.sleep(1500);
-						if (!firstimg.exists()) {
-							Utils.toast(CheckforFilesActivity.this,
-									getString(R.string.somethingwrong), 0);
-							finish();
+		if (!firstimg.exists()) {
+			if (secondrom.exists()) {
+				Utils.alert(this, getString(R.string.app_name),
+						getString(R.string.nofirstimg));
+			} else {
+				Utils.displayprogress(getString(R.string.getfirstimg), this);
+				Thread pause = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							GetKernel.pullkernel();
+							Thread.sleep(1000);
+							if (!firstimg.exists()) {
+								Utils.toast(CheckforFilesActivity.this,
+										getString(R.string.somethingwrong), 0);
+								finish();
+							} else {
+								restartIntent(CheckforFilesActivity.this);
+							}
+							Utils.hideprogress();
+						} catch (Exception e) {
+							e.getLocalizedMessage();
 						}
-					} catch (Exception e) {
-						e.getLocalizedMessage();
 					}
-				}
-			});
-			pause.start();
-		} else if (firstimg.exists() && secondimg.exists()) {
-			start(this);
-		} else if (zip.exists()) {
+				});
+				pause.start();
+			}
+		} else if (!secondimg.exists() && zip.exists()) {
 			unzip(this);
-		} else {
+		} else if (!secondimg.exists() && !zip.exists()) {
 			Intent i = new Intent(this, LinkActivity.class);
 			startActivity(i);
 			finish();
+		} else if (firstimg.exists() && secondimg.exists()) {
+			start(this);
 		}
 	}
 
@@ -113,9 +125,16 @@ public class CheckforFilesActivity extends Activity {
 		}
 	}
 
+	private static void restartIntent(Context context) {
+		Intent i = new Intent(context, StartActivity.class);
+		context.startActivity(i);
+		((Activity) context).finish();
+	}
+
 	private static void unzip(Context context) {
 		Utils.runCommand(
 				"unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/",
 				0);
+		restartIntent(context);
 	}
 }

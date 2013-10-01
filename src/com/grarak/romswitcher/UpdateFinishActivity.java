@@ -14,17 +14,27 @@
  * limitations under the License.
  */
 
-package com.grarak.romswitcher.Utils;
+package com.grarak.romswitcher;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
-public class GetKernel {
+import com.grarak.romswitcher.Utils.Utils;
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
+import android.app.Activity;
+import android.os.Bundle;
 
-	public static void pullkernel() {
-		Utils.runCommand("dd if=" + SupportedDevices.bootpartition + " of="
-				+ sdcard + "/romswitcher/first.img", 0);
+public class UpdateFinishActivity extends Activity {
+
+	private static final String sdcard = getExternalStorageDirectory()
+			.getPath();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		Utils.runCommand("rm -rf " + sdcard + "/romswitcher", 0);
+
+		Utils.alert(this, getString(R.string.update),
+				getString(R.string.updatefinish));
 	}
-
 }

@@ -17,7 +17,8 @@
 package com.grarak.romswitcher;
 
 import com.grarak.romswitcher.Fragment.AboutUsFragment;
-import com.grarak.romswitcher.Fragment.GeneralSettingsFragment;
+import com.grarak.romswitcher.Fragment.GeneralFragment;
+import com.grarak.romswitcher.Fragment.SettingsFragment;
 import com.grarak.romswitcher.Fragment.WipeOptionsFragment;
 
 import android.app.Activity;
@@ -171,12 +172,15 @@ public class MoreSettingsActitvity extends Activity {
 		// update the main content by replacing fragments
 		switch (position) {
 		case 0:
-			fragment = new GeneralSettingsFragment();
+			fragment = new GeneralFragment();
 			break;
 		case 1:
 			fragment = new WipeOptionsFragment();
 			break;
 		case 2:
+			fragment = new SettingsFragment();
+			break;
+		case 3:
 			fragment = new AboutUsFragment();
 		default:
 			break;
