@@ -55,7 +55,7 @@
         </activity>
 
         <receiver
-            android:name=".Utils$BootReceiver"
+            android:name=".Utils.BootReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
