@@ -24,5 +24,15 @@
             android:summary="@string/ota_summary"
             android:title="@string/ota" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/privacy" >
+        <CheckBoxPreference
+            android:key="key_password"
+            android:summary="@string/password_summay"
+            android:title="@string/password" />
+
+        <Preference
+            android:key="key_setup_pass"
+            android:title="@string/setuppass" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

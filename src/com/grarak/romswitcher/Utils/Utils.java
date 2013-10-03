@@ -16,6 +16,7 @@
 
 package com.grarak.romswitcher.Utils;
 
+import static android.os.Environment.getExternalStorageDirectory;
 import static com.stericson.RootTools.RootTools.getShell;
 
 import java.io.BufferedReader;
@@ -43,13 +44,22 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Utils {
 
+	private static TextView mOldPasstext;
+	private static EditText mOldPassword, mNewPassword, mConfirmPassword;
 	public static String mHtmlstring = "";
 	private static ProgressDialog mProgressDialog;
 	private static final String FILENAME_PROC_VERSION = "/proc/version";
+	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
+	private static final File mPassfile = new File(PASS_FILE);
 
 	public static void deleteFiles(String path) {
 
@@ -204,5 +214,83 @@ public class Utils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void setupPassword(final Context context) {
+
+		LayoutInflater factory = LayoutInflater.from(context);
+
+		final View btn = factory.inflate(R.layout.password, null);
+
+		mOldPasstext = (TextView) btn.findViewById(R.id.oldpass_text);
+
+		mOldPassword = (EditText) btn.findViewById(R.id.oldpass);
+		mNewPassword = (EditText) btn.findViewById(R.id.newpass);
+		mConfirmPassword = (EditText) btn.findViewById(R.id.confirmpass);
+
+		if (!mPassfile.exists()) {
+			mOldPassword.setVisibility(View.GONE);
+			mOldPasstext.setVisibility(View.GONE);
+		}
+
+		Builder builder = new Builder(context);
+		builder.setView(btn)
+				.setTitle(context.getString(R.string.setuppass))
+				.setNegativeButton(context.getString(R.string.button_cancel),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+							}
+						})
+				.setPositiveButton(context.getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								checkOldPass(context);
+							}
+						}).show();
+	}
+
+	private static void checkOldPass(Context context) {
+		if (mPassfile.exists()) {
+			String oldPass = "";
+			try {
+				oldPass = Utils.readLine(PASS_FILE);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if (mOldPassword.getText().toString().trim().equals(oldPass)) {
+				checkNewPass(context);
+			} else {
+				Utils.toast(context, context.getString(R.string.oldpasswrong),
+						0);
+				setupPassword(context);
+			}
+		} else {
+			checkNewPass(context);
+		}
+	}
+
+	private static void checkNewPass(Context context) {
+		if (mNewPassword.getText().toString().trim()
+				.equals(mConfirmPassword.getText().toString().trim())
+				&& !mNewPassword.getText().toString().trim().isEmpty()) {
+			savePassword();
+		} else {
+			if (mNewPassword.getText().toString().trim().isEmpty()) {
+				Utils.toast(context, context.getString(R.string.emptypass), 0);
+			} else {
+				Utils.toast(context, context.getString(R.string.newnotmatch), 0);
+			}
+			setupPassword(context);
+		}
+	}
+
+	private static void savePassword() {
+		runCommand("echo \"" + mNewPassword.getText().toString().trim()
+				+ "\" > " + mPassfile, 1);
 	}
 }

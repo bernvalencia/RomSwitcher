@@ -28,12 +28,17 @@ import com.grarak.romswitcher.Utils.GetKernel;
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.widget.EditText;
 
 public class CheckforFilesActivity extends Activity {
 
+	private static EditText mPasstext;
 	private static final File secondrom = new File("/.firstrom/app");
 
 	private static String sdcard = getExternalStorageDirectory().getPath();
@@ -48,11 +53,22 @@ public class CheckforFilesActivity extends Activity {
 			+ "/romswitcher-tmp/firstname";
 	private static final String SECOND_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/secondname";
+	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
+
+	private static final File mPassfile = new File(PASS_FILE);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (mPassfile.exists()) {
+			checkPassword(this);
+		} else {
+			secondPart(this);
+		}
+	}
+
+	private static void secondPart(final Context context) {
 		File rs = new File(sdcard + "/romswitcher");
 		rs.mkdirs();
 
@@ -60,20 +76,20 @@ public class CheckforFilesActivity extends Activity {
 		rstmp.mkdirs();
 
 		if (!isRootAvailable()) {
-			Utils.toast(getApplicationContext(), getString(R.string.noroot), 0);
-			finish();
+			Utils.toast(context, context.getString(R.string.noroot), 0);
+			((Activity) context).finish();
 		} else if (!isBusyboxAvailable()) {
-			Utils.toast(getApplicationContext(), getString(R.string.nobusybox),
-					0);
-			finish();
+			Utils.toast(context, context.getString(R.string.nobusybox), 0);
+			((Activity) context).finish();
 		}
 
 		if (!firstimg.exists()) {
 			if (secondrom.exists()) {
-				Utils.alert(this, getString(R.string.app_name),
-						getString(R.string.nofirstimg));
+				Utils.alert(context, context.getString(R.string.app_name),
+						context.getString(R.string.nofirstimg));
 			} else {
-				Utils.displayprogress(getString(R.string.getfirstimg), this);
+				Utils.displayprogress(context.getString(R.string.getfirstimg),
+						context);
 				Thread pause = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -81,11 +97,11 @@ public class CheckforFilesActivity extends Activity {
 							GetKernel.pullkernel();
 							Thread.sleep(1000);
 							if (!firstimg.exists()) {
-								Utils.toast(CheckforFilesActivity.this,
-										getString(R.string.somethingwrong), 0);
-								finish();
+								Utils.toast(context, context
+										.getString(R.string.somethingwrong), 0);
+								((Activity) context).finish();
 							} else {
-								restartIntent(CheckforFilesActivity.this);
+								restartIntent(context);
 							}
 							Utils.hideprogress();
 						} catch (Exception e) {
@@ -96,13 +112,13 @@ public class CheckforFilesActivity extends Activity {
 				pause.start();
 			}
 		} else if (!secondimg.exists() && zip.exists()) {
-			unzip(this);
+			unzip(context);
 		} else if (!secondimg.exists() && !zip.exists()) {
-			Intent i = new Intent(this, LinkActivity.class);
-			startActivity(i);
-			finish();
+			Intent i = new Intent(context, LinkActivity.class);
+			context.startActivity(i);
+			((Activity) context).finish();
 		} else if (firstimg.exists() && secondimg.exists()) {
-			start(this);
+			start(context);
 		}
 	}
 
@@ -136,5 +152,45 @@ public class CheckforFilesActivity extends Activity {
 				"unzip /sdcard/romswitcher/download.zip -d /sdcard/romswitcher/",
 				0);
 		restartIntent(context);
+	}
+
+	private static void checkPassword(final Context context) {
+		mPasstext = new EditText(context);
+		mPasstext.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		Builder builder = new Builder(context);
+		builder.setView(mPasstext)
+				.setTitle(context.getString(R.string.password))
+				.setNegativeButton(context.getString(R.string.button_cancel),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								((Activity) context).finish();
+							}
+						})
+				.setPositiveButton(context.getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								checkPass(context);
+							}
+						}).show();
+	}
+
+	private static void checkPass(Context context) {
+		String password = "";
+		try {
+			password = Utils.readLine(PASS_FILE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (mPasstext.getText().toString().trim().equals(password)) {
+			secondPart(context);
+		} else {
+			Utils.toast(context, context.getString(R.string.passwordwrong), 0);
+			checkPassword(context);
+		}
 	}
 }

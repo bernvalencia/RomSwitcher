@@ -79,8 +79,7 @@ public class GeneralFragment extends PreferenceFragment implements
 				e.printStackTrace();
 			}
 		} else {
-			setSummary(GeneralFragment.mFirstname,
-					getString(R.string.firstrom));
+			setSummary(GeneralFragment.mFirstname, getString(R.string.firstrom));
 			setSummary(GeneralFragment.mSecondname,
 					getString(R.string.secondrom));
 		}
@@ -120,12 +119,14 @@ public class GeneralFragment extends PreferenceFragment implements
 				mDataSharing.setEnabled(true);
 				Utils.runCommand("echo \"enabled\" > " + APP_SHARING_FILE, 0);
 			}
-		} else if (mDataSharing.isChecked()) {
-			mDataSharing.setChecked(false);
-			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
-		} else {
-			mDataSharing.setChecked(true);
-			Utils.runCommand("echo \"enabled\" > " + DATA_SHARING_FILE, 0);
+		} else if (preference == mDataSharing) {
+			if (mDataSharing.isChecked()) {
+				mDataSharing.setChecked(false);
+				Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
+			} else {
+				mDataSharing.setChecked(true);
+				Utils.runCommand("echo \"enabled\" > " + DATA_SHARING_FILE, 0);
+			}
 		}
 		return false;
 	}

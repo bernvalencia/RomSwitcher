@@ -20,7 +20,6 @@
     <style name="Halo" parent="@android:style/Theme.Holo"></style>
 
     <style name="TextTheme">
-        <item name="android:gravity">center</item>
         <item name="android:textColor">@color/orange_light</item>
     </style>
 
@@ -29,6 +28,7 @@
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">italic|bold</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="ThemeTransparent" parent="android:Theme.DeviceDefault">

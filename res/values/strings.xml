@@ -42,11 +42,31 @@
     <string name="setname_second">Name of second rom</string>
     <string name="emptynames">Names are empty</string>
 
+    <!-- Features -->
+    <string name="features">Features of RomSwitcher</string>
+    <string name="sharing">Sharing</string>
+    <string name="appsharing">App Sharing</string>
+    <string name="datasharing">Data Sharing</string>
+    <string name="appsharing_summary">Enable App Sharing between both roms</string>
+    <string name="datasharing_summary">Enable Data Sharing between both roms</string>
+    <string name="privacy">Privacy</string>
+    <string name="password">Password</string>
+    <string name="password_summay">Protect your roms with a password</string>
+    <string name="setuppass">Setup a password</string>
+    <string name="oldpassword">Old Password</string>
+    <string name="newpassword">New Password</string>
+    <string name="confirmpassword">Confirm Password</string>
+    <string name="oldpasswrong">Old password is wrong</string>
+    <string name="newnotmatch">Password does not match</string>
+    <string name="emptypass">Password is empty</string>
+    <string name="nopassword">Setup a password please</string>
+
     <!-- Check Files -->
     <string name="more">More</string>
     <string name="yes">Yes</string>
     <string name="getfirstimg">Grab first.img from your device</string>
     <string name="nofirstimg">first.img does not exist\nPlease extract boot.img from your 1st rom, rename it to first.img and move to romswitcher folder</string>
+    <string name="passwordwrong">Password is wrong</string>
 
     <!-- Connection -->
     <string name="checkconnection">Checking connection</string>
@@ -65,10 +85,6 @@
     <!-- General -->
     <string name="setname">Set name</string>
     <string name="miscellaneous">Miscellaneous</string>
-    <string name="appsharing">App Sharing</string>
-    <string name="datasharing">Data Sharing</string>
-    <string name="appsharing_summary">Enable App Sharing between both roms</string>
-    <string name="datasharing_summary">Enable Data Sharing between both roms</string>
 
     <!-- Wipe Options -->
     <string name="remove2ndrom">Remove 2nd rom</string>
@@ -86,7 +102,7 @@
 
     <!-- About us -->
     <string name="members">Team members</string>
-    
+
     <!-- OTA -->
     <string name="updateavaible">Update is avaible</string>
     <string name="updatefinish">Please open RomSwitcher App! It will download required files again</string>

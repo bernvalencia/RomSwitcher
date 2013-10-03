@@ -24,7 +24,6 @@ import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +34,6 @@ public class SetNameActivity extends Activity {
 	private static Button mButtonNext;
 	private static EditText mFirstEdit, mSecondEdit;
 	private static String sdcard = getExternalStorageDirectory().getPath();
-	private static final String PREF = "prefs";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,11 +52,6 @@ public class SetNameActivity extends Activity {
 					Utils.toast(SetNameActivity.this,
 							getString(R.string.emptynames), 0);
 				} else {
-					SharedPreferences mPref = getSharedPreferences(PREF, 0);
-					SharedPreferences.Editor editorPref = mPref.edit();
-					editorPref.putBoolean("firstuse", false);
-					editorPref.commit();
-
 					File rstmp = new File(sdcard + "/romswitcher-tmp");
 					rstmp.mkdirs();
 
@@ -71,9 +64,8 @@ public class SetNameActivity extends Activity {
 							+ sdcard + "/romswitcher-tmp/secondname", 1);
 
 					Intent i = new Intent(SetNameActivity.this,
-							CheckforFilesActivity.class);
+							FeaturesActivity.class);
 					startActivity(i);
-					finish();
 				}
 			}
 		});

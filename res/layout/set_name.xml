@@ -39,7 +39,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:background="?android:attr/selectableItemBackground"
             android:text="@string/button_next" />
     </LinearLayout>
 

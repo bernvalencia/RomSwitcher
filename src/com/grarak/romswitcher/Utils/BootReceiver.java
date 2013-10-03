@@ -52,6 +52,7 @@ public class BootReceiver extends BroadcastReceiver {
 	private static Context context;
 	private static NotificationManager notifyMgr = null;
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void onReceive(Context activity, Intent intent) {
 		context = activity;
