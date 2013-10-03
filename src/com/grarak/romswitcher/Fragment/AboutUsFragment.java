@@ -18,14 +18,49 @@ package com.grarak.romswitcher.Fragment;
 
 import com.grarak.romswitcher.R;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 
 public class AboutUsFragment extends PreferenceFragment {
+
+	private static final CharSequence KEY_ME = "key_grarak";
+	private static final CharSequence KEY_MITHUN = "key_mithun46";
+	private static final CharSequence KEY_BLUE = "key_bluefa1con";
+	private static final CharSequence KEY_VIK = "key_disturbed";
+
+	private static final String grarakDonate = "http://forum.xda-developers.com/donatetome.php?u=4443334";
+	private static final String mithunDonate = "http://forum.xda-developers.com/donatetome.php?u=4922752";
+	private static final String blueDonate = "http://forum.xda-developers.com/donatetome.php?u=4209428";
+	private static final String vikDonate = "http://forum.xda-developers.com/donatetome.php?u=4655143";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.about_us_header);
+	}
+
+	@Override
+	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
+			Preference preference) {
+		if (preference.getKey().equals(KEY_ME)) {
+			openLink(grarakDonate, getActivity());
+		} else if (preference.getKey().equals(KEY_MITHUN)) {
+			openLink(mithunDonate, getActivity());
+		} else if (preference.getKey().equals(KEY_BLUE)) {
+			openLink(blueDonate, getActivity());
+		} else if (preference.getKey().equals(KEY_VIK)) {
+			openLink(vikDonate, getActivity());
+		}
+		return super.onPreferenceTreeClick(preferenceScreen, preference);
+	}
+
+	private static void openLink(String link, Context context) {
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+		context.startActivity(browserIntent);
 	}
 }
