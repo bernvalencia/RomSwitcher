@@ -61,7 +61,7 @@ public class CheckforFilesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (mPassfile.exists()) {
+		if (mPassfile.exists() && firstimg.exists() && secondimg.exists()) {
 			checkPassword(this);
 		} else {
 			secondPart(this);
