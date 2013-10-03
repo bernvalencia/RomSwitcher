@@ -161,6 +161,12 @@ public class CheckforFilesActivity extends Activity {
 		Builder builder = new Builder(context);
 		builder.setView(mPasstext)
 				.setTitle(context.getString(R.string.password))
+				.setOnCancelListener(new DialogInterface.OnCancelListener() {
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						((Activity) context).finish();
+					}
+				})
 				.setNegativeButton(context.getString(R.string.button_cancel),
 						new DialogInterface.OnClickListener() {
 							@Override
