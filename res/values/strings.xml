@@ -38,8 +38,10 @@
     <!-- Set Name -->
     <string name="firstrom">First rom</string>
     <string name="secondrom">Second rom</string>
+    <string name="thirdrom">Third rom</string>
     <string name="setname_first">Name of first rom</string>
     <string name="setname_second">Name of second rom</string>
+    <string name="setname_third">Name of third rom</string>
     <string name="emptynames">Names are empty</string>
 
     <!-- Features -->
@@ -47,8 +49,8 @@
     <string name="sharing">Sharing</string>
     <string name="appsharing">App Sharing</string>
     <string name="datasharing">Data Sharing</string>
-    <string name="appsharing_summary">Enable App Sharing between both roms</string>
-    <string name="datasharing_summary">Enable Data Sharing between both roms</string>
+    <string name="appsharing_summary">Enable App Sharing between 1st and 2nd rom</string>
+    <string name="datasharing_summary">Enable Data Sharing between 1st and 2nd rom</string>
     <string name="privacy">Privacy</string>
     <string name="password">Password</string>
     <string name="password_summay">Protect your roms with a password</string>
@@ -88,6 +90,7 @@
 
     <!-- Wipe Options -->
     <string name="remove2ndrom">Remove 2nd rom</string>
+    <string name="remove3rdrom">Remove 3rd rom</string>
     <string name="factoryreset">Factory reset</string>
     <string name="wipecache">Wipe cache</string>
     <string name="wipedalvik">Wipe dalvik-cache</string>

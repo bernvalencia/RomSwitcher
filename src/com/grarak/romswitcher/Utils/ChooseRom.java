@@ -18,6 +18,10 @@ package com.grarak.romswitcher.Utils;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.grarak.romswitcher.MoreSettingsActitvity;
 import com.grarak.romswitcher.R;
 
@@ -32,13 +36,22 @@ public class ChooseRom {
 
 	private static int selected = 0;
 	private static int buffKey = 0;
+	private static CharSequence[] choiceList;
 
 	public static void chooserom(final Context context, String title,
-			final String firstrom, String secondrom) {
+			final String firstrom, final String secondrom, String thirdrom,
+			File thirdfile) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title);
 
-		final CharSequence[] choiceList = { firstrom, secondrom };
+		List<String> listItems = new ArrayList<String>();
+		listItems.add(firstrom);
+		listItems.add(secondrom);
+		if (thirdfile.exists()) {
+			listItems.add(thirdrom);
+		}
+
+		choiceList = listItems.toArray(new CharSequence[listItems.size()]);
 
 		builder.setSingleChoiceItems(choiceList, selected,
 				new DialogInterface.OnClickListener() {
@@ -63,7 +76,8 @@ public class ChooseRom {
 								if (choiceList[buffKey].toString().equals(
 										firstrom)) {
 									flashkernel("first", context);
-								} else {
+								} else if (choiceList[buffKey].toString()
+										.equals(secondrom)) {
 									flashkernel("second", context);
 									selected = buffKey;
 									((Activity) context).finish();

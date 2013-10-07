@@ -43,17 +43,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_secondname"
-        style="@style/TextTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/secondrom_edit"
-        android:layout_centerHorizontal="true"
-        android:text="@string/secondrom"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/text_firstname"
         style="@style/TextTheme"
         android:layout_width="wrap_content"
@@ -84,10 +73,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/firstrom_edit"
-        android:layout_alignRight="@+id/firstrom_edit"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="161dp"
         android:ems="10"
         android:hint="@string/setname_second"
         android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/text_secondname"
+        style="@style/TextTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/secondrom_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/secondrom"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_thirdname"
+        style="@style/TextTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secondrom_edit"
+        android:layout_centerHorizontal="true"
+        android:text="@string/thirdrom"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/thirdrom_edit"
+        style="@style/Halo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/secondrom_edit"
+        android:layout_alignRight="@+id/secondrom_edit"
+        android:layout_below="@+id/text_thirdname"
+        android:ems="10"
+        android:hint="@string/setname_third" />
 
 </RelativeLayout>

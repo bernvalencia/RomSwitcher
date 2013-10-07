@@ -39,12 +39,13 @@ public class GeneralFragment extends PreferenceFragment implements
 
 	private static final CharSequence KEY_SETNAME_FIRST = "key_setname_first";
 	private static final CharSequence KEY_SETNAME_SECOND = "key_setname_second";
+	private static final CharSequence KEY_SETNAME_THIRD = "key_setname_third";
 	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
 	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
 
 	private static CheckBoxPreference mAppSharing, mDataSharing;
 
-	private static Preference mFirstname, mSecondname;
+	private static Preference mFirstname, mSecondname, mThirdname;
 	private static EditText mName;
 
 	private static String sdcard = getExternalStorageDirectory().getPath();
@@ -53,6 +54,8 @@ public class GeneralFragment extends PreferenceFragment implements
 			+ "/romswitcher-tmp/firstname";
 	private static final String SECOND_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/secondname";
+	private static final String THIRD_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/thirdname";
 	private static final String APP_SHARING_FILE = sdcard
 			+ "/romswitcher-tmp/appshare";
 	private static final String DATA_SHARING_FILE = sdcard
@@ -60,6 +63,7 @@ public class GeneralFragment extends PreferenceFragment implements
 
 	private static final File mFirstfile = new File(FIRST_NAME_FILE);
 	private static final File mSecondfile = new File(SECOND_NAME_FILE);
+	private static final File mThirdfile = new File(THIRD_NAME_FILE);
 	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
 	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
 
@@ -70,18 +74,20 @@ public class GeneralFragment extends PreferenceFragment implements
 
 		mFirstname = (Preference) findPreference(KEY_SETNAME_FIRST);
 		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
+		mThirdname = (Preference) findPreference(KEY_SETNAME_THIRD);
 
-		if (mFirstfile.exists() && mSecondfile.exists()) {
+		if (mFirstfile.exists() && mSecondfile.exists() && mThirdfile.exists()) {
 			try {
 				setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
 				setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
+				setSummary(mThirdname, Utils.readLine(THIRD_NAME_FILE));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
-			setSummary(GeneralFragment.mFirstname, getString(R.string.firstrom));
-			setSummary(GeneralFragment.mSecondname,
-					getString(R.string.secondrom));
+			setSummary(mFirstname, getString(R.string.firstrom));
+			setSummary(mSecondname, getString(R.string.secondrom));
+			setSummary(mThirdname, getString(R.string.thirdrom));
 		}
 
 		mAppSharing = (CheckBoxPreference) findPreference(KEY_APP_SHARING);
@@ -139,17 +145,19 @@ public class GeneralFragment extends PreferenceFragment implements
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
 			Preference preference) {
 		if (preference.getKey().equals(KEY_SETNAME_FIRST)) {
-			alertEdit(getActivity(), true);
+			alertEdit(getActivity(), 0);
 		} else if (preference.getKey().equals(KEY_SETNAME_SECOND)) {
-			alertEdit(getActivity(), false);
+			alertEdit(getActivity(), 1);
+		} else if (preference.getKey().equals(KEY_SETNAME_THIRD)) {
+			alertEdit(getActivity(), 2);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
 
-	private static void alertEdit(final Context context, final boolean name) {
+	private static void alertEdit(final Context context, final int name) {
 		Builder alert = new Builder(context);
 		mName = new EditText(context);
-		if (name) {
+		if (name == 0) {
 			if (mFirstfile.exists()) {
 				try {
 					mName.setHint(Utils.readLine(FIRST_NAME_FILE));
@@ -159,7 +167,7 @@ public class GeneralFragment extends PreferenceFragment implements
 			} else {
 				mName.setHint(context.getString(R.string.firstrom));
 			}
-		} else {
+		} else if (name == 1) {
 			if (mSecondfile.exists()) {
 				try {
 					mName.setHint(Utils.readLine(SECOND_NAME_FILE));
@@ -168,6 +176,16 @@ public class GeneralFragment extends PreferenceFragment implements
 				}
 			} else {
 				mName.setHint(context.getString(R.string.secondrom));
+			}
+		} else if (name == 2) {
+			if (mThirdfile.exists()) {
+				try {
+					mName.setHint(Utils.readLine(THIRD_NAME_FILE));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				mName.setHint(context.getString(R.string.thirdrom));
 			}
 		}
 		alert.setView(mName)
@@ -189,21 +207,25 @@ public class GeneralFragment extends PreferenceFragment implements
 		alert.show();
 	}
 
-	private static void setName(Context context, boolean name) {
+	private static void setName(Context context, int name) {
 		File rstmp = new File(sdcard + "/romswitcher-tmp");
 		rstmp.mkdirs();
 
-		if (name) {
+		if (name == 0) {
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + sdcard + "/romswitcher-tmp/firstname", 0);
-		} else {
+					+ "\" > " + FIRST_NAME_FILE, 0);
+		} else if (name == 1) {
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + sdcard + "/romswitcher-tmp/secondname", 1);
+					+ "\" > " + SECOND_NAME_FILE, 1);
+		} else if (name == 2) {
+			Utils.runCommand("echo \"" + mName.getText().toString().trim()
+					+ "\" > " + THIRD_NAME_FILE, 2);
 		}
 
 		try {
 			setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
 			setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
+			setSummary(mThirdname, Utils.readLine(THIRD_NAME_FILE));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

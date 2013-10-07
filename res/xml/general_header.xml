@@ -27,6 +27,11 @@
             android:key="key_setname_second"
             android:title="@string/setname_second" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/thirdrom" >
+        <Preference
+            android:key="key_setname_third"
+            android:title="@string/setname_third" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/miscellaneous" >
         <CheckBoxPreference
             android:defaultValue="false"

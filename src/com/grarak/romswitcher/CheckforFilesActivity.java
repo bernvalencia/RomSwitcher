@@ -53,9 +53,17 @@ public class CheckforFilesActivity extends Activity {
 			+ "/romswitcher-tmp/firstname";
 	private static final String SECOND_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/secondname";
+	private static final String THIRD_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/thirdname";
+	private static final String THIRD_ROM = "/data/media/.thirdrom/system.img";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 
+	private static final File mFirstname = new File(FIRST_NAME_FILE);
+	private static final File mSecondname = new File(SECOND_NAME_FILE);
+	private static final File mThirdname = new File(THIRD_NAME_FILE);
+
 	private static final File mPassfile = new File(PASS_FILE);
+	private static final File mThirdSystem = new File(THIRD_ROM);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,21 +131,21 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void start(Context context) {
-		File mFirstname = new File(FIRST_NAME_FILE);
-		File mSecondname = new File(SECOND_NAME_FILE);
-		if (mFirstname.exists() && mSecondname.exists()) {
+		if (mFirstname.exists() && mSecondname.exists() && mThirdname.exists()) {
 			try {
 				ChooseRom.chooserom(context,
 						context.getString(R.string.app_name),
 						Utils.readLine(FIRST_NAME_FILE),
-						Utils.readLine(SECOND_NAME_FILE));
+						Utils.readLine(SECOND_NAME_FILE),
+						Utils.readLine(THIRD_NAME_FILE), mThirdSystem);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
 			ChooseRom.chooserom(context, context.getString(R.string.app_name),
 					context.getString(R.string.firstrom),
-					context.getString(R.string.secondrom));
+					context.getString(R.string.secondrom),
+					context.getString(R.string.thirdrom), mThirdSystem);
 		}
 	}
 

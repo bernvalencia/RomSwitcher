@@ -22,16 +22,33 @@
             android:key="key_remove_2ndrom"
             android:title="@string/remove2ndrom" />
         <Preference
-            android:key="key_factory_reset"
+            android:key="key_factory_reset_2nd"
             android:title="@string/factoryreset" />
         <Preference
-            android:key="key_wipe_cache"
+            android:key="key_wipe_cache_2nd"
             android:title="@string/wipecache" />
         <Preference
-            android:key="key_wipe_dalvik"
+            android:key="key_wipe_dalvik_2nd"
             android:title="@string/wipedalvik" />
         <Preference
-            android:key="key_wipe_battery"
+            android:key="key_wipe_battery_2nd"
+            android:title="@string/wipebattery" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/thirdrom" >
+        <Preference
+            android:key="key_remove_2ndrom"
+            android:title="@string/remove3rdrom" />
+        <Preference
+            android:key="key_factory_reset_3rd"
+            android:title="@string/factoryreset" />
+        <Preference
+            android:key="key_wipe_cache_3rd"
+            android:title="@string/wipecache" />
+        <Preference
+            android:key="key_wipe_dalvik_3rd"
+            android:title="@string/wipedalvik" />
+        <Preference
+            android:key="key_wipe_battery_3rd"
             android:title="@string/wipebattery" />
     </PreferenceCategory>
 
