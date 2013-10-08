@@ -224,9 +224,8 @@ public class MoreSettingsActitvity extends Activity {
 	}
 
 	public void onDestroy() {
-		super.onDestroy();
 		Intent i = new Intent(this, CheckforFilesActivity.class);
 		startActivity(i);
-		finish();
+		super.onDestroy();
 	}
 }
