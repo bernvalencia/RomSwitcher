@@ -88,14 +88,14 @@ public class ChooseRom {
 									flashkernel("second", context);
 									selected = buffKey;
 									Utils.runCommand(
-											"echo 1 > /data/media/rom", 0);
+											"echo 1 > /data/media/.rom", 0);
 									((Activity) context).finish();
 								} else if (choiceList[buffKey].toString()
 										.equals(thirdrom)) {
 									flashkernel("second", context);
 									selected = buffKey;
 									Utils.runCommand(
-											"echo 2 > /data/media/rom", 0);
+											"echo 2 > /data/media/.rom", 0);
 									((Activity) context).finish();
 								}
 							}
