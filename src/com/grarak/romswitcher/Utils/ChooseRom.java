@@ -38,16 +38,23 @@ public class ChooseRom {
 	private static int buffKey = 0;
 	private static CharSequence[] choiceList;
 
+	private static final String SECOND_ROM = "/data/media/.secondrom/system.img";
+	private static final String THIRD_ROM = "/data/media/.thirdrom/system.img";
+
+	private static final File mSecondSystem = new File(SECOND_ROM);
+	private static final File mThirdSystem = new File(THIRD_ROM);
+
 	public static void chooserom(final Context context, String title,
-			final String firstrom, final String secondrom, String thirdrom,
-			File thirdfile) {
+			final String firstrom, final String secondrom, final String thirdrom) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title);
 
 		List<String> listItems = new ArrayList<String>();
 		listItems.add(firstrom);
-		listItems.add(secondrom);
-		if (thirdfile.exists()) {
+		if (mSecondSystem.exists()) {
+			listItems.add(secondrom);
+		}
+		if (mThirdSystem.exists()) {
 			listItems.add(thirdrom);
 		}
 
@@ -80,6 +87,15 @@ public class ChooseRom {
 										.equals(secondrom)) {
 									flashkernel("second", context);
 									selected = buffKey;
+									Utils.runCommand(
+											"echo 1 > /data/media/rom", 0);
+									((Activity) context).finish();
+								} else if (choiceList[buffKey].toString()
+										.equals(thirdrom)) {
+									flashkernel("second", context);
+									selected = buffKey;
+									Utils.runCommand(
+											"echo 2 > /data/media/rom", 0);
 									((Activity) context).finish();
 								}
 							}
