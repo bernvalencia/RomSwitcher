@@ -38,11 +38,12 @@ public class ChooseRom {
 	private static int buffKey = 0;
 	private static CharSequence[] choiceList;
 
-	private static final String SECOND_ROM = "/data/media/.secondrom/system.img";
-	private static final String THIRD_ROM = "/data/media/.thirdrom/system.img";
+	private static String SECOND_ROM = "/data/media/.secondrom/system.img";
+	private static String THIRD_ROM = "/data/media/.thirdrom/system.img";
 
 	private static final File mSecondSystem = new File(SECOND_ROM);
 	private static final File mThirdSystem = new File(THIRD_ROM);
+	private static final File mSecondRom = new File("/.firstrom/app");
 
 	public static void chooserom(final Context context, String title,
 			final String firstrom, final String secondrom, final String thirdrom) {
@@ -51,10 +52,10 @@ public class ChooseRom {
 
 		List<String> listItems = new ArrayList<String>();
 		listItems.add(firstrom);
-		if (mSecondSystem.exists()) {
+		if (mSecondSystem.exists() || mSecondRom.exists()) {
 			listItems.add(secondrom);
 		}
-		if (mThirdSystem.exists()) {
+		if (mThirdSystem.exists() || mSecondRom.exists()) {
 			listItems.add(thirdrom);
 		}
 
