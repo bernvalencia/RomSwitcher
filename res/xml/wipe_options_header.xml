@@ -36,7 +36,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/thirdrom" >
         <Preference
-            android:key="key_remove_2ndrom"
+            android:key="key_remove_3rdrom"
             android:title="@string/remove3rdrom" />
         <Preference
             android:key="key_factory_reset_3rd"
