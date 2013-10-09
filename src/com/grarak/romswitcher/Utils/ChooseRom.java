@@ -39,15 +39,11 @@ public class ChooseRom {
 	private static CharSequence[] choiceList;
 
 	private static String DATA;
-	private static final String SECOND_ROM = DATA
-			+ "/media/.secondrom/system.img";
-	private static final String THIRD_ROM = DATA
-			+ "/media/.thirdrom/system.img";
-	private static final String ROM_SELECTION = DATA + "/media/.rom";
+	private static String ROM_SELECTION;
 
-	private static final File mSecondSystem = new File(SECOND_ROM);
-	private static final File mThirdSystem = new File(THIRD_ROM);
-	private static final File mSecondRom = new File("/.firstrom/app");
+	private static File mSecondSystem;
+	private static File mThirdSystem;
+	private static File mSecondRom = new File("/.firstrom");
 
 	public static void chooserom(final Context context, String title,
 			final String firstrom, final String secondrom, final String thirdrom) {
@@ -59,6 +55,10 @@ public class ChooseRom {
 		} else {
 			DATA = "/data";
 		}
+
+		ROM_SELECTION = DATA + "/media/.rom";
+		mSecondSystem = new File(DATA + "/media/.secondrom/system.img");
+		mThirdSystem = new File(DATA + "/media/.thirdrom/system.img");
 
 		List<String> listItems = new ArrayList<String>();
 		listItems.add(firstrom);
@@ -93,20 +93,16 @@ public class ChooseRom {
 									int which) {
 								if (choiceList[buffKey].toString().equals(
 										firstrom)) {
-									flashkernel("first", context);
+									flashKernel("first", 0, context);
 								} else if (choiceList[buffKey].toString()
 										.equals(secondrom)) {
-									flashkernel("second", context);
+									flashKernel("second", 1, context);
 									selected = buffKey;
-									Utils.runCommand("echo 1 > "
-											+ ROM_SELECTION, 0);
 									((Activity) context).finish();
 								} else if (choiceList[buffKey].toString()
 										.equals(thirdrom)) {
-									flashkernel("second", context);
+									flashKernel("second", 2, context);
 									selected = buffKey;
-									Utils.runCommand("echo 2 > "
-											+ ROM_SELECTION, 0);
 									((Activity) context).finish();
 								}
 							}
@@ -126,8 +122,9 @@ public class ChooseRom {
 		alert.show();
 	}
 
-	private static void flashkernel(String rom, Context context) {
-		if (!mSecondRom.exists() && !rom.equals("first")) {
+	private static void flashKernel(String rom, int romnumber, Context context) {
+		Utils.runCommand("echo " + romnumber + " > " + ROM_SELECTION, 0);
+		if (!mSecondRom.exists() || romnumber == 0) {
 			Utils.runCommand("dd if=" + getExternalStorageDirectory().getPath()
 					+ "/romswitcher/" + rom + ".img of="
 					+ SupportedDevices.bootpartition
