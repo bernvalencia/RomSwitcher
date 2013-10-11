@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.grarak.romswitcher.R;
+import com.grarak.romswitcher.Utils.SupportedDevices;
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.AlertDialog.Builder;
@@ -42,6 +43,7 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final CharSequence KEY_SETNAME_SECOND = "key_setname_second";
 	private static final CharSequence KEY_ENABLE_THIRD = "key_enable_third";
 	private static final CharSequence KEY_SETNAME_THIRD = "key_setname_third";
+	private static final CharSequence KEY_INSTALL_RECOVERY = "key_install_recovery";
 	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
 	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
 
@@ -62,6 +64,8 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final String THIRD_FILE = sdcard + "/romswitcher-tmp/third";
 	private static final String THIRD_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/thirdname";
+	private static final String BOOT_IMAGE_FILE = sdcard
+			+ "/romswitcher/second.img";
 	private static final String APP_SHARING_FILE = sdcard
 			+ "/romswitcher-tmp/appshare";
 	private static final String DATA_SHARING_FILE = sdcard
@@ -192,6 +196,10 @@ public class GeneralFragment extends PreferenceFragment implements
 			alertEdit(getActivity(), 1);
 		} else if (preference.getKey().equals(KEY_SETNAME_THIRD)) {
 			alertEdit(getActivity(), 2);
+		} else if (preference.getKey().equals(KEY_INSTALL_RECOVERY)) {
+			Utils.runCommand("dd if=" + BOOT_IMAGE_FILE + " of="
+					+ SupportedDevices.recoverypartition, 3);
+			Utils.toast(getActivity(), getString(R.string.recoveryinstalled), 0);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}

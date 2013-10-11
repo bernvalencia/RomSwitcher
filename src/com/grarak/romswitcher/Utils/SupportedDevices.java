@@ -23,6 +23,7 @@ public class SupportedDevices {
 	private static String brand = android.os.Build.BRAND.toString();
 	public static String downloadlink = "";
 	public static String bootpartition;
+	public static String recoverypartition = "";
 
 	public static void getDevices() {
 
@@ -30,6 +31,7 @@ public class SupportedDevices {
 		if (device.equals("ja3g")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/i9500";
 			bootpartition = "/dev/block/mmcblk0p9";
+			recoverypartition = "/dev/block/mmcblk0p10";
 		}
 
 		// M470

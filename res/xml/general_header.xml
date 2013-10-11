@@ -43,6 +43,10 @@
             android:title="@string/setname_third" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/miscellaneous" >
+        <Preference
+            android:key="key_install_recovery"
+            android:title="@string/installrecovery" />
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="key_app_sharing"

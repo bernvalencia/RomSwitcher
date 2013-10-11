@@ -87,6 +87,8 @@
     <string name="setname_third">Name of third rom</string>
     <string name="setname">Set name</string>
     <string name="miscellaneous">Miscellaneous</string>
+    <string name="installrecovery">Install RomSwitcher-Recovery</string>
+    <string name="recoveryinstalled">Recovery installed</string>
 
     <!-- Wipe Options -->
     <string name="remove2ndrom">Remove 2nd rom</string>
