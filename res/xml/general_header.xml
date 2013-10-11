@@ -23,11 +23,21 @@
             android:title="@string/setname_first" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/secondrom" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_enable_second"
+            android:title="@string/secondrom" />
+
         <Preference
             android:key="key_setname_second"
             android:title="@string/setname_second" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/thirdrom" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key_enable_third"
+            android:title="@string/thirdrom" />
+
         <Preference
             android:key="key_setname_third"
             android:title="@string/setname_third" />
@@ -39,7 +49,7 @@
             android:summary="@string/appsharing_summary"
             android:title="@string/appsharing" />
         <CheckBoxPreference
-            android:enabled="false"
+            android:defaultValue="false"
             android:key="key_data_sharing"
             android:summary="@string/datasharing_summary"
             android:title="@string/datasharing" />

@@ -38,12 +38,15 @@ public class GeneralFragment extends PreferenceFragment implements
 		Preference.OnPreferenceChangeListener {
 
 	private static final CharSequence KEY_SETNAME_FIRST = "key_setname_first";
+	private static final CharSequence KEY_ENABLE_SECOND = "key_enable_second";
 	private static final CharSequence KEY_SETNAME_SECOND = "key_setname_second";
+	private static final CharSequence KEY_ENABLE_THIRD = "key_enable_third";
 	private static final CharSequence KEY_SETNAME_THIRD = "key_setname_third";
 	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
 	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
 
-	private static CheckBoxPreference mAppSharing, mDataSharing;
+	private static CheckBoxPreference mSecond, mThird, mAppSharing,
+			mDataSharing;
 
 	private static Preference mFirstname, mSecondname, mThirdname;
 	private static EditText mName;
@@ -52,8 +55,11 @@ public class GeneralFragment extends PreferenceFragment implements
 
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";
+	private static final String SECOND_FILE = sdcard
+			+ "/romswitcher-tmp/second";
 	private static final String SECOND_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/secondname";
+	private static final String THIRD_FILE = sdcard + "/romswitcher-tmp/third";
 	private static final String THIRD_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/thirdname";
 	private static final String APP_SHARING_FILE = sdcard
@@ -62,8 +68,10 @@ public class GeneralFragment extends PreferenceFragment implements
 			+ "/romswitcher-tmp/datashare";
 
 	private static final File mFirstfile = new File(FIRST_NAME_FILE);
-	private static final File mSecondfile = new File(SECOND_NAME_FILE);
-	private static final File mThirdfile = new File(THIRD_NAME_FILE);
+	private static final File mSecondfile = new File(SECOND_FILE);
+	private static final File mSecondNamefile = new File(SECOND_NAME_FILE);
+	private static final File mThirdfile = new File(THIRD_FILE);
+	private static final File mThirdNamefile = new File(THIRD_NAME_FILE);
 	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
 	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
 
@@ -76,7 +84,8 @@ public class GeneralFragment extends PreferenceFragment implements
 		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
 		mThirdname = (Preference) findPreference(KEY_SETNAME_THIRD);
 
-		if (mFirstfile.exists() && mSecondfile.exists() && mThirdfile.exists()) {
+		if (mFirstfile.exists() && mSecondNamefile.exists()
+				&& mThirdNamefile.exists()) {
 			try {
 				setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
 				setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
@@ -88,6 +97,23 @@ public class GeneralFragment extends PreferenceFragment implements
 			setSummary(mFirstname, getString(R.string.firstrom));
 			setSummary(mSecondname, getString(R.string.secondrom));
 			setSummary(mThirdname, getString(R.string.thirdrom));
+		}
+
+		mSecond = (CheckBoxPreference) findPreference(KEY_ENABLE_SECOND);
+		mSecond.setOnPreferenceChangeListener(this);
+		mThird = (CheckBoxPreference) findPreference(KEY_ENABLE_THIRD);
+		mThird.setOnPreferenceChangeListener(this);
+
+		if (mSecondfile.exists()) {
+			mSecond.setChecked(false);
+		} else {
+			mSecond.setChecked(true);
+		}
+
+		if (mThirdfile.exists()) {
+			mThird.setChecked(true);
+		} else {
+			mThird.setChecked(false);
 		}
 
 		mAppSharing = (CheckBoxPreference) findPreference(KEY_APP_SHARING);
@@ -113,7 +139,23 @@ public class GeneralFragment extends PreferenceFragment implements
 	}
 
 	public boolean onPreferenceChange(Preference preference, Object objValue) {
-		if (preference == mAppSharing) {
+		if (preference == mSecond) {
+			if (mSecond.isChecked()) {
+				mSecond.setChecked(false);
+				Utils.runCommand("echo \"disabled\" > " + SECOND_FILE, 0);
+			} else {
+				mSecond.setChecked(true);
+				Utils.runCommand("rm -f " + SECOND_FILE, 0);
+			}
+		} else if (preference == mThird) {
+			if (mThird.isChecked()) {
+				mThird.setChecked(false);
+				Utils.runCommand("rm -f " + THIRD_FILE, 0);
+			} else {
+				mThird.setChecked(true);
+				Utils.runCommand("echo \"enabled\" > " + THIRD_FILE, 0);
+			}
+		} else if (preference == mAppSharing) {
 			if (mAppSharing.isChecked()) {
 				mAppSharing.setChecked(false);
 				mDataSharing.setEnabled(false);
@@ -168,7 +210,7 @@ public class GeneralFragment extends PreferenceFragment implements
 				mName.setHint(context.getString(R.string.firstrom));
 			}
 		} else if (name == 1) {
-			if (mSecondfile.exists()) {
+			if (mSecondNamefile.exists()) {
 				try {
 					mName.setHint(Utils.readLine(SECOND_NAME_FILE));
 				} catch (IOException e) {
@@ -178,7 +220,7 @@ public class GeneralFragment extends PreferenceFragment implements
 				mName.setHint(context.getString(R.string.secondrom));
 			}
 		} else if (name == 2) {
-			if (mThirdfile.exists()) {
+			if (mThirdNamefile.exists()) {
 				try {
 					mName.setHint(Utils.readLine(THIRD_NAME_FILE));
 				} catch (IOException e) {

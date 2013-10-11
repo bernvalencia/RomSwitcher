@@ -32,15 +32,13 @@ import android.widget.EditText;
 public class SetNameActivity extends Activity {
 
 	private static Button mButtonNext;
-	private static EditText mFirstEdit, mSecondEdit, mThirdEdit;
+	private static EditText mFirstEdit, mSecondEdit;
 	private static String sdcard = getExternalStorageDirectory().getPath();
 
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";
 	private static final String SECOND_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/secondname";
-	private static final String THIRD_NAME_FILE = sdcard
-			+ "/romswitcher-tmp/thirdname";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,7 +46,6 @@ public class SetNameActivity extends Activity {
 
 		mFirstEdit = (EditText) findViewById(R.id.firstrom_edit);
 		mSecondEdit = (EditText) findViewById(R.id.secondrom_edit);
-		mThirdEdit = (EditText) findViewById(R.id.thirdrom_edit);
 
 		mButtonNext = (Button) findViewById(R.id.button_next_setname);
 
@@ -56,8 +53,7 @@ public class SetNameActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (mFirstEdit.getText().toString().isEmpty()
-						|| mSecondEdit.getText().toString().isEmpty()
-						|| mThirdEdit.getText().toString().isEmpty()) {
+						|| mSecondEdit.getText().toString().isEmpty()) {
 					Utils.toast(SetNameActivity.this,
 							getString(R.string.emptynames), 0);
 				} else {
@@ -71,10 +67,6 @@ public class SetNameActivity extends Activity {
 					Utils.runCommand("echo \""
 							+ mSecondEdit.getText().toString().trim() + "\" > "
 							+ SECOND_NAME_FILE, 1);
-
-					Utils.runCommand("echo \""
-							+ mThirdEdit.getText().toString().trim() + "\" > "
-							+ THIRD_NAME_FILE, 1);
 
 					Intent i = new Intent(SetNameActivity.this,
 							FeaturesActivity.class);

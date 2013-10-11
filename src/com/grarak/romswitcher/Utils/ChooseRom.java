@@ -41,8 +41,14 @@ public class ChooseRom {
 	private static String DATA;
 	private static String ROM_SELECTION;
 
-	private static File mSecondSystem;
-	private static File mThirdSystem;
+	private static String sdcard = getExternalStorageDirectory().getPath();
+
+	private static final String SECOND_FILE = sdcard
+			+ "/romswitcher-tmp/second";
+	private static final String THIRD_FILE = sdcard + "/romswitcher-tmp/third";
+
+	private static final File mSecondfile = new File(SECOND_FILE);
+	private static final File mThirdfile = new File(THIRD_FILE);
 	private static File mSecondRom = new File("/.firstrom");
 
 	public static void chooserom(final Context context, String title,
@@ -57,15 +63,13 @@ public class ChooseRom {
 		}
 
 		ROM_SELECTION = DATA + "/media/.rom";
-		mSecondSystem = new File(DATA + "/media/.secondrom/system.img");
-		mThirdSystem = new File(DATA + "/media/.thirdrom/system.img");
 
 		List<String> listItems = new ArrayList<String>();
 		listItems.add(firstrom);
-		if (mSecondSystem.exists() || mSecondRom.exists()) {
+		if (!mSecondfile.exists()) {
 			listItems.add(secondrom);
 		}
-		if (mThirdSystem.exists() || mSecondRom.exists()) {
+		if (mThirdfile.exists()) {
 			listItems.add(thirdrom);
 		}
 

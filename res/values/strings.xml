@@ -38,10 +38,8 @@
     <!-- Set Name -->
     <string name="firstrom">First rom</string>
     <string name="secondrom">Second rom</string>
-    <string name="thirdrom">Third rom</string>
     <string name="setname_first">Name of first rom</string>
     <string name="setname_second">Name of second rom</string>
-    <string name="setname_third">Name of third rom</string>
     <string name="emptynames">Names are empty</string>
 
     <!-- Features -->
@@ -85,6 +83,8 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <!-- General -->
+    <string name="thirdrom">Third rom</string>
+    <string name="setname_third">Name of third rom</string>
     <string name="setname">Set name</string>
     <string name="miscellaneous">Miscellaneous</string>
 
