@@ -50,18 +50,6 @@ public class SupportedDevices {
 			bootpartition = "/dev/block/platform/dw_mmc.0/by-name/boot";
 		}
 
-		// Mako
-		if (device.equals("mako")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/mako";
-			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
-		}
-
-		// Odin
-		if (device.equals("odin") || device.equals("C6503")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/odin";
-			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
-		}
-
 		// pollux_windy
 		if (device.equals("pollux_windy") || device.contains("SGP31")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/pollux_windy";
@@ -72,13 +60,6 @@ public class SupportedDevices {
 		if (board.equals("tuna")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
 			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
-		}
-
-		// Yuga
-		if (device.equals("yuga") || device.equals("C6603")
-				|| device.equals("C6602")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/yuga";
-			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
 		}
 
 	}
