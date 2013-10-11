@@ -114,6 +114,12 @@ public class GeneralFragment extends PreferenceFragment implements
 			mSecond.setChecked(true);
 		}
 
+		if (SupportedDevices.recoverypartition.isEmpty()) {
+			findPreference(KEY_INSTALL_RECOVERY).setEnabled(false);
+			mThird.setEnabled(false);
+			mThirdname.setEnabled(false);
+		}
+
 		if (mThirdfile.exists()) {
 			mThird.setChecked(true);
 		} else {
