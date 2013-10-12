@@ -57,6 +57,9 @@ public class CheckforFilesActivity extends Activity {
 			+ "/romswitcher-tmp/thirdname";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 
+	private static final File mFirstName = new File(FIRST_NAME_FILE);
+	private static final File mSecondName = new File(SECOND_NAME_FILE);
+	private static final File mThirdName = new File(THIRD_NAME_FILE);
 	private static final File mPassfile = new File(PASS_FILE);
 
 	@Override
@@ -76,6 +79,18 @@ public class CheckforFilesActivity extends Activity {
 
 		File rstmp = new File(sdcard + "/romswitcher-tmp");
 		rstmp.mkdirs();
+
+		if (!mFirstName.exists()) {
+			Utils.runCommand("echo \"First rom\" > " + FIRST_NAME_FILE, 0);
+		}
+
+		if (!mSecondName.exists()) {
+			Utils.runCommand("echo \"Second rom\" > " + SECOND_NAME_FILE, 0);
+		}
+
+		if (!mThirdName.exists()) {
+			Utils.runCommand("echo \"Third rom\" > " + THIRD_NAME_FILE, 0);
+		}
 
 		if (!isRootAvailable()) {
 			Utils.toast(context, context.getString(R.string.noroot), 0);
