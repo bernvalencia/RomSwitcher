@@ -71,11 +71,8 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final String DATA_SHARING_FILE = sdcard
 			+ "/romswitcher-tmp/datashare";
 
-	private static final File mFirstfile = new File(FIRST_NAME_FILE);
 	private static final File mSecondfile = new File(SECOND_FILE);
-	private static final File mSecondNamefile = new File(SECOND_NAME_FILE);
 	private static final File mThirdfile = new File(THIRD_FILE);
-	private static final File mThirdNamefile = new File(THIRD_NAME_FILE);
 	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
 	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
 
@@ -88,19 +85,12 @@ public class GeneralFragment extends PreferenceFragment implements
 		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
 		mThirdname = (Preference) findPreference(KEY_SETNAME_THIRD);
 
-		if (mFirstfile.exists() && mSecondNamefile.exists()
-				&& mThirdNamefile.exists()) {
-			try {
-				setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
-				setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
-				setSummary(mThirdname, Utils.readLine(THIRD_NAME_FILE));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			setSummary(mFirstname, getString(R.string.firstrom));
-			setSummary(mSecondname, getString(R.string.secondrom));
-			setSummary(mThirdname, getString(R.string.thirdrom));
+		try {
+			setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
+			setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
+			setSummary(mThirdname, Utils.readLine(THIRD_NAME_FILE));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		mSecond = (CheckBoxPreference) findPreference(KEY_ENABLE_SECOND);
@@ -214,34 +204,22 @@ public class GeneralFragment extends PreferenceFragment implements
 		Builder alert = new Builder(context);
 		mName = new EditText(context);
 		if (name == 0) {
-			if (mFirstfile.exists()) {
-				try {
-					mName.setHint(Utils.readLine(FIRST_NAME_FILE));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				mName.setHint(context.getString(R.string.firstrom));
+			try {
+				mName.setHint(Utils.readLine(FIRST_NAME_FILE));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		} else if (name == 1) {
-			if (mSecondNamefile.exists()) {
-				try {
-					mName.setHint(Utils.readLine(SECOND_NAME_FILE));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				mName.setHint(context.getString(R.string.secondrom));
+			try {
+				mName.setHint(Utils.readLine(SECOND_NAME_FILE));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		} else if (name == 2) {
-			if (mThirdNamefile.exists()) {
-				try {
-					mName.setHint(Utils.readLine(THIRD_NAME_FILE));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				mName.setHint(context.getString(R.string.thirdrom));
+			try {
+				mName.setHint(Utils.readLine(THIRD_NAME_FILE));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		alert.setView(mName)
