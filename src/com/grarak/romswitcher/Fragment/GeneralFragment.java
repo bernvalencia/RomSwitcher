@@ -31,12 +31,16 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.widget.EditText;
 
 public class GeneralFragment extends PreferenceFragment implements
 		Preference.OnPreferenceChangeListener {
+
+	private static final CharSequence KEY_CATEGORY_THIRDROM = "key_category_thirdrom";
+	private static final CharSequence KEY_CATEGORY_MISC = "key_category_misc";
 
 	private static final CharSequence KEY_SETNAME_FIRST = "key_setname_first";
 	private static final CharSequence KEY_ENABLE_SECOND = "key_enable_second";
@@ -46,6 +50,8 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final CharSequence KEY_INSTALL_RECOVERY = "key_install_recovery";
 	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
 	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
+
+	private static PreferenceCategory mCategoryMisc;
 
 	private static CheckBoxPreference mSecond, mThird, mAppSharing,
 			mDataSharing;
@@ -80,6 +86,7 @@ public class GeneralFragment extends PreferenceFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.general_header);
+		PreferenceScreen prefScreen = getPreferenceScreen();
 
 		mFirstname = (Preference) findPreference(KEY_SETNAME_FIRST);
 		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
@@ -102,12 +109,6 @@ public class GeneralFragment extends PreferenceFragment implements
 			mSecond.setChecked(false);
 		} else {
 			mSecond.setChecked(true);
-		}
-
-		if (SupportedDevices.recoverypartition.isEmpty()) {
-			findPreference(KEY_INSTALL_RECOVERY).setEnabled(false);
-			mThird.setEnabled(false);
-			mThirdname.setEnabled(false);
 		}
 
 		if (mThirdfile.exists()) {
@@ -135,6 +136,14 @@ public class GeneralFragment extends PreferenceFragment implements
 		} else {
 			mDataSharing.setChecked(false);
 			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
+		}
+
+		mCategoryMisc = (PreferenceCategory) findPreference(KEY_CATEGORY_MISC);
+
+		if (SupportedDevices.recoverypartition.isEmpty()) {
+			prefScreen.removePreference(findPreference(KEY_CATEGORY_THIRDROM));
+			mCategoryMisc
+					.removePreference(findPreference(KEY_INSTALL_RECOVERY));
 		}
 	}
 
