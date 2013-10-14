@@ -46,13 +46,17 @@ public class ChooseRom {
 	private static final String SECOND_FILE = sdcard
 			+ "/romswitcher-tmp/second";
 	private static final String THIRD_FILE = sdcard + "/romswitcher-tmp/third";
+	private static final String FOURTH_FILE = sdcard
+			+ "/romswitcher-tmp/fourth";
 
 	private static final File mSecondfile = new File(SECOND_FILE);
 	private static final File mThirdfile = new File(THIRD_FILE);
+	private static final File mFourthfile = new File(FOURTH_FILE);
 	private static File mSecondRom = new File("/.firstrom");
 
 	public static void chooserom(final Context context, String title,
-			final String firstrom, final String secondrom, final String thirdrom) {
+			final String firstrom, final String secondrom,
+			final String thirdrom, final String fourthrom) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title);
 
@@ -71,6 +75,9 @@ public class ChooseRom {
 		}
 		if (mThirdfile.exists()) {
 			listItems.add(thirdrom);
+		}
+		if (mFourthfile.exists()) {
+			listItems.add(fourthrom);
 		}
 
 		choiceList = listItems.toArray(new CharSequence[listItems.size()]);
@@ -101,14 +108,15 @@ public class ChooseRom {
 								} else if (choiceList[buffKey].toString()
 										.equals(secondrom)) {
 									flashKernel("second", 1, context);
-									selected = buffKey;
-									((Activity) context).finish();
 								} else if (choiceList[buffKey].toString()
 										.equals(thirdrom)) {
 									flashKernel("second", 2, context);
-									selected = buffKey;
-									((Activity) context).finish();
+								} else if (choiceList[buffKey].toString()
+										.equals(fourthrom)) {
+									flashKernel("second", 3, context);
 								}
+								selected = buffKey;
+								((Activity) context).finish();
 							}
 						})
 				.setNegativeButton(context.getString(R.string.more),

@@ -55,11 +55,14 @@ public class CheckforFilesActivity extends Activity {
 			+ "/romswitcher-tmp/secondname";
 	private static final String THIRD_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/thirdname";
+	private static final String FOURTH_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/fourthname";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 
 	private static final File mFirstName = new File(FIRST_NAME_FILE);
 	private static final File mSecondName = new File(SECOND_NAME_FILE);
 	private static final File mThirdName = new File(THIRD_NAME_FILE);
+	private static final File mFourthName = new File(FOURTH_NAME_FILE);
 	private static final File mPassfile = new File(PASS_FILE);
 
 	@Override
@@ -80,6 +83,14 @@ public class CheckforFilesActivity extends Activity {
 		File rstmp = new File(sdcard + "/romswitcher-tmp");
 		rstmp.mkdirs();
 
+		if (!isRootAvailable()) {
+			Utils.toast(context, context.getString(R.string.noroot), 0);
+			((Activity) context).finish();
+		} else if (!isBusyboxAvailable()) {
+			Utils.toast(context, context.getString(R.string.nobusybox), 0);
+			((Activity) context).finish();
+		}
+
 		if (!mFirstName.exists()) {
 			Utils.runCommand("echo \"First rom\" > " + FIRST_NAME_FILE, 0);
 		}
@@ -92,12 +103,8 @@ public class CheckforFilesActivity extends Activity {
 			Utils.runCommand("echo \"Third rom\" > " + THIRD_NAME_FILE, 0);
 		}
 
-		if (!isRootAvailable()) {
-			Utils.toast(context, context.getString(R.string.noroot), 0);
-			((Activity) context).finish();
-		} else if (!isBusyboxAvailable()) {
-			Utils.toast(context, context.getString(R.string.nobusybox), 0);
-			((Activity) context).finish();
+		if (!mFourthName.exists()) {
+			Utils.runCommand("echo \"Fourth rom\" > " + FOURTH_NAME_FILE, 0);
 		}
 
 		if (!firstimg.exists()) {
@@ -144,7 +151,8 @@ public class CheckforFilesActivity extends Activity {
 			ChooseRom.chooserom(context, context.getString(R.string.app_name),
 					Utils.readLine(FIRST_NAME_FILE),
 					Utils.readLine(SECOND_NAME_FILE),
-					Utils.readLine(THIRD_NAME_FILE));
+					Utils.readLine(THIRD_NAME_FILE),
+					Utils.readLine(FOURTH_NAME_FILE));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

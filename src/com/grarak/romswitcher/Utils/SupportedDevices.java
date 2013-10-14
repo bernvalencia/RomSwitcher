@@ -24,6 +24,7 @@ public class SupportedDevices {
 	public static String downloadlink = "";
 	public static String bootpartition;
 	public static String recoverypartition = "";
+	public static boolean device_use_one_kernel = false;
 
 	public static void getDevices() {
 
@@ -62,6 +63,8 @@ public class SupportedDevices {
 		if (board.equals("tuna")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
 			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
+			recoverypartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/recovery";
+			device_use_one_kernel = true;
 		}
 
 	}

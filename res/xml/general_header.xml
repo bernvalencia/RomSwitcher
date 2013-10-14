@@ -33,7 +33,7 @@
             android:title="@string/setname_second" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:key="key_category_thirdrom"
+        android:key="key_category_third"
         android:title="@string/thirdrom" >
         <CheckBoxPreference
             android:defaultValue="false"
@@ -43,6 +43,17 @@
         <Preference
             android:key="key_setname_third"
             android:title="@string/setname_third" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="key_category_fourth"
+        android:title="@string/fourthrom" >
+        <CheckBoxPreference
+            android:key="key_enable_fourth"
+            android:title="@string/fourthrom" />
+
+        <Preference
+            android:key="key_setname_fourth"
+            android:title="@string/setname_fourth" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="key_category_misc"
