@@ -56,10 +56,26 @@
             android:title="@string/setname_fourth" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="key_category_fifth"
+        android:title="@string/fifthrom" >
+        <CheckBoxPreference
+            android:key="key_enable_fifth"
+            android:title="@string/fifthrom" />
+
+        <Preference
+            android:key="key_setname_fifth"
+            android:title="@string/setname_fifth" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="key_category_misc"
         android:title="@string/miscellaneous" >
         <Preference
+            android:key="key_reboot_recovery"
+            android:summary="@string/rebootrecovery_summary"
+            android:title="@string/rebootrecovery" />
+        <Preference
             android:key="key_install_recovery"
+            android:summary="@string/installrecovery_summary"
             android:title="@string/installrecovery" />
 
         <CheckBoxPreference

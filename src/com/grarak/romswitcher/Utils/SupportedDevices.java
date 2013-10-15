@@ -24,15 +24,18 @@ public class SupportedDevices {
 	public static String downloadlink = "";
 	public static String bootpartition;
 	public static String recoverypartition = "";
-	public static boolean device_use_one_kernel = false;
+	public static int roms = 2;
+	public static boolean onekernel = false;
 
 	public static void getDevices() {
 
 		// i9500
-		if (device.equals("ja3g")) {
+		if (device.equals("ja3g") || device.equals("i9500")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/i9500";
 			bootpartition = "/dev/block/mmcblk0p9";
 			recoverypartition = "/dev/block/mmcblk0p10";
+			roms = 3;
+			onekernel = true;
 		}
 
 		// M470
@@ -45,6 +48,8 @@ public class SupportedDevices {
 		if (device.contains("m7") && brand.contains("htc")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/m7ul";
 			bootpartition = "/dev/block/mmcblk0p33";
+			recoverypartition = "/dev/block/mmcblk0p34";
+			roms = 3;
 		}
 
 		// Manta
@@ -64,7 +69,8 @@ public class SupportedDevices {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
 			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
 			recoverypartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/recovery";
-			device_use_one_kernel = true;
+			roms = 5;
+			onekernel = true;
 		}
 
 	}

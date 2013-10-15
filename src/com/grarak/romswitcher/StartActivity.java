@@ -33,18 +33,19 @@ import android.os.Bundle;
 
 public class StartActivity extends Activity {
 
-	private static final File secondrom = new File("/.firstrom/app");
+	private static final File secondrom = new File("/.firstrom");
 	private static String sdcard = getExternalStorageDirectory().getPath();
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
 	private static final String PREF = "prefs";
+	private static SharedPreferences mPref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		debugMode = true;
-		
+
 		SupportedDevices.getDevices();
 
 		if (SupportedDevices.downloadlink.isEmpty()) {
@@ -56,31 +57,34 @@ public class StartActivity extends Activity {
 	}
 
 	private static void checkkernel(Context context) {
-		final SharedPreferences mPref = context.getSharedPreferences(PREF, 0);
-		String mKernelVersion = mPref.getString("kernelversion", "nothing");
-		SharedPreferences.Editor editor = mPref.edit();
+		mPref = context.getSharedPreferences(PREF, 0);
+		if (!SupportedDevices.onekernel) {
+			String mKernelVersion = mPref.getString("kernelversion", "nothing");
+			SharedPreferences.Editor editor = mPref.edit();
 
-		if (!secondrom.exists()) {
-			if (mKernelVersion.equals("nothing")
-					|| mKernelVersion.equals(Utils.getFormattedKernelVersion())) {
-				editor.putString("kernelversion",
-						Utils.getFormattedKernelVersion());
-				editor.commit();
-			} else {
-				Utils.toast(context, context.getString(R.string.newkernel), 0);
-				Utils.displayprogress(
-						context.getString(R.string.setupnewkernel), context);
-				loadKernel(context);
-				editor.putString("kernelversion",
-						Utils.getFormattedKernelVersion());
-				editor.commit();
+			if (!secondrom.exists()) {
+				if (mKernelVersion.equals("nothing")
+						|| mKernelVersion.equals(Utils
+								.getFormattedKernelVersion())) {
+					editor.putString("kernelversion",
+							Utils.getFormattedKernelVersion());
+					editor.commit();
+				} else {
+					Utils.toast(context, context.getString(R.string.newkernel),
+							0);
+					Utils.displayprogress(
+							context.getString(R.string.setupnewkernel), context);
+					loadKernel(context);
+					editor.putString("kernelversion",
+							Utils.getFormattedKernelVersion());
+					editor.commit();
+				}
 			}
 		}
-
-		setup(context, mPref);
+		setup(context);
 	}
 
-	private static void setup(Context context, SharedPreferences mPref) {
+	private static void setup(Context context) {
 		boolean mFirstuse = mPref.getBoolean("firstuse", true);
 
 		if (mFirstuse && !secondrom.exists()) {

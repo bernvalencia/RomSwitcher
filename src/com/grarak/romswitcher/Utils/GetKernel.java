@@ -18,6 +18,13 @@ package com.grarak.romswitcher.Utils;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
+import com.grarak.romswitcher.R;
+
+import android.app.Activity;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
+
 public class GetKernel {
 
 	private static String sdcard = getExternalStorageDirectory().getPath();
@@ -27,4 +34,29 @@ public class GetKernel {
 				+ sdcard + "/romswitcher/first.img", 0);
 	}
 
+	public static void flashKernel(final Context context) {
+		Utils.runCommand("dd if=" + sdcard + "/romswitcher/second.img of="
+				+ SupportedDevices.bootpartition, 0);
+
+		Builder builder = new Builder(context);
+		builder.setTitle(context.getString(R.string.app_name))
+				.setMessage(context.getString(R.string.kernelinstalled))
+				.setNegativeButton(context.getString(R.string.button_cancel),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								((Activity) context).finish();
+							}
+						})
+				.setPositiveButton(context.getString(R.string.yes),
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Utils.runCommand("reboot", 0);
+							}
+						}).show();
+	}
 }

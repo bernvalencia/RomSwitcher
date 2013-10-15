@@ -48,15 +48,17 @@ public class ChooseRom {
 	private static final String THIRD_FILE = sdcard + "/romswitcher-tmp/third";
 	private static final String FOURTH_FILE = sdcard
 			+ "/romswitcher-tmp/fourth";
+	private static final String FIFTH_FILE = sdcard + "/romswitcher-tmp/fifth";
 
 	private static final File mSecondfile = new File(SECOND_FILE);
 	private static final File mThirdfile = new File(THIRD_FILE);
 	private static final File mFourthfile = new File(FOURTH_FILE);
+	private static final File mFifthfile = new File(FIFTH_FILE);
 	private static File mSecondRom = new File("/.firstrom");
 
 	public static void chooserom(final Context context, String title,
 			final String firstrom, final String secondrom,
-			final String thirdrom, final String fourthrom) {
+			final String thirdrom, final String fourthrom, final String fifthrom) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title);
 
@@ -78,6 +80,9 @@ public class ChooseRom {
 		}
 		if (mFourthfile.exists()) {
 			listItems.add(fourthrom);
+		}
+		if (mFifthfile.exists()) {
+			listItems.add(fifthrom);
 		}
 
 		choiceList = listItems.toArray(new CharSequence[listItems.size()]);
@@ -114,6 +119,9 @@ public class ChooseRom {
 								} else if (choiceList[buffKey].toString()
 										.equals(fourthrom)) {
 									flashKernel("second", 3, context);
+								} else if (choiceList[buffKey].toString()
+										.equals(fifthrom)) {
+									flashKernel("second", 4, context);
 								}
 								selected = buffKey;
 								((Activity) context).finish();
@@ -136,12 +144,15 @@ public class ChooseRom {
 
 	private static void flashKernel(String rom, int romnumber, Context context) {
 		Utils.runCommand("echo " + romnumber + " > " + ROM_SELECTION, 0);
-		if (!mSecondRom.exists() || romnumber == 0) {
-			Utils.runCommand("dd if=" + getExternalStorageDirectory().getPath()
-					+ "/romswitcher/" + rom + ".img of="
-					+ SupportedDevices.bootpartition
-					+ " && echo 1 > /proc/sys/kernel/sysrq"
-					+ " && echo b > /proc/sysrq-trigger", 0);
+		if (!SupportedDevices.onekernel) {
+			if (!mSecondRom.exists() || romnumber == 0) {
+				Utils.runCommand("dd if="
+						+ getExternalStorageDirectory().getPath()
+						+ "/romswitcher/" + rom + ".img of="
+						+ SupportedDevices.bootpartition
+						+ " && echo 1 > /proc/sys/kernel/sysrq"
+						+ " && echo b > /proc/sysrq-trigger", 0);
+			}
 		}
 		Utils.runCommand("reboot", 1);
 	}

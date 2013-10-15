@@ -19,6 +19,7 @@ package com.grarak.romswitcher;
 import java.io.File;
 
 import com.grarak.romswitcher.Utils.GetKernel;
+import com.grarak.romswitcher.Utils.SupportedDevices;
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.os.Bundle;
@@ -32,9 +33,9 @@ import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 public class MainSetupActivity extends Activity {
 
-	private static final File secondrom = new File("/.firstrom/app");
 	private static String sdcard = getExternalStorageDirectory().getPath();
-	private static final File firstimg = new File(sdcard + "/romswitcher/first.img");
+	private static final File firstimg = new File(sdcard
+			+ "/romswitcher/first.img");
 	private static Button mNextButton, mCancelButton;
 	public static boolean firstuse = false;
 
@@ -60,33 +61,31 @@ public class MainSetupActivity extends Activity {
 					Utils.toast(getApplicationContext(),
 							getString(R.string.nobusybox), 0);
 					finish();
-				} else if (!secondrom.exists()){
-					Utils.displayprogress(getString(R.string.setuprs),
-							MainSetupActivity.this);
-					Thread pause = new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								GetKernel.pullkernel();
-								Thread.sleep(1000);
-								if (!firstimg.exists()) {
-									Utils.toast(MainSetupActivity.this,
-											getString(R.string.somethingwrong),
-											0);
-									finish();
-								}
-								Intent i = new Intent(MainSetupActivity.this,
-										SetNameActivity.class);
-								startActivity(i);
-								finish();
-								Utils.hideprogress();
-							} catch (Exception e) {
-								e.getLocalizedMessage();
-							}
-						}
-					});
-					pause.start();
 				} else {
+					if (!SupportedDevices.onekernel) {
+						Utils.displayprogress(getString(R.string.setuprs),
+								MainSetupActivity.this);
+						Thread pause = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									GetKernel.pullkernel();
+									Thread.sleep(1000);
+									if (!firstimg.exists()) {
+										Utils.toast(
+												MainSetupActivity.this,
+												getString(R.string.somethingwrong),
+												0);
+										finish();
+									}
+									Utils.hideprogress();
+								} catch (Exception e) {
+									e.getLocalizedMessage();
+								}
+							}
+						});
+						pause.start();
+					}
 					Intent i = new Intent(MainSetupActivity.this,
 							SetNameActivity.class);
 					startActivity(i);

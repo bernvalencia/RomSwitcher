@@ -52,17 +52,23 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final CharSequence KEY_ENABLE_FOURTH = "key_enable_fourth";
 	private static final CharSequence KEY_SETNAME_FOURTH = "key_setname_fourth";
 
+	private static final CharSequence KEY_CATEGORY_FIFTHROM = "key_category_fifth";
+	private static final CharSequence KEY_ENABLE_FIFTH = "key_enable_fifth";
+	private static final CharSequence KEY_SETNAME_FIFTH = "key_setname_fifth";
+
 	private static final CharSequence KEY_CATEGORY_MISC = "key_category_misc";
+	private static final CharSequence KEY_REBOOT_RECOVERY = "key_reboot_recovery";
 	private static final CharSequence KEY_INSTALL_RECOVERY = "key_install_recovery";
 	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
 	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
 
 	private static PreferenceCategory mCategoryMisc;
 
-	private static CheckBoxPreference mSecond, mThird, mFourth, mAppSharing,
-			mDataSharing;
+	private static CheckBoxPreference mSecond, mThird, mFourth, mFifth,
+			mAppSharing, mDataSharing;
 
-	private static Preference mFirstname, mSecondname, mThirdname, mFourthname;
+	private static Preference mFirstname, mSecondname, mThirdname, mFourthname,
+			mFifthname;
 	private static EditText mName;
 
 	private static String sdcard = getExternalStorageDirectory().getPath();
@@ -84,6 +90,10 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final String FOURTH_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/fourthname";
 
+	private static final String FIFTH_FILE = sdcard + "/romswitcher-tmp/fifth";
+	private static final String FIFTH_NAME_FILE = sdcard
+			+ "/romswitcher-tmp/fifthname";
+
 	private static final String BOOT_IMAGE_FILE = sdcard
 			+ "/romswitcher/second.img";
 	private static final String APP_SHARING_FILE = sdcard
@@ -94,6 +104,7 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final File mSecondfile = new File(SECOND_FILE);
 	private static final File mThirdfile = new File(THIRD_FILE);
 	private static final File mFourthfile = new File(FOURTH_FILE);
+	private static final File mFifthfile = new File(FIFTH_FILE);
 	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
 	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
 
@@ -107,12 +118,14 @@ public class GeneralFragment extends PreferenceFragment implements
 		mSecondname = (Preference) findPreference(KEY_SETNAME_SECOND);
 		mThirdname = (Preference) findPreference(KEY_SETNAME_THIRD);
 		mFourthname = (Preference) findPreference(KEY_SETNAME_FOURTH);
+		mFifthname = (Preference) findPreference(KEY_SETNAME_FIFTH);
 
 		try {
 			setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
 			setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
 			setSummary(mThirdname, Utils.readLine(THIRD_NAME_FILE));
 			setSummary(mFourthname, Utils.readLine(FOURTH_NAME_FILE));
+			setSummary(mFifthname, Utils.readLine(FIFTH_NAME_FILE));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,6 +136,8 @@ public class GeneralFragment extends PreferenceFragment implements
 		mThird.setOnPreferenceChangeListener(this);
 		mFourth = (CheckBoxPreference) findPreference(KEY_ENABLE_FOURTH);
 		mFourth.setOnPreferenceChangeListener(this);
+		mFifth = (CheckBoxPreference) findPreference(KEY_ENABLE_FIFTH);
+		mFifth.setOnPreferenceChangeListener(this);
 
 		if (mSecondfile.exists()) {
 			mSecond.setChecked(false);
@@ -140,6 +155,12 @@ public class GeneralFragment extends PreferenceFragment implements
 			mFourth.setChecked(true);
 		} else {
 			mFourth.setChecked(false);
+		}
+
+		if (mFifthfile.exists()) {
+			mFifth.setChecked(true);
+		} else {
+			mFifth.setChecked(false);
 		}
 
 		mAppSharing = (CheckBoxPreference) findPreference(KEY_APP_SHARING);
@@ -163,16 +184,27 @@ public class GeneralFragment extends PreferenceFragment implements
 			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
 		}
 
+		if (SupportedDevices.roms < 3) {
+			prefScreen.removePreference(findPreference(KEY_CATEGORY_THIRDROM));
+		}
+
+		if (SupportedDevices.roms < 4) {
+			prefScreen.removePreference(findPreference(KEY_CATEGORY_FOURTHROM));
+		}
+
+		if (SupportedDevices.roms < 5) {
+			prefScreen.removePreference(findPreference(KEY_CATEGORY_FIFTHROM));
+		}
+
 		mCategoryMisc = (PreferenceCategory) findPreference(KEY_CATEGORY_MISC);
 
 		if (SupportedDevices.recoverypartition.isEmpty()) {
-			prefScreen.removePreference(findPreference(KEY_CATEGORY_THIRDROM));
 			mCategoryMisc
 					.removePreference(findPreference(KEY_INSTALL_RECOVERY));
 		}
 
-		if (!SupportedDevices.device_use_one_kernel) {
-			prefScreen.removePreference(findPreference(KEY_CATEGORY_FOURTHROM));
+		if (!SupportedDevices.onekernel) {
+			mCategoryMisc.removePreference(findPreference(KEY_REBOOT_RECOVERY));
 		}
 	}
 
@@ -195,11 +227,19 @@ public class GeneralFragment extends PreferenceFragment implements
 			}
 		} else if (preference == mFourth) {
 			if (mFourth.isChecked()) {
-				mThird.setChecked(false);
+				mFourth.setChecked(false);
 				Utils.runCommand("rm -f " + FOURTH_FILE, 0);
 			} else {
-				mThird.setChecked(true);
+				mFourth.setChecked(true);
 				Utils.runCommand("echo \"enabled\" > " + FOURTH_FILE, 0);
+			}
+		} else if (preference == mFifth) {
+			if (mFifth.isChecked()) {
+				mFifth.setChecked(false);
+				Utils.runCommand("rm -f " + FIFTH_FILE, 0);
+			} else {
+				mFifth.setChecked(true);
+				Utils.runCommand("echo \"enabled\" > " + FIFTH_FILE, 0);
 			}
 		} else if (preference == mAppSharing) {
 			if (mAppSharing.isChecked()) {
@@ -240,6 +280,17 @@ public class GeneralFragment extends PreferenceFragment implements
 			alertEdit(getActivity(), 2);
 		} else if (preference.getKey().equals(KEY_SETNAME_FOURTH)) {
 			alertEdit(getActivity(), 3);
+		} else if (preference.getKey().equals(KEY_SETNAME_FIFTH)) {
+			alertEdit(getActivity(), 4);
+		} else if (preference.getKey().equals(KEY_REBOOT_RECOVERY)) {
+			File rom = new File("/.firstrom");
+			String folder;
+			if (rom.exists()) {
+				folder = "/.firstrom/media/rebootrs";
+			} else {
+				folder = "/data/media/rebootrs";
+			}
+			Utils.runCommand("echo 1 > " + folder + " && reboot", 0);
 		} else if (preference.getKey().equals(KEY_INSTALL_RECOVERY)) {
 			Utils.runCommand("dd if=" + BOOT_IMAGE_FILE + " of="
 					+ SupportedDevices.recoverypartition, 3);
@@ -276,6 +327,13 @@ public class GeneralFragment extends PreferenceFragment implements
 		case 3:
 			try {
 				mName.setHint(Utils.readLine(FOURTH_NAME_FILE));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
+		case 4:
+			try {
+				mName.setHint(Utils.readLine(FIFTH_NAME_FILE));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -321,6 +379,10 @@ public class GeneralFragment extends PreferenceFragment implements
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
 					+ "\" > " + FOURTH_NAME_FILE, 3);
 			break;
+		case 4:
+			Utils.runCommand("echo \"" + mName.getText().toString().trim()
+					+ "\" > " + FIFTH_NAME_FILE, 3);
+			break;
 		}
 
 		try {
@@ -328,6 +390,7 @@ public class GeneralFragment extends PreferenceFragment implements
 			setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
 			setSummary(mThirdname, Utils.readLine(THIRD_NAME_FILE));
 			setSummary(mFourthname, Utils.readLine(FOURTH_NAME_FILE));
+			setSummary(mFifthname, Utils.readLine(FIFTH_NAME_FILE));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
