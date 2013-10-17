@@ -105,7 +105,7 @@ public class CheckforFilesActivity extends Activity {
 		}
 
 		if (SupportedDevices.onekernel) {
-			if (kernelScript.exists()) {
+			if (kernelScript.exists() && secondimg.exists()) {
 				start(context);
 			} else if (secondimg.exists()) {
 				GetKernel.flashKernel(context);
