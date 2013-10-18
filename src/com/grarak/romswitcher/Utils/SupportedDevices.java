@@ -49,7 +49,7 @@ public class SupportedDevices {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/m7ul";
 			bootpartition = "/dev/block/mmcblk0p33";
 			recoverypartition = "/dev/block/mmcblk0p34";
-			roms = 3;
+			roms = 5;
 		}
 
 		// Manta
