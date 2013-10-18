@@ -72,6 +72,12 @@ public class SupportedDevices {
 			roms = 5;
 			onekernel = true;
 		}
+		
+		// Honami (Xperia Z1)
+		if (device.equals("honami") || device.contains("C69")) {
+			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/honami";
+			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
+		}
 
 	}
 
