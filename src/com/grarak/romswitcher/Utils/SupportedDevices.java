@@ -77,6 +77,8 @@ public class SupportedDevices {
 		if (device.equals("honami") || device.contains("C69")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/honami";
 			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
+			roms = 2;
+			onekernel = true;
 		}
 
 	}
