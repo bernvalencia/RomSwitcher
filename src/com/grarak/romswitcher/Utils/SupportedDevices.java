@@ -34,7 +34,7 @@ public class SupportedDevices {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/i9500";
 			bootpartition = "/dev/block/mmcblk0p9";
 			recoverypartition = "/dev/block/mmcblk0p10";
-			roms = 3;
+			roms = 4;
 			onekernel = true;
 		}
 
