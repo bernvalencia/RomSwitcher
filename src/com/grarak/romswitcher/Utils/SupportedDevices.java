@@ -20,7 +20,6 @@ public class SupportedDevices {
 
 	private static String device = android.os.Build.DEVICE.toString();
 	private static String board = android.os.Build.BOARD.toString();
-	private static String brand = android.os.Build.BRAND.toString();
 	public static String downloadlink = "";
 	public static String bootpartition;
 	public static String recoverypartition = "";
@@ -72,9 +71,9 @@ public class SupportedDevices {
 			roms = 5;
 			onekernel = true;
 		}
-		
-		// Honami (Xperia Z1)
-		if (device.equals("honami") || device.contains("C69")) {
+
+		// Honami
+		if (device.equals("honami") || device.startsWith("C69")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/honami";
 			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
 			roms = 5;
