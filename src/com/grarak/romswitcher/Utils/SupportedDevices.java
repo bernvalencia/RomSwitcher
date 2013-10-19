@@ -45,7 +45,7 @@ public class SupportedDevices {
 		}
 
 		// m7ul
-		if (device.contains("m7") && brand.contains("htc")) {
+		if (device.contains("m7")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/m7ul";
 			bootpartition = "/dev/block/mmcblk0p33";
 			recoverypartition = "/dev/block/mmcblk0p34";
