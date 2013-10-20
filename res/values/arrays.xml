@@ -19,7 +19,6 @@
 
     <string-array name="menu_arrays">
         <item>@string/general</item>
-        <item>@string/wipeoptions</item>
         <item>@string/settings</item>
         <item>@string/aboutus</item>
     </string-array>

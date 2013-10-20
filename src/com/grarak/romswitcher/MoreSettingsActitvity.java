@@ -19,7 +19,6 @@ package com.grarak.romswitcher;
 import com.grarak.romswitcher.Fragment.AboutUsFragment;
 import com.grarak.romswitcher.Fragment.GeneralFragment;
 import com.grarak.romswitcher.Fragment.SettingsFragment;
-import com.grarak.romswitcher.Fragment.WipeOptionsFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -175,12 +174,9 @@ public class MoreSettingsActitvity extends Activity {
 			fragment = new GeneralFragment();
 			break;
 		case 1:
-			fragment = new WipeOptionsFragment();
-			break;
-		case 2:
 			fragment = new SettingsFragment();
 			break;
-		case 3:
+		case 2:
 			fragment = new AboutUsFragment();
 		default:
 			break;

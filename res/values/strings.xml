@@ -98,16 +98,6 @@
     <string name="installrecovery_summary">Use RomSwitcher Recovery as default</string>
     <string name="recoveryinstalled">Recovery has been installed</string>
 
-    <!-- Wipe Options -->
-    <string name="remove2ndrom">Remove 2nd rom</string>
-    <string name="remove3rdrom">Remove 3rd rom</string>
-    <string name="factoryreset">Factory reset</string>
-    <string name="wipecache">Wipe cache</string>
-    <string name="wipedalvik">Wipe dalvik-cache</string>
-    <string name="wipebattery">Wipe battery stats</string>
-    <string name="areyousure">Are you sure?\n\nI am not responsible if your device get bricked!</string>
-    <string name="confirm">Confirm</string>
-
     <!-- Settings -->
     <string name="update">Update</string>
     <string name="ota">Receive OTA-Updates</string>
