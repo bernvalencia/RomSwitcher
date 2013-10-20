@@ -107,8 +107,6 @@ public class CheckforFilesActivity extends Activity {
 		if (SupportedDevices.onekernel) {
 			if (kernelScript.exists() && secondimg.exists()) {
 				start(context);
-			} else if (secondimg.exists()) {
-				GetKernel.flashKernel(context);
 			} else if (zip.exists()) {
 				unzip(context);
 			} else {
@@ -172,7 +170,7 @@ public class CheckforFilesActivity extends Activity {
 		}
 	}
 
-	private static void restartIntent(Context context) {
+	public static void restartIntent(Context context) {
 		Intent i = new Intent(context, StartActivity.class);
 		context.startActivity(i);
 		((Activity) context).finish();
@@ -181,7 +179,11 @@ public class CheckforFilesActivity extends Activity {
 	private static void unzip(Context context) {
 		Utils.runCommand("unzip " + sdcard + "/romswitcher/download.zip -d "
 				+ sdcard + "/romswitcher/", 0);
-		restartIntent(context);
+		if (SupportedDevices.onekernel) {
+			GetKernel.flashKernel(context);
+		} else {
+			restartIntent(context);
+		}
 	}
 
 	private static void checkPassword(final Context context) {

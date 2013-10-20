@@ -33,7 +33,6 @@ public class UpdateFinishActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		Utils.runCommand("rm -rf " + sdcard + "/romswitcher", 0);
-		Utils.runCommand("rm -f /sbin/create_system.sh", 0);
 
 		Utils.alert(this, getString(R.string.update),
 				getString(R.string.updatefinish));

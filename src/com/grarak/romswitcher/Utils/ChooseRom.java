@@ -147,7 +147,7 @@ public class ChooseRom {
 		if (!SupportedDevices.onekernel) {
 			if (!mSecondRom.exists() || romnumber == 0) {
 				Utils.runCommand("dd if="
-						+ getExternalStorageDirectory().getPath()
+						+ "/sdcard"
 						+ "/romswitcher/" + rom + ".img of="
 						+ SupportedDevices.bootpartition
 						+ " && echo 1 > /proc/sys/kernel/sysrq"
