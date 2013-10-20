@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher.Utils;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import com.grarak.romswitcher.R;
 
 import android.app.Activity;
@@ -27,7 +25,7 @@ import android.content.DialogInterface;
 
 public class GetKernel {
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 
 	public static void pullkernel() {
 		Utils.runCommand("dd if=" + SupportedDevices.bootpartition + " of="

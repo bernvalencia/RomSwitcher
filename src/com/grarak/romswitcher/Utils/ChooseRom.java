@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher.Utils;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +39,7 @@ public class ChooseRom {
 	private static String DATA;
 	private static String ROM_SELECTION;
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final String SECOND_FILE = sdcard
 			+ "/romswitcher-tmp/second";
@@ -146,10 +144,8 @@ public class ChooseRom {
 		Utils.runCommand("echo " + romnumber + " > " + ROM_SELECTION, 0);
 		if (!SupportedDevices.onekernel) {
 			if (!mSecondRom.exists() || romnumber == 0) {
-				Utils.runCommand("dd if="
-						+ "/sdcard"
-						+ "/romswitcher/" + rom + ".img of="
-						+ SupportedDevices.bootpartition
+				Utils.runCommand("dd if=" + sdcard + "/romswitcher/" + rom
+						+ ".img of=" + SupportedDevices.bootpartition
 						+ " && echo 1 > /proc/sys/kernel/sysrq"
 						+ " && echo b > /proc/sysrq-trigger", 0);
 			}

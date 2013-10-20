@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import com.grarak.romswitcher.Utils.SupportedDevices;
 import com.grarak.romswitcher.Utils.Utils;
 
@@ -33,8 +31,7 @@ public class LinkActivity extends Activity {
 	private static String HTML;
 	public static String mDownload;
 
-	private static final String sdcard = getExternalStorageDirectory()
-			.getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final String HTML_FILE = sdcard
 			+ "/romswitcher-tmp/htmllink";

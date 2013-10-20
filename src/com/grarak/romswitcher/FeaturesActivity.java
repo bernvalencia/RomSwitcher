@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import java.io.File;
 
 import com.grarak.romswitcher.Utils.Utils;
@@ -34,7 +32,7 @@ public class FeaturesActivity extends Activity implements View.OnClickListener {
 
 	private static Button mButtonPassword, mButtonNext;
 	private static CheckBox mAppSharing, mDataSharing, mPassword;
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static String sdcard = "/sdcard";
 	private static final String PREF = "prefs";
 
 	private static final String APP_SHARING_FILE = sdcard

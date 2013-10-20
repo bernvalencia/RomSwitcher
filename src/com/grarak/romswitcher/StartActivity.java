@@ -16,7 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import static android.os.Environment.getExternalStorageDirectory;
 import static com.stericson.RootTools.RootTools.debugMode;
 
 import java.io.File;
@@ -34,7 +33,7 @@ import android.os.Bundle;
 public class StartActivity extends Activity {
 
 	private static final File secondrom = new File("/.firstrom");
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
 	private static final String PREF = "prefs";

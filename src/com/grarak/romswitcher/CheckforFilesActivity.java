@@ -16,7 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import static android.os.Environment.getExternalStorageDirectory;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
@@ -43,7 +42,7 @@ public class CheckforFilesActivity extends Activity {
 	private static final File kernelScript = new File("/sbin/create_system.sh");
 	private static final File secondrom = new File("/.firstrom");
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");

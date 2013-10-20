@@ -27,13 +27,12 @@ import android.view.View;
 import android.widget.Button;
 import android.app.Activity;
 import android.content.Intent;
-import static android.os.Environment.getExternalStorageDirectory;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
 import static com.stericson.RootTools.RootTools.isRootAvailable;
 
 public class MainSetupActivity extends Activity {
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 	private static final File firstimg = new File(sdcard
 			+ "/romswitcher/first.img");
 	private static Button mNextButton, mCancelButton;

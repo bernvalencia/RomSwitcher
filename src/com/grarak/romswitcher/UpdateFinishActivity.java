@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
@@ -25,8 +23,7 @@ import android.os.Bundle;
 
 public class UpdateFinishActivity extends Activity {
 
-	private static final String sdcard = getExternalStorageDirectory()
-			.getPath();
+	private static final String sdcard = "/sdcard";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

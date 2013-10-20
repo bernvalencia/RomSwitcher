@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher.Fragment;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -46,8 +44,7 @@ public class SettingsFragment extends PreferenceFragment implements
 	private static CheckBoxPreference mOTA, mPass;
 	private static Preference mSetupPass;
 
-	private static final String sdcard = getExternalStorageDirectory()
-			.getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final String OTA_FILE = sdcard + "/romswitcher-tmp/ota";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";

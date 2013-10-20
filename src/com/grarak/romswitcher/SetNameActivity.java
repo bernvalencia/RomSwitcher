@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import java.io.File;
 
 import com.grarak.romswitcher.Utils.Utils;
@@ -33,7 +31,7 @@ public class SetNameActivity extends Activity {
 
 	private static Button mButtonNext;
 	private static EditText mFirstEdit, mSecondEdit;
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";

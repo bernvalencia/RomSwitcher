@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher.Fragment;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -71,7 +69,7 @@ public class GeneralFragment extends PreferenceFragment implements
 			mFifthname;
 	private static EditText mName;
 
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";

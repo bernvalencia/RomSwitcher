@@ -16,9 +16,7 @@
 
 package com.grarak.romswitcher.Utils;
 
-import static android.os.Environment.getExternalStorageDirectory;
 import static com.stericson.RootTools.RootTools.getShell;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,14 +26,12 @@ import java.io.InputStreamReader;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import com.grarak.romswitcher.R;
 import com.stericson.RootTools.CommandCapture;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog.Builder;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -57,7 +53,7 @@ public class Utils {
 	public static String mHtmlstring = "";
 	private static ProgressDialog mProgressDialog;
 	private static final String FILENAME_PROC_VERSION = "/proc/version";
-	private static String sdcard = getExternalStorageDirectory().getPath();
+	private static final String sdcard = "/sdcard";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 	private static final File mPassfile = new File(PASS_FILE);
 
@@ -94,6 +90,7 @@ public class Utils {
 		mProgressDialog.hide();
 	}
 
+	@SuppressLint("NewApi")
 	public static void alert(final Context context, String title, String message) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title)

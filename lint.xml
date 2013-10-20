@@ -3,4 +3,7 @@
     <issue id="CommitPrefEdits">
         <ignore path="src/com/grarak/romswitcher/Fragment/GeneralSettingsFragment.java" />
     </issue>
+    <issue id="SdCardPath" severity="ignore">
+        <ignore path="src/com/grarak/romswitcher/CheckforFilesActivity.java" />
+    </issue>
 </lint>

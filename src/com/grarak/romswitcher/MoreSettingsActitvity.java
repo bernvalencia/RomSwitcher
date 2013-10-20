@@ -72,13 +72,13 @@ import android.widget.ListView;
  */
 public class MoreSettingsActitvity extends Activity {
 
-	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
-	private ActionBarDrawerToggle mDrawerToggle;
+	private static DrawerLayout mDrawerLayout;
+	private static ListView mDrawerList;
+	private static ActionBarDrawerToggle mDrawerToggle;
 
-	private CharSequence mDrawerTitle;
-	private CharSequence mTitle;
-	private String[] mMenu;
+	private static CharSequence mDrawerTitle;
+	private static CharSequence mTitle;
+	private static String[] mMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

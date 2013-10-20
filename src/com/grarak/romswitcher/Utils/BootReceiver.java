@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher.Utils;
 
-import static android.os.Environment.getExternalStorageDirectory;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -37,8 +35,7 @@ public class BootReceiver extends BroadcastReceiver {
 	private static String HTML;
 	private static String mHTMLtext = "";
 
-	private static final String sdcard = getExternalStorageDirectory()
-			.getPath();
+	private static final String sdcard = "/sdcard";
 
 	private static final String HTML_FILE = sdcard
 			+ "/romswitcher-tmp/htmllink";
