@@ -170,7 +170,7 @@ public class CheckforFilesActivity extends Activity {
 		}
 	}
 
-	public static void restartIntent(Context context) {
+	private static void restartIntent(Context context) {
 		Intent i = new Intent(context, StartActivity.class);
 		context.startActivity(i);
 		((Activity) context).finish();
