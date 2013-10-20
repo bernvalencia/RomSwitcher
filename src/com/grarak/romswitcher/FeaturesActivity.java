@@ -32,7 +32,7 @@ public class FeaturesActivity extends Activity implements View.OnClickListener {
 
 	private static Button mButtonPassword, mButtonNext;
 	private static CheckBox mAppSharing, mDataSharing, mPassword;
-	private static String sdcard = "/sdcard";
+	private static final String sdcard = "/sdcard";
 	private static final String PREF = "prefs";
 
 	private static final String APP_SHARING_FILE = sdcard
