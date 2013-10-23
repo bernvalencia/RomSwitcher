@@ -80,6 +80,11 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
+            android:key="key_manual_boot"
+            android:summary="@string/manualboot_summary"
+            android:title="@string/manualboot" />
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:key="key_app_sharing"
             android:summary="@string/appsharing_summary"
             android:title="@string/appsharing" />

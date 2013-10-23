@@ -97,6 +97,8 @@
     <string name="installrecovery">Install RomSwitcher Recovery</string>
     <string name="installrecovery_summary">Use RomSwitcher Recovery as default</string>
     <string name="recoveryinstalled">Recovery has been installed</string>
+    <string name="manualboot">Manual Boot</string>
+    <string name="manualboot_summary">Choose a rom at startup</string>
 
     <!-- Settings -->
     <string name="update">Update</string>

@@ -57,13 +57,14 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final CharSequence KEY_CATEGORY_MISC = "key_category_misc";
 	private static final CharSequence KEY_REBOOT_RECOVERY = "key_reboot_recovery";
 	private static final CharSequence KEY_INSTALL_RECOVERY = "key_install_recovery";
+	private static final CharSequence KEY_MANUAL_BOOT = "key_manual_boot";
 	private static final CharSequence KEY_APP_SHARING = "key_app_sharing";
 	private static final CharSequence KEY_DATA_SHARING = "key_data_sharing";
 
 	private static PreferenceCategory mCategoryMisc;
 
 	private static CheckBoxPreference mSecond, mThird, mFourth, mFifth,
-			mAppSharing, mDataSharing;
+			mManualboot, mAppSharing, mDataSharing;
 
 	private static Preference mFirstname, mSecondname, mThirdname, mFourthname,
 			mFifthname;
@@ -94,6 +95,8 @@ public class GeneralFragment extends PreferenceFragment implements
 
 	private static final String BOOT_IMAGE_FILE = sdcard
 			+ "/romswitcher/second.img";
+	private static final String MANUAL_BOOT_FILE = sdcard
+			+ "/romswitcher-tmp/manualboot";
 	private static final String APP_SHARING_FILE = sdcard
 			+ "/romswitcher-tmp/appshare";
 	private static final String DATA_SHARING_FILE = sdcard
@@ -103,6 +106,7 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final File mThirdfile = new File(THIRD_FILE);
 	private static final File mFourthfile = new File(FOURTH_FILE);
 	private static final File mFifthfile = new File(FIFTH_FILE);
+	private static final File mManualbootfile = new File(MANUAL_BOOT_FILE);
 	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
 	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
 
@@ -161,10 +165,19 @@ public class GeneralFragment extends PreferenceFragment implements
 			mFifth.setChecked(false);
 		}
 
+		mManualboot = (CheckBoxPreference) findPreference(KEY_MANUAL_BOOT);
+		mManualboot.setOnPreferenceChangeListener(this);
 		mAppSharing = (CheckBoxPreference) findPreference(KEY_APP_SHARING);
 		mAppSharing.setOnPreferenceChangeListener(this);
 		mDataSharing = (CheckBoxPreference) findPreference(KEY_DATA_SHARING);
 		mDataSharing.setOnPreferenceChangeListener(this);
+
+		if (mManualbootfile.exists()) {
+			mManualboot.setChecked(true);
+		} else {
+			mManualboot.setChecked(false);
+			Utils.runCommand("rm -f " + MANUAL_BOOT_FILE, 0);
+		}
 
 		if (mAppSharingfile.exists()) {
 			mAppSharing.setChecked(true);
@@ -238,6 +251,14 @@ public class GeneralFragment extends PreferenceFragment implements
 			} else {
 				mFifth.setChecked(true);
 				Utils.runCommand("echo \"enabled\" > " + FIFTH_FILE, 0);
+			}
+		} else if (preference == mManualboot) {
+			if (mManualboot.isChecked()) {
+				mManualboot.setChecked(false);
+				Utils.runCommand("rm -f " + MANUAL_BOOT_FILE, 0);
+			} else {
+				mManualboot.setChecked(true);
+				Utils.runCommand("echo \"enabled\" > " + MANUAL_BOOT_FILE, 0);
 			}
 		} else if (preference == mAppSharing) {
 			if (mAppSharing.isChecked()) {
