@@ -217,6 +217,10 @@ public class GeneralFragment extends PreferenceFragment implements
 		if (!SupportedDevices.onekernel) {
 			mCategoryMisc.removePreference(findPreference(KEY_REBOOT_RECOVERY));
 		}
+
+		if (!SupportedDevices.manualboot) {
+			mCategoryMisc.removePreference(findPreference(KEY_MANUAL_BOOT));
+		}
 	}
 
 	public boolean onPreferenceChange(Preference preference, Object objValue) {

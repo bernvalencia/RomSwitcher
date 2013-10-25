@@ -25,6 +25,7 @@ public class SupportedDevices {
 	public static String recoverypartition = "";
 	public static int roms = 2;
 	public static boolean onekernel = false;
+	public static boolean manualboot = false;
 
 	public static void getDevices() {
 
@@ -35,6 +36,7 @@ public class SupportedDevices {
 			recoverypartition = "/dev/block/mmcblk0p10";
 			roms = 4;
 			onekernel = true;
+			manualboot = true;
 		}
 
 		// M470
@@ -70,6 +72,7 @@ public class SupportedDevices {
 			recoverypartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/recovery";
 			roms = 5;
 			onekernel = true;
+			manualboot = true;
 		}
 
 		// Honami
