@@ -38,6 +38,7 @@ public class ChooseRom {
 
 	private static String DATA;
 	private static String ROM_SELECTION;
+	private static String NEXT_BOOT;
 
 	private static final String sdcard = "/sdcard";
 
@@ -67,6 +68,7 @@ public class ChooseRom {
 		}
 
 		ROM_SELECTION = DATA + "/media/.rom";
+		NEXT_BOOT = DATA + "/media/.nextboot";
 
 		List<String> listItems = new ArrayList<String>();
 		listItems.add(firstrom);
@@ -142,6 +144,7 @@ public class ChooseRom {
 
 	private static void flashKernel(String rom, int romnumber, Context context) {
 		Utils.runCommand("echo " + romnumber + " > " + ROM_SELECTION, 0);
+		Utils.runCommand("echo 1 > " + NEXT_BOOT, 1);
 		if (!SupportedDevices.onekernel) {
 			if (!mSecondRom.exists() || romnumber == 0) {
 				Utils.runCommand("dd if=" + sdcard + "/romswitcher/" + rom
