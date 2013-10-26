@@ -69,7 +69,6 @@ public class SupportedDevices {
 		if (board.equals("tuna")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
 			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
-			recoverypartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/recovery";
 			roms = 5;
 			onekernel = true;
 			manualboot = true;
