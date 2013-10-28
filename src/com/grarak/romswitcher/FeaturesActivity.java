@@ -116,6 +116,7 @@ public class FeaturesActivity extends Activity implements View.OnClickListener {
 
 				Intent i = new Intent(this, CheckforFilesActivity.class);
 				startActivity(i);
+				finish();
 			}
 		} else if (v == mButtonPassword) {
 			Utils.setupPassword(this);
