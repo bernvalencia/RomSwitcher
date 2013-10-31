@@ -176,7 +176,7 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void unzip(Context context) {
-		Utils.runCommand("unzip " + sdcard + "/romswitcher/download.zip -d "
+		Utils.runCommand("unzip -o " + sdcard + "/romswitcher/download.zip -d "
 				+ sdcard + "/romswitcher/", 0);
 		if (SupportedDevices.onekernel) {
 			GetKernel.flashKernel(context);

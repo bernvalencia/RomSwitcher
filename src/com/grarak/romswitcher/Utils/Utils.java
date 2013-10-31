@@ -17,6 +17,7 @@
 package com.grarak.romswitcher.Utils;
 
 import static com.stericson.RootTools.RootTools.getShell;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,11 +27,15 @@ import java.io.InputStreamReader;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
 import com.grarak.romswitcher.R;
-import com.stericson.RootTools.CommandCapture;
+import com.stericson.RootTools.exceptions.RootDeniedException;
+import com.stericson.RootTools.execution.CommandCapture;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog.Builder;
 import android.app.Activity;
@@ -203,12 +208,12 @@ public class Utils {
 
 	public static void runCommand(String run, int id) {
 		try {
-			getShell(true).add(new CommandCapture(id, run)).waitForFinish();
-		} catch (InterruptedException e) {
+			getShell(true).add(new CommandCapture(id, run)).commandCompleted(id, 0);
+		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (RootDeniedException e) {
 			e.printStackTrace();
 		}
 	}
