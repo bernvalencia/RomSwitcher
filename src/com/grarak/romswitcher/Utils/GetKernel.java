@@ -16,6 +16,8 @@
 
 package com.grarak.romswitcher.Utils;
 
+import java.io.File;
+
 import com.grarak.romswitcher.R;
 
 import android.app.Activity;
@@ -26,6 +28,8 @@ import android.content.DialogInterface;
 public class GetKernel {
 
 	private static final String sdcard = "/sdcard";
+	private static final String SECOND_IMG = sdcard + "/romswitcher/second.img";
+	private static final File mSecondimg = new File(SECOND_IMG);
 
 	public static void pullkernel() {
 		Utils.runCommand("dd if=" + SupportedDevices.bootpartition + " of="
@@ -33,28 +37,62 @@ public class GetKernel {
 	}
 
 	public static void flashKernel(final Context context) {
-		Utils.runCommand("dd if=" + sdcard + "/romswitcher/second.img of="
-				+ SupportedDevices.bootpartition, 0);
+		if (mSecondimg.exists()) {
+			Utils.runCommand("dd if=" + sdcard + "/romswitcher/second.img of="
+					+ SupportedDevices.bootpartition, 0);
 
+			Builder builder = new Builder(context);
+			builder.setTitle(context.getString(R.string.app_name))
+					.setMessage(context.getString(R.string.kernelinstalled))
+					.setNegativeButton(
+							context.getString(R.string.button_cancel),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									((Activity) context).finish();
+								}
+							})
+					.setPositiveButton(context.getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Utils.runCommand("reboot", 0);
+								}
+							}).show();
+
+		} else {
+			Builder builder = new Builder(context);
+			builder.setTitle(context.getString(R.string.app_name))
+					.setMessage(context.getString(R.string.somethingwrong))
+					.setOnCancelListener(
+							new DialogInterface.OnCancelListener() {
+								@Override
+								public void onCancel(DialogInterface dialog) {
+									((Activity) context).finish();
+								}
+							})
+					.setNeutralButton(context.getString(R.string.showsolution),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									showSolution(context);
+								}
+							}).show();
+		}
+	}
+
+	private static void showSolution(final Context context) {
 		Builder builder = new Builder(context);
-		builder.setTitle(context.getString(R.string.app_name))
-				.setMessage(context.getString(R.string.kernelinstalled))
-				.setNegativeButton(context.getString(R.string.button_cancel),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								((Activity) context).finish();
-							}
-						})
-				.setPositiveButton(context.getString(R.string.yes),
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Utils.runCommand("reboot", 0);
-							}
-						}).show();
+		builder.setMessage(context.getString(R.string.solution))
+				.setOnCancelListener(new DialogInterface.OnCancelListener() {
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						((Activity) context).finish();
+					}
+				}).show();
 	}
 }

@@ -68,6 +68,8 @@
     <string name="nofirstimg">first.img does not exist\nPlease extract boot.img from your 1st rom, rename it to first.img and move to romswitcher folder</string>
     <string name="passwordwrong">Password is wrong</string>
     <string name="kernelinstalled">Kernel has been installed\nReboot now?</string>
+    <string name="showsolution">Show me a solution</string>
+    <string name="solution">Extract download.zip in romswitcher manually\nMove second.img file to romswitcher folder</string>
 
     <!-- Connection -->
     <string name="checkconnection">Checking connection</string>
