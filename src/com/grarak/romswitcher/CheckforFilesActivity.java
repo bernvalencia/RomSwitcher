@@ -25,6 +25,7 @@ import java.io.IOException;
 import com.grarak.romswitcher.Utils.ChooseRom;
 import com.grarak.romswitcher.Utils.GetKernel;
 import com.grarak.romswitcher.Utils.SupportedDevices;
+import com.grarak.romswitcher.Utils.Unzip;
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
@@ -49,8 +50,8 @@ public class CheckforFilesActivity extends Activity {
 	private static final File secondimg = new File(sdcard
 			+ "/romswitcher/second.img");
 
-	private static final File zip = new File(sdcard
-			+ "/romswitcher/download.zip");
+	private static final String ZIP_FILE = sdcard + "/romswitcher/download.zip";
+	private static final File mZip = new File(ZIP_FILE);
 
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";
@@ -106,7 +107,7 @@ public class CheckforFilesActivity extends Activity {
 		if (SupportedDevices.onekernel) {
 			if (kernelScript.exists() && secondimg.exists()) {
 				start(context);
-			} else if (zip.exists()) {
+			} else if (mZip.exists()) {
 				unzip(context);
 			} else {
 				Intent i = new Intent(context, LinkActivity.class);
@@ -144,9 +145,9 @@ public class CheckforFilesActivity extends Activity {
 					});
 					pause.start();
 				}
-			} else if (!secondimg.exists() && zip.exists()) {
+			} else if (!secondimg.exists() && mZip.exists()) {
 				unzip(context);
-			} else if (!secondimg.exists() && !zip.exists()) {
+			} else if (!secondimg.exists() && !mZip.exists()) {
 				Intent i = new Intent(context, LinkActivity.class);
 				context.startActivity(i);
 				((Activity) context).finish();
@@ -176,8 +177,7 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void unzip(Context context) {
-		Utils.runCommand("unzip -o " + sdcard + "/romswitcher/download.zip -d "
-				+ sdcard + "/romswitcher/", 0);
+		Unzip.unpackZip(sdcard + "/romswitcher/", "download.zip");
 		if (SupportedDevices.onekernel) {
 			GetKernel.flashKernel(context);
 		} else {
