@@ -17,7 +17,7 @@
 package com.grarak.romswitcher;
 
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
-import static com.stericson.RootTools.RootTools.isRootAvailable;
+import static com.stericson.RootTools.RootTools.isAccessGiven;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,15 +96,11 @@ public class CheckforFilesActivity extends Activity {
 
 		checkNamefile();
 
-		if (!isRootAvailable()) {
+		if (!isAccessGiven()) {
 			Utils.toast(context, context.getString(R.string.noroot), 0);
-			((Activity) context).finish();
 		} else if (!isBusyboxAvailable()) {
 			Utils.toast(context, context.getString(R.string.nobusybox), 0);
-			((Activity) context).finish();
-		}
-
-		if (SupportedDevices.onekernel) {
+		} else if (SupportedDevices.onekernel) {
 			if (kernelScript.exists() && secondimg.exists()) {
 				start(context);
 			} else if (mZip.exists()) {

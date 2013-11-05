@@ -28,7 +28,7 @@ import android.widget.Button;
 import android.app.Activity;
 import android.content.Intent;
 import static com.stericson.RootTools.RootTools.isBusyboxAvailable;
-import static com.stericson.RootTools.RootTools.isRootAvailable;
+import static com.stericson.RootTools.RootTools.isAccessGiven;
 
 public class MainSetupActivity extends Activity {
 
@@ -52,7 +52,7 @@ public class MainSetupActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				if (!isRootAvailable()) {
+				if (!isAccessGiven()) {
 					Utils.toast(getApplicationContext(),
 							getString(R.string.noroot), 0);
 					finish();
