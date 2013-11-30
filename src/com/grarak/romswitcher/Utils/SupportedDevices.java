@@ -29,7 +29,7 @@ public class SupportedDevices {
 
 	public static void getDevices() {
 
-		// i9500
+		// Galaxy S4 Exynos
 		if (device.equals("ja3g") || device.equals("i9500")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/i9500";
 			bootpartition = "/dev/block/mmcblk0p9";
@@ -39,13 +39,7 @@ public class SupportedDevices {
 			manualboot = true;
 		}
 
-		// M470
-		if (device.equals("m470")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/m470";
-			bootpartition = "/dev/block/platform/sdhci-tegra.3/by-name/LNX";
-		}
-
-		// m7ul
+		// One
 		if (device.contains("m7")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/m7ul";
 			bootpartition = "/dev/block/mmcblk0p33";
@@ -53,19 +47,19 @@ public class SupportedDevices {
 			roms = 5;
 		}
 
-		// Manta
+		// Nexus 10
 		if (device.equals("manta")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/manta";
 			bootpartition = "/dev/block/platform/dw_mmc.0/by-name/boot";
 		}
 
-		// pollux_windy
+		// Xperia Tablet Z
 		if (device.equals("pollux_windy") || device.contains("SGP31")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/pollux_windy";
 			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
 		}
 
-		// Tuna
+		// Galaxy Nexus
 		if (board.equals("tuna")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
 			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
@@ -74,11 +68,13 @@ public class SupportedDevices {
 			manualboot = true;
 		}
 
-		// Honami
-		if (device.equals("honami") || device.startsWith("C69")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/honami";
+		// Nexus 5
+		if (device.equals("hammerhead")) {
+			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/hammerhead";
 			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
 			roms = 5;
+			onekernel = true;
+			manualboot = true;
 		}
 
 	}
