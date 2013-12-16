@@ -128,6 +128,7 @@ public class MoreSettingsActitvity extends Activity {
 			break;
 		case 2:
 			fragment = new AboutUsFragment();
+			break;
 		default:
 			break;
 		}
