@@ -16,7 +16,6 @@
 
 package com.grarak.romswitcher.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,19 +48,13 @@ public class ChooseRom {
 			+ "/romswitcher-tmp/fourth";
 	private static final String FIFTH_FILE = sdcard + "/romswitcher-tmp/fifth";
 
-	private static final File mSecondfile = new File(SECOND_FILE);
-	private static final File mThirdfile = new File(THIRD_FILE);
-	private static final File mFourthfile = new File(FOURTH_FILE);
-	private static final File mFifthfile = new File(FIFTH_FILE);
-	private static File mSecondRom = new File("/.firstrom");
-
 	public static void chooserom(final Context context, String title,
 			final String firstrom, final String secondrom,
 			final String thirdrom, final String fourthrom, final String fifthrom) {
 		Builder builder = new Builder(context);
 		builder.setTitle(title);
 
-		if (mSecondRom.exists()) {
+		if (Utils.existFile("/.firstrom")) {
 			DATA = "/.firstrom";
 		} else {
 			DATA = "/data";
@@ -72,18 +65,14 @@ public class ChooseRom {
 
 		List<String> listItems = new ArrayList<String>();
 		listItems.add(firstrom);
-		if (!mSecondfile.exists()) {
+		if (!Utils.existFile(SECOND_FILE))
 			listItems.add(secondrom);
-		}
-		if (mThirdfile.exists()) {
+		if (Utils.existFile(THIRD_FILE))
 			listItems.add(thirdrom);
-		}
-		if (mFourthfile.exists()) {
+		if (Utils.existFile(FOURTH_FILE))
 			listItems.add(fourthrom);
-		}
-		if (mFifthfile.exists()) {
+		if (Utils.existFile(FIFTH_FILE))
 			listItems.add(fifthrom);
-		}
 
 		choiceList = listItems.toArray(new CharSequence[listItems.size()]);
 
@@ -143,16 +132,15 @@ public class ChooseRom {
 	}
 
 	private static void flashKernel(String rom, int romnumber, Context context) {
-		Utils.runCommand("echo " + romnumber + " > " + ROM_SELECTION, 0);
-		Utils.runCommand("echo 1 > " + NEXT_BOOT, 1);
-		if (!SupportedDevices.onekernel) {
-			if (!mSecondRom.exists() || romnumber == 0) {
-				Utils.runCommand("dd if=" + sdcard + "/romswitcher/" + rom
-						+ ".img of=" + SupportedDevices.bootpartition
-						+ " && echo 1 > /proc/sys/kernel/sysrq"
-						+ " && echo b > /proc/sysrq-trigger", 0);
-			}
+		Utils.runCommand("echo " + romnumber + " > " + ROM_SELECTION);
+		Utils.runCommand("echo 1 > " + NEXT_BOOT);
+		if (!SupportedDevices.onekernel
+				&& (!Utils.existFile("/.firstrom") || romnumber == 0)) {
+			Utils.runCommand("dd if=" + sdcard + "/romswitcher/" + rom
+					+ ".img of=" + SupportedDevices.bootpartition
+					+ " && echo 1 > /proc/sys/kernel/sysrq"
+					+ " && echo b > /proc/sysrq-trigger");
 		}
-		Utils.runCommand("reboot", 1);
+		Utils.runCommand("reboot");
 	}
 }

@@ -47,15 +47,14 @@ public class AboutUsFragment extends PreferenceFragment {
 	@Override
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
 			Preference preference) {
-		if (preference.getKey().equals(KEY_ME)) {
+		if (preference.getKey().equals(KEY_ME))
 			openLink(grarakDonate, getActivity());
-		} else if (preference.getKey().equals(KEY_MITHUN)) {
+		else if (preference.getKey().equals(KEY_MITHUN))
 			openLink(mithunDonate, getActivity());
-		} else if (preference.getKey().equals(KEY_BLUE)) {
+		else if (preference.getKey().equals(KEY_BLUE))
 			openLink(blueDonate, getActivity());
-		} else if (preference.getKey().equals(KEY_VIK)) {
+		else if (preference.getKey().equals(KEY_VIK))
 			openLink(vikDonate, getActivity());
-		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
 

@@ -44,7 +44,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -60,19 +59,15 @@ public class Utils {
 	private static final String FILENAME_PROC_VERSION = "/proc/version";
 	private static final String sdcard = "/sdcard";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
-	private static final File mPassfile = new File(PASS_FILE);
+
+	public static boolean existFile(String file) {
+		File mFile = new File(file);
+		return mFile.exists();
+	}
 
 	public static void deleteFiles(String path) {
-
-		File file = new File(path);
-
-		if (file.exists()) {
-			String deleteCmd = "rm -rf " + path;
-			Runtime runtime = Runtime.getRuntime();
-			try {
-				runtime.exec(deleteCmd);
-			} catch (IOException e) {
-			}
+		if (existFile(path)) {
+			runCommand("rm -rf " + path);
 		}
 	}
 
@@ -117,11 +112,8 @@ public class Utils {
 	}
 
 	public static void toast(Context context, String text, int time) {
-		if (time == 1) {
-			Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-		} else {
-			Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-		}
+		Toast.makeText(context, text,
+				time == 1 ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
 	}
 
 	public static String readLine(String filename) throws IOException {
@@ -137,14 +129,9 @@ public class Utils {
 	public static String getFormattedKernelVersion() {
 		try {
 			return formatKernelVersion(readLine(FILENAME_PROC_VERSION));
-
 		} catch (IOException e) {
-			Log.e("RomSwitcher",
-					"IO Exception when getting kernel version for Device Info screen",
-					e);
-
-			return "Unavailable";
 		}
+		return "Unavailable";
 	}
 
 	public static String formatKernelVersion(String rawKernelVersion) {
@@ -155,20 +142,10 @@ public class Utils {
 
 		Matcher m = Pattern.compile(PROC_VERSION_REGEX).matcher(
 				rawKernelVersion);
-		if (!m.matches()) {
-			Log.e("RomSwitcher", "Regex did not match on /proc/version: "
-					+ rawKernelVersion);
-			return "Unavailable";
-		} else if (m.groupCount() < 4) {
-			Log.e("RomSwitcher", "Regex match on /proc/version only returned "
-					+ m.groupCount() + " groups");
-			return "Unavailable";
-		}
-		return m.group(1);
+		return !m.matches() || m.groupCount() < 4 ? "Unavailable" : m.group(1);
 	}
 
 	public static void getconnection(String url) {
-
 		DownloadWebPageTask task = new DownloadWebPageTask();
 		task.execute(new String[] { url });
 	}
@@ -192,9 +169,7 @@ public class Utils {
 					while ((s = buffer.readLine()) != null) {
 						response += s;
 					}
-
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 			return response;
@@ -206,15 +181,13 @@ public class Utils {
 		}
 	}
 
-	public static void runCommand(String run, int id) {
+	public static void runCommand(String run) {
 		try {
-			getShell(true).add(new CommandCapture(id, run)).commandCompleted(id, 0);
+			getShell(true).add(new CommandCapture(0, run)).commandCompleted(0,
+					0);
 		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (TimeoutException e) {
-			e.printStackTrace();
 		} catch (RootDeniedException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -230,7 +203,7 @@ public class Utils {
 		mNewPassword = (EditText) btn.findViewById(R.id.newpass);
 		mConfirmPassword = (EditText) btn.findViewById(R.id.confirmpass);
 
-		if (!mPassfile.exists()) {
+		if (!existFile(PASS_FILE)) {
 			mOldPassword.setVisibility(View.GONE);
 			mOldPasstext.setVisibility(View.GONE);
 		}
@@ -257,42 +230,40 @@ public class Utils {
 	}
 
 	private static void checkOldPass(Context context) {
-		if (mPassfile.exists()) {
+		if (existFile(PASS_FILE)) {
 			String oldPass = "";
 			try {
 				oldPass = Utils.readLine(PASS_FILE);
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
-			if (mOldPassword.getText().toString().trim().equals(oldPass)) {
+			if (mOldPassword.getText().toString().trim().equals(oldPass))
 				checkNewPass(context);
-			} else {
+			else {
 				Utils.toast(context, context.getString(R.string.oldpasswrong),
 						0);
 				setupPassword(context);
 			}
-		} else {
+		} else
 			checkNewPass(context);
-		}
 	}
 
 	private static void checkNewPass(Context context) {
 		if (mNewPassword.getText().toString().trim()
 				.equals(mConfirmPassword.getText().toString().trim())
-				&& !mNewPassword.getText().toString().trim().isEmpty()) {
+				&& !mNewPassword.getText().toString().trim().isEmpty())
 			savePassword();
-		} else {
-			if (mNewPassword.getText().toString().trim().isEmpty()) {
+		else {
+			if (mNewPassword.getText().toString().trim().isEmpty())
 				Utils.toast(context, context.getString(R.string.emptypass), 0);
-			} else {
+			else
 				Utils.toast(context, context.getString(R.string.newnotmatch), 0);
-			}
+
 			setupPassword(context);
 		}
 	}
 
 	private static void savePassword() {
 		runCommand("echo \"" + mNewPassword.getText().toString().trim()
-				+ "\" > " + mPassfile, 1);
+				+ "\" > " + PASS_FILE);
 	}
 }

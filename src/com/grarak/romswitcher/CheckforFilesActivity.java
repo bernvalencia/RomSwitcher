@@ -40,18 +40,15 @@ import android.widget.EditText;
 public class CheckforFilesActivity extends Activity {
 
 	private static EditText mPasstext;
-	private static final File kernelScript = new File("/sbin/create_system.sh");
-	private static final File secondrom = new File("/.firstrom");
 
 	private static final String sdcard = "/sdcard";
 
-	private static final File firstimg = new File(sdcard
-			+ "/romswitcher/first.img");
-	private static final File secondimg = new File(sdcard
-			+ "/romswitcher/second.img");
+	private static final String FIRST_IMG = sdcard + "/romswitcher/first.img";
+	private static final String SECOND_IMG = sdcard + "/romswitcher/second.img";
+
+	private static final String KERNEL_SBIN_SCRIPT = "/sbin/create_system.sh";
 
 	private static final String ZIP_FILE = sdcard + "/romswitcher/download.zip";
-	private static final File mZip = new File(ZIP_FILE);
 
 	private static final String FIRST_NAME_FILE = sdcard
 			+ "/romswitcher-tmp/firstname";
@@ -66,25 +63,15 @@ public class CheckforFilesActivity extends Activity {
 
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 
-	private static final File mFirstName = new File(FIRST_NAME_FILE);
-	private static final File mSecondName = new File(SECOND_NAME_FILE);
-	private static final File mThirdName = new File(THIRD_NAME_FILE);
-	private static final File mFourthName = new File(FOURTH_NAME_FILE);
-	private static final File mFifthName = new File(FIFTH_NAME_FILE);
-	private static final File mPassfile = new File(PASS_FILE);
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (mPassfile.exists()) {
-			if (firstimg.exists() && secondimg.exists()
-					|| kernelScript.exists()) {
+		if (Utils.existFile(PASS_FILE)) {
+			if ((Utils.existFile(FIRST_IMG) && Utils.existFile(SECOND_IMG))
+					|| Utils.existFile(KERNEL_SBIN_SCRIPT))
 				checkPassword(this);
-			}
-		} else {
+		} else
 			secondPart(this);
-		}
 	}
 
 	private static void secondPart(final Context context) {
@@ -101,18 +88,18 @@ public class CheckforFilesActivity extends Activity {
 		} else if (!isBusyboxAvailable()) {
 			Utils.toast(context, context.getString(R.string.nobusybox), 0);
 		} else if (SupportedDevices.onekernel) {
-			if (kernelScript.exists() && secondimg.exists()) {
+			if (Utils.existFile(KERNEL_SBIN_SCRIPT)
+					&& Utils.existFile(SECOND_IMG)) {
 				start(context);
-			} else if (mZip.exists()) {
+			} else if (Utils.existFile(ZIP_FILE)) {
 				unzip(context);
 			} else {
-				Intent i = new Intent(context, LinkActivity.class);
-				context.startActivity(i);
+				context.startActivity(new Intent(context, LinkActivity.class));
 				((Activity) context).finish();
 			}
 		} else {
-			if (!firstimg.exists()) {
-				if (secondrom.exists()) {
+			if (!Utils.existFile(FIRST_IMG)) {
+				if (!Utils.existFile(SECOND_IMG)) {
 					Utils.alert(context, context.getString(R.string.app_name),
 							context.getString(R.string.nofirstimg));
 				} else {
@@ -124,7 +111,7 @@ public class CheckforFilesActivity extends Activity {
 							try {
 								GetKernel.pullkernel();
 								Thread.sleep(1000);
-								if (!firstimg.exists()) {
+								if (!Utils.existFile(FIRST_IMG)) {
 									Utils.toast(
 											context,
 											context.getString(R.string.somethingwrong),
@@ -141,13 +128,16 @@ public class CheckforFilesActivity extends Activity {
 					});
 					pause.start();
 				}
-			} else if (!secondimg.exists() && mZip.exists()) {
+			} else if (!Utils.existFile(SECOND_IMG)
+					&& Utils.existFile(ZIP_FILE)) {
 				unzip(context);
-			} else if (!secondimg.exists() && !mZip.exists()) {
+			} else if (!Utils.existFile(SECOND_IMG)
+					&& !Utils.existFile(ZIP_FILE)) {
 				Intent i = new Intent(context, LinkActivity.class);
 				context.startActivity(i);
 				((Activity) context).finish();
-			} else if (firstimg.exists() && secondimg.exists()) {
+			} else if (Utils.existFile(FIRST_IMG)
+					&& Utils.existFile(SECOND_IMG)) {
 				start(context);
 			}
 		}
@@ -162,23 +152,20 @@ public class CheckforFilesActivity extends Activity {
 					Utils.readLine(FOURTH_NAME_FILE),
 					Utils.readLine(FIFTH_NAME_FILE));
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
 	private static void restartIntent(Context context) {
-		Intent i = new Intent(context, StartActivity.class);
-		context.startActivity(i);
+		context.startActivity(new Intent(context, StartActivity.class));
 		((Activity) context).finish();
 	}
 
 	private static void unzip(Context context) {
 		Unzip.unpackZip(sdcard + "/romswitcher/", "download.zip");
-		if (SupportedDevices.onekernel) {
+		if (SupportedDevices.onekernel)
 			GetKernel.flashKernel(context);
-		} else {
+		else
 			restartIntent(context);
-		}
 	}
 
 	private static void checkPassword(final Context context) {
@@ -228,24 +215,19 @@ public class CheckforFilesActivity extends Activity {
 	}
 
 	private static void checkNamefile() {
-		if (!mFirstName.exists()) {
-			Utils.runCommand("echo \"First rom\" > " + FIRST_NAME_FILE, 0);
-		}
+		if (!Utils.existFile(FIRST_NAME_FILE))
+			Utils.runCommand("echo \"First rom\" > " + FIRST_NAME_FILE);
 
-		if (!mSecondName.exists()) {
-			Utils.runCommand("echo \"Second rom\" > " + SECOND_NAME_FILE, 0);
-		}
+		if (!Utils.existFile(SECOND_NAME_FILE))
+			Utils.runCommand("echo \"Second rom\" > " + SECOND_NAME_FILE);
 
-		if (!mThirdName.exists()) {
-			Utils.runCommand("echo \"Third rom\" > " + THIRD_NAME_FILE, 0);
-		}
+		if (!Utils.existFile(THIRD_NAME_FILE))
+			Utils.runCommand("echo \"Third rom\" > " + THIRD_NAME_FILE);
 
-		if (!mFourthName.exists()) {
-			Utils.runCommand("echo \"Fourth rom\" > " + FOURTH_NAME_FILE, 0);
-		}
+		if (!Utils.existFile(FOURTH_NAME_FILE))
+			Utils.runCommand("echo \"Fourth rom\" > " + FOURTH_NAME_FILE);
 
-		if (!mFifthName.exists()) {
-			Utils.runCommand("echo \"Fifth rom\" > " + FIFTH_NAME_FILE, 0);
-		}
+		if (!Utils.existFile(FIFTH_NAME_FILE))
+			Utils.runCommand("echo \"Fifth rom\" > " + FIFTH_NAME_FILE);
 	}
 }

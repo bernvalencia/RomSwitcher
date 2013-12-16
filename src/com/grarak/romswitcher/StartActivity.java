@@ -18,8 +18,6 @@ package com.grarak.romswitcher;
 
 import static com.stericson.RootTools.RootTools.debugMode;
 
-import java.io.File;
-
 import com.grarak.romswitcher.Utils.GetKernel;
 import com.grarak.romswitcher.Utils.SupportedDevices;
 import com.grarak.romswitcher.Utils.Utils;
@@ -32,10 +30,9 @@ import android.os.Bundle;
 
 public class StartActivity extends Activity {
 
-	private static final File secondrom = new File("/.firstrom");
+	private static final String SECONDROM = "/.firstrom";
 	private static final String sdcard = "/sdcard";
-	private static final File firstimg = new File(sdcard
-			+ "/romswitcher/first.img");
+	private static final String FIRST_IMG = sdcard + "/romswitcher/first.img";
 	private static final String PREF = "prefs";
 	private static SharedPreferences mPref;
 
@@ -61,7 +58,7 @@ public class StartActivity extends Activity {
 			String mKernelVersion = mPref.getString("kernelversion", "nothing");
 			SharedPreferences.Editor editor = mPref.edit();
 
-			if (!secondrom.exists()) {
+			if (!Utils.existFile(SECONDROM)) {
 				if (mKernelVersion.equals("nothing")
 						|| mKernelVersion.equals(Utils
 								.getFormattedKernelVersion())) {
@@ -85,14 +82,12 @@ public class StartActivity extends Activity {
 
 	private static void setup(Context context) {
 		boolean mFirstuse = mPref.getBoolean("firstuse", true);
-
-		if (mFirstuse && !secondrom.exists()) {
-			Intent i = new Intent(context, MainSetupActivity.class);
-			context.startActivity(i);
+		if (mFirstuse && !Utils.existFile(SECONDROM)) {
+			context.startActivity(new Intent(context, MainSetupActivity.class));
 			((Activity) context).finish();
 		} else {
-			Intent i = new Intent(context, CheckforFilesActivity.class);
-			context.startActivity(i);
+			context.startActivity(new Intent(context,
+					CheckforFilesActivity.class));
 			((Activity) context).finish();
 		}
 	}
@@ -104,14 +99,13 @@ public class StartActivity extends Activity {
 				try {
 					GetKernel.pullkernel();
 					Thread.sleep(1000);
-					if (!firstimg.exists()) {
+					if (!Utils.existFile(FIRST_IMG)) {
 						Utils.toast(context,
 								context.getString(R.string.somethingwrong), 0);
 						((Activity) context).finish();
 					}
 					Utils.hideprogress();
 				} catch (Exception e) {
-					e.getLocalizedMessage();
 				}
 			}
 		});

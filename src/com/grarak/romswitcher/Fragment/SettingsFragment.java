@@ -16,7 +16,6 @@
 
 package com.grarak.romswitcher.Fragment;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.grarak.romswitcher.R;
@@ -49,9 +48,6 @@ public class SettingsFragment extends PreferenceFragment implements
 	private static final String OTA_FILE = sdcard + "/romswitcher-tmp/ota";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 
-	private static final File mOTAfile = new File(OTA_FILE);
-	private static final File mPassfile = new File(PASS_FILE);
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,39 +60,25 @@ public class SettingsFragment extends PreferenceFragment implements
 		mPass = (CheckBoxPreference) findPreference(KEY_PASS);
 		mPass.setOnPreferenceChangeListener(this);
 
-		if (mOTAfile.exists()) {
-			mOTA.setChecked(false);
-		} else {
-			mOTA.setChecked(true);
-		}
+		mOTA.setChecked(!Utils.existFile(OTA_FILE));
 
-		if (mPassfile.exists()) {
-			mPass.setChecked(true);
-			mSetupPass.setEnabled(true);
-		} else {
-			mPass.setChecked(false);
-			mSetupPass.setEnabled(false);
-		}
+		mPass.setChecked(Utils.existFile(PASS_FILE));
+		mSetupPass.setEnabled(Utils.existFile(PASS_FILE));
 	}
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		if (preference == mOTA) {
-			if (mOTA.isChecked()) {
-				mOTA.setChecked(false);
-				Utils.runCommand("echo \"disabled\" > " + mOTAfile, 0);
-			} else {
-				mOTA.setChecked(true);
-				Utils.runCommand("rm -f " + mOTAfile, 0);
-			}
+			mOTA.setChecked(!mOTA.isChecked());
+			Utils.runCommand(!mOTA.isChecked() ? "echo \"disabled\" > "
+					+ OTA_FILE : "rm -f " + OTA_FILE);
 		} else if (preference == mPass) {
-			if (mPass.isChecked()) {
-				if (mPassfile.exists()) {
+			if (mPass.isChecked())
+				if (Utils.existFile(PASS_FILE))
 					checkPassword(getActivity());
-				} else {
+				else
 					disablePass();
-				}
-			} else {
+			else {
 				mPass.setChecked(true);
 				mSetupPass.setEnabled(true);
 			}
@@ -138,23 +120,22 @@ public class SettingsFragment extends PreferenceFragment implements
 	}
 
 	private static void checkPass(Context context) {
-		String password = "";
 		try {
-			password = Utils.readLine(PASS_FILE);
+			String password = Utils.readLine(PASS_FILE);
+			if (mPasstext.getText().toString().trim().equals(password))
+				disablePass();
+			else {
+				Utils.toast(context, context.getString(R.string.passwordwrong),
+						0);
+				checkPassword(context);
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (mPasstext.getText().toString().trim().equals(password)) {
-			disablePass();
-		} else {
-			Utils.toast(context, context.getString(R.string.passwordwrong), 0);
-			checkPassword(context);
 		}
 	}
 
 	private static void disablePass() {
 		mPass.setChecked(false);
 		mSetupPass.setEnabled(false);
-		Utils.runCommand("rm -f " + mPassfile, 0);
+		Utils.runCommand("rm -f " + PASS_FILE);
 	}
 }

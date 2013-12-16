@@ -33,25 +33,21 @@ import static com.stericson.RootTools.RootTools.isAccessGiven;
 public class MainSetupActivity extends Activity {
 
 	private static final String sdcard = "/sdcard";
-	private static final File firstimg = new File(sdcard
-			+ "/romswitcher/first.img");
+	private static final String FIRST_IMG = "/romswitcher/first.img";
 	private static Button mNextButton, mCancelButton;
-	public static boolean firstuse = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_setup);
-		firstuse = true;
 
-		File RSDirectory = new File(sdcard + "/romswitcher/");
+		File RSDirectory = new File(sdcard + "/romswitcher");
 		RSDirectory.mkdirs();
 
 		mNextButton = (Button) findViewById(R.id.button_next);
 		mNextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				if (!isAccessGiven()) {
 					Utils.toast(getApplicationContext(),
 							getString(R.string.noroot), 0);
@@ -70,7 +66,7 @@ public class MainSetupActivity extends Activity {
 								try {
 									GetKernel.pullkernel();
 									Thread.sleep(1000);
-									if (!firstimg.exists()) {
+									if (!Utils.existFile(FIRST_IMG)) {
 										Utils.toast(
 												MainSetupActivity.this,
 												getString(R.string.somethingwrong),
@@ -85,9 +81,8 @@ public class MainSetupActivity extends Activity {
 						});
 						pause.start();
 					}
-					Intent i = new Intent(MainSetupActivity.this,
-							SetNameActivity.class);
-					startActivity(i);
+					startActivity(new Intent(MainSetupActivity.this,
+							SetNameActivity.class));
 					finish();
 				}
 			}

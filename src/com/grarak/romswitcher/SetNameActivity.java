@@ -60,15 +60,14 @@ public class SetNameActivity extends Activity {
 
 					Utils.runCommand("echo \""
 							+ mFirstEdit.getText().toString().trim() + "\" > "
-							+ FIRST_NAME_FILE, 0);
+							+ FIRST_NAME_FILE);
 
 					Utils.runCommand("echo \""
 							+ mSecondEdit.getText().toString().trim() + "\" > "
-							+ SECOND_NAME_FILE, 1);
+							+ SECOND_NAME_FILE);
 
-					Intent i = new Intent(SetNameActivity.this,
-							FeaturesActivity.class);
-					startActivity(i);
+					startActivity(new Intent(SetNameActivity.this,
+							FeaturesActivity.class));
 				}
 			}
 		});

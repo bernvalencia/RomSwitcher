@@ -102,14 +102,6 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static final String DATA_SHARING_FILE = sdcard
 			+ "/romswitcher-tmp/datashare";
 
-	private static final File mSecondfile = new File(SECOND_FILE);
-	private static final File mThirdfile = new File(THIRD_FILE);
-	private static final File mFourthfile = new File(FOURTH_FILE);
-	private static final File mFifthfile = new File(FIFTH_FILE);
-	private static final File mManualbootfile = new File(MANUAL_BOOT_FILE);
-	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
-	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -141,29 +133,10 @@ public class GeneralFragment extends PreferenceFragment implements
 		mFifth = (CheckBoxPreference) findPreference(KEY_ENABLE_FIFTH);
 		mFifth.setOnPreferenceChangeListener(this);
 
-		if (mSecondfile.exists()) {
-			mSecond.setChecked(false);
-		} else {
-			mSecond.setChecked(true);
-		}
-
-		if (mThirdfile.exists()) {
-			mThird.setChecked(true);
-		} else {
-			mThird.setChecked(false);
-		}
-
-		if (mFourthfile.exists()) {
-			mFourth.setChecked(true);
-		} else {
-			mFourth.setChecked(false);
-		}
-
-		if (mFifthfile.exists()) {
-			mFifth.setChecked(true);
-		} else {
-			mFifth.setChecked(false);
-		}
+		mSecond.setChecked(!Utils.existFile(SECOND_FILE));
+		mThird.setChecked(Utils.existFile(THIRD_FILE));
+		mFourth.setChecked(Utils.existFile(FOURTH_FILE));
+		mFifth.setChecked(Utils.existFile(FIFTH_FILE));
 
 		mManualboot = (CheckBoxPreference) findPreference(KEY_MANUAL_BOOT);
 		mManualboot.setOnPreferenceChangeListener(this);
@@ -172,117 +145,81 @@ public class GeneralFragment extends PreferenceFragment implements
 		mDataSharing = (CheckBoxPreference) findPreference(KEY_DATA_SHARING);
 		mDataSharing.setOnPreferenceChangeListener(this);
 
-		if (mManualbootfile.exists()) {
-			mManualboot.setChecked(true);
-		} else {
-			mManualboot.setChecked(false);
-			Utils.runCommand("rm -f " + MANUAL_BOOT_FILE, 0);
-		}
+		mManualboot.setChecked(Utils.existFile(MANUAL_BOOT_FILE));
 
-		if (mAppSharingfile.exists()) {
-			mAppSharing.setChecked(true);
-			mDataSharing.setEnabled(true);
-		} else {
-			mAppSharing.setChecked(false);
-			mDataSharing.setChecked(false);
-			mDataSharing.setEnabled(false);
-		}
+		mAppSharing.setChecked(Utils.existFile(APP_SHARING_FILE));
+		mDataSharing.setEnabled(Utils.existFile(APP_SHARING_FILE));
+		mDataSharing.setChecked(Utils.existFile(APP_SHARING_FILE));
 
-		if (mAppSharingfile.exists() && mDataSharingfile.exists()) {
-			mDataSharing.setChecked(true);
-		} else {
-			mDataSharing.setChecked(false);
-			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
-		}
+		mDataSharing.setChecked(Utils.existFile(APP_SHARING_FILE)
+				&& Utils.existFile(DATA_SHARING_FILE));
+		if (Utils.existFile(APP_SHARING_FILE)
+				&& Utils.existFile(DATA_SHARING_FILE))
+			Utils.runCommand("rm -f " + DATA_SHARING_FILE);
 
-		if (SupportedDevices.roms < 3) {
+		if (SupportedDevices.roms < 3)
 			prefScreen.removePreference(findPreference(KEY_CATEGORY_THIRDROM));
-		}
 
-		if (SupportedDevices.roms < 4) {
+		if (SupportedDevices.roms < 4)
 			prefScreen.removePreference(findPreference(KEY_CATEGORY_FOURTHROM));
-		}
 
-		if (SupportedDevices.roms < 5) {
+		if (SupportedDevices.roms < 5)
 			prefScreen.removePreference(findPreference(KEY_CATEGORY_FIFTHROM));
-		}
 
 		mCategoryMisc = (PreferenceCategory) findPreference(KEY_CATEGORY_MISC);
 
-		if (SupportedDevices.recoverypartition.isEmpty()) {
+		if (SupportedDevices.recoverypartition.isEmpty())
 			mCategoryMisc
 					.removePreference(findPreference(KEY_INSTALL_RECOVERY));
-		}
 
-		if (!SupportedDevices.onekernel) {
+		if (!SupportedDevices.onekernel)
 			mCategoryMisc.removePreference(findPreference(KEY_REBOOT_RECOVERY));
-		}
 
-		if (!SupportedDevices.manualboot) {
+		if (!SupportedDevices.manualboot)
 			mCategoryMisc.removePreference(findPreference(KEY_MANUAL_BOOT));
-		}
 	}
 
 	public boolean onPreferenceChange(Preference preference, Object objValue) {
 		if (preference == mSecond) {
-			if (mSecond.isChecked()) {
-				mSecond.setChecked(false);
-				Utils.runCommand("echo \"disabled\" > " + SECOND_FILE, 0);
-			} else {
-				mSecond.setChecked(true);
-				Utils.runCommand("rm -f " + SECOND_FILE, 0);
-			}
+			mSecond.setChecked(!mSecond.isChecked());
+			Utils.runCommand(!mSecond.isChecked() ? "echo \"disabled\" > "
+					+ SECOND_FILE : "rm -f " + SECOND_FILE);
 		} else if (preference == mThird) {
-			if (mThird.isChecked()) {
-				mThird.setChecked(false);
-				Utils.runCommand("rm -f " + THIRD_FILE, 0);
-			} else {
-				mThird.setChecked(true);
-				Utils.runCommand("echo \"enabled\" > " + THIRD_FILE, 0);
-			}
+			mThird.setChecked(!mThird.isChecked());
+			Utils.runCommand(!mThird.isChecked() ? "rm -f " + THIRD_FILE
+					: "echo \"enabled\" > " + THIRD_FILE);
 		} else if (preference == mFourth) {
-			if (mFourth.isChecked()) {
-				mFourth.setChecked(false);
-				Utils.runCommand("rm -f " + FOURTH_FILE, 0);
-			} else {
-				mFourth.setChecked(true);
-				Utils.runCommand("echo \"enabled\" > " + FOURTH_FILE, 0);
-			}
+			mFourth.setChecked(!mFourth.isChecked());
+			Utils.runCommand(!mFourth.isChecked() ? "rm -f " + FOURTH_FILE
+					: "echo \"enabled\" > " + FOURTH_FILE);
 		} else if (preference == mFifth) {
-			if (mFifth.isChecked()) {
-				mFifth.setChecked(false);
-				Utils.runCommand("rm -f " + FIFTH_FILE, 0);
-			} else {
-				mFifth.setChecked(true);
-				Utils.runCommand("echo \"enabled\" > " + FIFTH_FILE, 0);
-			}
+			mFifth.setChecked(!mFifth.isChecked());
+			Utils.runCommand(!mFifth.isChecked() ? "rm -f " + FIFTH_FILE
+					: "echo \"enabled\" > " + FIFTH_FILE);
 		} else if (preference == mManualboot) {
-			if (mManualboot.isChecked()) {
-				mManualboot.setChecked(false);
-				Utils.runCommand("rm -f " + MANUAL_BOOT_FILE, 0);
-			} else {
-				mManualboot.setChecked(true);
-				Utils.runCommand("echo \"enabled\" > " + MANUAL_BOOT_FILE, 0);
-			}
+			mManualboot.setChecked(!mManualboot.isChecked());
+			Utils.runCommand(!mManualboot.isChecked() ? "rm -f "
+					+ MANUAL_BOOT_FILE : "echo \"enabled\" > "
+					+ MANUAL_BOOT_FILE);
 		} else if (preference == mAppSharing) {
 			if (mAppSharing.isChecked()) {
 				mAppSharing.setChecked(false);
 				mDataSharing.setEnabled(false);
 				mDataSharing.setChecked(false);
 				Utils.runCommand("rm -f " + APP_SHARING_FILE + " && rm -f "
-						+ DATA_SHARING_FILE, 0);
+						+ DATA_SHARING_FILE);
 			} else {
 				mAppSharing.setChecked(true);
 				mDataSharing.setEnabled(true);
-				Utils.runCommand("echo \"enabled\" > " + APP_SHARING_FILE, 0);
+				Utils.runCommand("echo \"enabled\" > " + APP_SHARING_FILE);
 			}
 		} else if (preference == mDataSharing) {
 			if (mDataSharing.isChecked()) {
 				mDataSharing.setChecked(false);
-				Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
+				Utils.runCommand("rm -f " + DATA_SHARING_FILE);
 			} else {
 				mDataSharing.setChecked(true);
-				Utils.runCommand("echo \"enabled\" > " + DATA_SHARING_FILE, 0);
+				Utils.runCommand("echo \"enabled\" > " + DATA_SHARING_FILE);
 			}
 		}
 		return false;
@@ -307,16 +244,12 @@ public class GeneralFragment extends PreferenceFragment implements
 			alertEdit(getActivity(), 4);
 		} else if (preference.getKey().equals(KEY_REBOOT_RECOVERY)) {
 			File rom = new File("/.firstrom");
-			String folder;
-			if (rom.exists()) {
-				folder = "/.firstrom/media/rebootrs";
-			} else {
-				folder = "/data/media/rebootrs";
-			}
-			Utils.runCommand("echo 1 > " + folder + " && reboot", 0);
+			String folder = rom.exists() ? "/.firstrom/media/rebootrs"
+					: "/data/media/rebootrs";
+			Utils.runCommand("echo 1 > " + folder + " && reboot");
 		} else if (preference.getKey().equals(KEY_INSTALL_RECOVERY)) {
 			Utils.runCommand("dd if=" + BOOT_IMAGE_FILE + " of="
-					+ SupportedDevices.recoverypartition, 3);
+					+ SupportedDevices.recoverypartition);
 			Utils.toast(getActivity(), getString(R.string.recoveryinstalled), 0);
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -325,42 +258,26 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static void alertEdit(final Context context, final int name) {
 		Builder alert = new Builder(context);
 		mName = new EditText(context);
-		switch (name) {
-		case 0:
-			try {
+		try {
+			switch (name) {
+			case 0:
 				mName.setHint(Utils.readLine(FIRST_NAME_FILE));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		case 1:
-			try {
+				break;
+			case 1:
 				mName.setHint(Utils.readLine(SECOND_NAME_FILE));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		case 2:
-			try {
+				break;
+			case 2:
 				mName.setHint(Utils.readLine(THIRD_NAME_FILE));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		case 3:
-			try {
+				break;
+			case 3:
 				mName.setHint(Utils.readLine(FOURTH_NAME_FILE));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		case 4:
-			try {
+				break;
+			case 4:
 				mName.setHint(Utils.readLine(FIFTH_NAME_FILE));
-			} catch (IOException e) {
-				e.printStackTrace();
+
+				break;
 			}
-			break;
+		} catch (IOException e) {
 		}
 		alert.setView(mName)
 				.setTitle(context.getString(R.string.setname))
@@ -384,30 +301,28 @@ public class GeneralFragment extends PreferenceFragment implements
 	private static void setName(Context context, int name) {
 		File rstmp = new File(sdcard + "/romswitcher-tmp");
 		rstmp.mkdirs();
-
 		switch (name) {
 		case 0:
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + FIRST_NAME_FILE, 0);
+					+ "\" > " + FIRST_NAME_FILE);
 			break;
 		case 1:
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + SECOND_NAME_FILE, 1);
+					+ "\" > " + SECOND_NAME_FILE);
 			break;
 		case 2:
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + THIRD_NAME_FILE, 2);
+					+ "\" > " + THIRD_NAME_FILE);
 			break;
 		case 3:
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + FOURTH_NAME_FILE, 3);
+					+ "\" > " + FOURTH_NAME_FILE);
 			break;
 		case 4:
 			Utils.runCommand("echo \"" + mName.getText().toString().trim()
-					+ "\" > " + FIFTH_NAME_FILE, 3);
+					+ "\" > " + FIFTH_NAME_FILE);
 			break;
 		}
-
 		try {
 			setSummary(mFirstname, Utils.readLine(FIRST_NAME_FILE));
 			setSummary(mSecondname, Utils.readLine(SECOND_NAME_FILE));
@@ -415,7 +330,6 @@ public class GeneralFragment extends PreferenceFragment implements
 			setSummary(mFourthname, Utils.readLine(FOURTH_NAME_FILE));
 			setSummary(mFifthname, Utils.readLine(FIFTH_NAME_FILE));
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

@@ -29,7 +29,7 @@ public class UpdateFinishActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Utils.runCommand("rm -rf " + sdcard + "/romswitcher", 0);
+		Utils.runCommand("rm -rf " + sdcard + "/romswitcher");
 
 		Utils.alert(this, getString(R.string.update),
 				getString(R.string.updatefinish));

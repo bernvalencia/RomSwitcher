@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher.Utils;
 
-import java.io.File;
-
 import com.grarak.romswitcher.R;
 
 import android.app.Activity;
@@ -29,17 +27,16 @@ public class GetKernel {
 
 	private static final String sdcard = "/sdcard";
 	private static final String SECOND_IMG = sdcard + "/romswitcher/second.img";
-	private static final File mSecondimg = new File(SECOND_IMG);
 
 	public static void pullkernel() {
 		Utils.runCommand("dd if=" + SupportedDevices.bootpartition + " of="
-				+ sdcard + "/romswitcher/first.img", 0);
+				+ sdcard + "/romswitcher/first.img");
 	}
 
 	public static void flashKernel(final Context context) {
-		if (mSecondimg.exists()) {
+		if (Utils.existFile(SECOND_IMG)) {
 			Utils.runCommand("dd if=" + sdcard + "/romswitcher/second.img of="
-					+ SupportedDevices.bootpartition, 0);
+					+ SupportedDevices.bootpartition);
 
 			Builder builder = new Builder(context);
 			builder.setTitle(context.getString(R.string.app_name))
@@ -59,7 +56,7 @@ public class GetKernel {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									Utils.runCommand("reboot", 0);
+									Utils.runCommand("reboot");
 								}
 							}).show();
 

@@ -58,17 +58,17 @@ public class LinkActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			HTML = Utils.mHtmlstring.toString();
-			if (HTML.isEmpty()) {
+			if (HTML.isEmpty())
 				Utils.toast(context, context.getString(R.string.nointernet), 0);
-			} else if (HTML.contains("ffline")) {
+			else if (HTML.contains("ffline"))
 				Utils.toast(context, context.getString(R.string.serverdown), 0);
-			} else {
-				Utils.runCommand("echo \"" + HTML + "\" > " + HTML_FILE, 0);
+			else {
+				Utils.runCommand("echo \"" + HTML + "\" > " + HTML_FILE);
 				PackageDownloader.mDownloadfolder = "/romswitcher/";
 				PackageDownloader.mDownloadlink = HTML;
 				PackageDownloader.mDownloadname = "download.zip";
-				Intent i = new Intent(context, PackageDownloader.class);
-				context.startActivity(i);
+				context.startActivity(new Intent(context,
+						PackageDownloader.class));
 			}
 			Utils.hideprogress();
 			((Activity) context).finish();

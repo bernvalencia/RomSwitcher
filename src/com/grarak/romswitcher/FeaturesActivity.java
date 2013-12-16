@@ -16,8 +16,6 @@
 
 package com.grarak.romswitcher;
 
-import java.io.File;
-
 import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Activity;
@@ -41,10 +39,6 @@ public class FeaturesActivity extends Activity implements View.OnClickListener {
 			+ "/romswitcher-tmp/datashare";
 	private static final String PASS_FILE = sdcard + "/romswitcher-tmp/pass";
 
-	private static final File mAppSharingfile = new File(APP_SHARING_FILE);
-	private static final File mDataSharingfile = new File(DATA_SHARING_FILE);
-	private static final File mPassfile = new File(PASS_FILE);
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,82 +55,59 @@ public class FeaturesActivity extends Activity implements View.OnClickListener {
 		mPassword = (CheckBox) findViewById(R.id.check_password);
 		mPassword.setOnClickListener(this);
 
-		if (mAppSharingfile.exists()) {
-			mAppSharing.setChecked(true);
-			mDataSharing.setEnabled(true);
-		} else {
-			mAppSharing.setChecked(false);
-			mDataSharing.setChecked(false);
-			mDataSharing.setEnabled(false);
-		}
+		mAppSharing.setChecked(Utils.existFile(APP_SHARING_FILE));
+		mDataSharing.setEnabled(Utils.existFile(APP_SHARING_FILE));
+		mDataSharing.setChecked(Utils.existFile(APP_SHARING_FILE));
 
-		if (mAppSharingfile.exists() && mDataSharingfile.exists()) {
-			mDataSharing.setChecked(true);
-		} else {
-			mDataSharing.setChecked(false);
-			Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
-		}
+		mDataSharing.setChecked(Utils.existFile(APP_SHARING_FILE)
+				&& Utils.existFile(DATA_SHARING_FILE));
 
-		if (mPassfile.exists()) {
-			mPassword.setChecked(true);
-			mButtonPassword.setVisibility(View.VISIBLE);
-		} else {
-			mPassword.setChecked(false);
-			mButtonPassword.setVisibility(View.GONE);
-		}
+		if (!(Utils.existFile(APP_SHARING_FILE) && Utils
+				.existFile(DATA_SHARING_FILE)))
+			Utils.runCommand("rm -f " + DATA_SHARING_FILE);
+
+		mPassword.setChecked(Utils.existFile(PASS_FILE));
+		mButtonPassword.setVisibility(Utils.existFile(PASS_FILE) ? View.VISIBLE
+				: View.GONE);
 	}
 
 	@Override
 	public void onClick(View v) {
 		boolean forward = true;
-
 		if (v == mButtonNext) {
-			if (mAppSharing.isChecked()) {
-				Utils.runCommand("echo \"enabled\" > " + APP_SHARING_FILE, 0);
-			} else {
-				Utils.runCommand("rm -f " + APP_SHARING_FILE + " && rm -f "
-						+ DATA_SHARING_FILE, 0);
-			}
-			if (mDataSharing.isChecked()) {
-				Utils.runCommand("echo \"enabled\" > " + DATA_SHARING_FILE, 0);
-			} else {
-				Utils.runCommand("rm -f " + DATA_SHARING_FILE, 0);
-			}
-			if (!mPassword.isChecked()) {
-				Utils.runCommand("rm -f " + PASS_FILE, 0);
-			} else if (!mPassfile.exists()) {
+			Utils.runCommand(mAppSharing.isChecked() ? "echo \"enabled\" > "
+					+ APP_SHARING_FILE : "rm -f " + APP_SHARING_FILE
+					+ " && rm -f " + DATA_SHARING_FILE);
+
+			Utils.runCommand(mDataSharing.isChecked() ? "echo \"enabled\" > "
+					+ DATA_SHARING_FILE : "rm -f " + DATA_SHARING_FILE);
+
+			if (!mPassword.isChecked())
+				Utils.runCommand("rm -f " + PASS_FILE);
+			else if (!Utils.existFile(PASS_FILE)) {
 				Utils.toast(this, getString(R.string.nopassword), 0);
 				forward = false;
 			}
+
 			if (forward) {
 				SharedPreferences mPref = getSharedPreferences(PREF, 0);
 				SharedPreferences.Editor editorPref = mPref.edit();
 				editorPref.putBoolean("firstuse", false);
 				editorPref.commit();
 
-				Intent i = new Intent(this, CheckforFilesActivity.class);
-				startActivity(i);
+				startActivity(new Intent(this, CheckforFilesActivity.class));
 				finish();
 			}
 		} else if (v == mButtonPassword) {
 			Utils.setupPassword(this);
 		} else if (v == mAppSharing) {
-			if (mAppSharing.isChecked()) {
-				mAppSharing.setChecked(true);
-				mDataSharing.setEnabled(true);
-			} else {
-				mAppSharing.setChecked(false);
-				mDataSharing.setEnabled(false);
-				mDataSharing.setChecked(false);
-			}
+			mAppSharing.setChecked(mAppSharing.isChecked());
+			mDataSharing.setEnabled(mAppSharing.isChecked());
+			mDataSharing.setChecked(mAppSharing.isChecked());
 		} else if (v == mPassword) {
-			if (mPassword.isChecked()) {
-				mPassword.setChecked(true);
-				mButtonPassword.setVisibility(View.VISIBLE);
-			} else {
-				mPassword.setChecked(false);
-				mButtonPassword.setVisibility(View.GONE);
-			}
+			mPassword.setChecked(mPassword.isChecked());
+			mButtonPassword.setVisibility(mPassword.isChecked() ? View.VISIBLE
+					: View.GONE);
 		}
 	}
 }
