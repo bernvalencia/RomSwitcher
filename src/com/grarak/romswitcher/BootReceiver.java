@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.grarak.romswitcher.Utils;
+package com.grarak.romswitcher;
 
 import java.io.File;
 import java.io.IOException;
 
 import com.grarak.romswitcher.R;
-import com.grarak.romswitcher.UpdateFinishActivity;
+import com.grarak.romswitcher.Utils.SupportedDevices;
+import com.grarak.romswitcher.Utils.Utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
