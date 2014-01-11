@@ -29,7 +29,25 @@ public class SupportedDevices {
 
 	public static void getDevices() {
 
-		// Galaxy S4 Exynos
+		// Samsung Galaxy Mega 6.3
+		if (device.startsWith("melius") || device.startsWith("i920")) {
+			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/melius";
+			bootpartition = "dev/block/platform/msm_sdcc.1/by-name/boot";
+			recoverypartition = "/dev/block/platform/msm_sdcc.1/by-name/recovery";
+			roms = 5;
+			onekernel = true;
+		}
+
+		// Samsung Galaxy Nexus
+		if (board.equals("tuna")) {
+			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
+			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
+			roms = 5;
+			onekernel = true;
+			manualboot = true;
+		}
+
+		// Samsung Galaxy S4 Exynos
 		if (device.equals("ja3g") || device.equals("i9500")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/i9500";
 			bootpartition = "/dev/block/mmcblk0p9";
@@ -39,7 +57,7 @@ public class SupportedDevices {
 			manualboot = true;
 		}
 
-		// One
+		// HTC One
 		if (device.contains("m7")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/m7ul";
 			bootpartition = "/dev/block/mmcblk0p33";
@@ -47,34 +65,16 @@ public class SupportedDevices {
 			roms = 5;
 		}
 
-		// Nexus 10
+		// Google Nexus 10
 		if (device.equals("manta")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/manta";
 			bootpartition = "/dev/block/platform/dw_mmc.0/by-name/boot";
 		}
 
-		// Xperia Tablet Z
+		// Sony Xperia Tablet Z
 		if (device.equals("pollux_windy") || device.contains("SGP31")) {
 			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/pollux_windy";
 			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
-		}
-
-		// Galaxy Nexus
-		if (board.equals("tuna")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/tuna";
-			bootpartition = "/dev/block/platform/omap/omap_hsmmc.0/by-name/boot";
-			roms = 5;
-			onekernel = true;
-			manualboot = true;
-		}
-
-		// Nexus 5
-		if (device.equals("hammerhead")) {
-			downloadlink = "https://raw.github.com/RomSwitchers/Downloadlinks/master/hammerhead";
-			bootpartition = "/dev/block/platform/msm_sdcc.1/by-name/boot";
-			roms = 5;
-			onekernel = true;
-			manualboot = true;
 		}
 
 	}
